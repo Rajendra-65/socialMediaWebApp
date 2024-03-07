@@ -26,7 +26,7 @@ const CreatePost = () => {
     
     const [imageUrl,setImageUrl] = useState<string>('')
     
-    const handleUpload = (result) => {
+    const handleUpload = (result:any) => {
         const imageUrl = result?.info?.secure_url
         setImageUrl(imageUrl)
         console.log("ImageUrl is",imageUrl)

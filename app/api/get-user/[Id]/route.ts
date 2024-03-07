@@ -2,7 +2,11 @@ import { User } from "@/models/User"
 import { NextResponse } from "next/server"
 import { connectDb } from "@/utils/connectDb"
 
-export const GET = async (request:any,{params}) => {
+interface ParamsType {
+    Id:string
+}
+
+export const GET = async (request:any,{ params } : { params : ParamsType }) => {
     try{
         const {Id} = params
         console.log(Id,typeof Id)
