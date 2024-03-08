@@ -2,9 +2,11 @@ import { User } from "@/models/User"
 import mongoose from "mongoose"
 import { NextResponse } from "next/server"
 import { UserTypes } from "@/types/user"
+import { connectDb } from "@/utils/connectDb"
 
 export const GET = async (request:any,{params}) => {
     try{
+        await connectDb()
         const {Id} = params
         const userId = Id[0]
         const postId = Id[1]

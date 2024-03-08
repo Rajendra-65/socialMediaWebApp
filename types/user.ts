@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 
 export interface UserTypes{
+    _id:mongoose.Types.ObjectId;
     firstName: string;
     lastName: string;
     userName: string;

@@ -24,27 +24,32 @@ const userSchema = new Schema({
     },
     posts:[
         {
-            type:String
+            type:mongoose.Schema.ObjectId,
+            ref:'Post'
         }
     ],
     likedPost:[
         {
-            type:String
+            type:mongoose.Schema.ObjectId,
+            ref:'Post'
         }
     ],
     savedPosts:[
         {
-            type:String
+            type:mongoose.Schema.ObjectId,
+            ref:'Post'
         }
     ],
     followers:[
         {
-            type:String
+            type:mongoose.Schema.ObjectId,
+            ref:'User'
         }
     ],
     following:[
         {
-            type:String
+            type:mongoose.Schema.ObjectId,
+            ref:'User'
         }
     ],
     profileImage:{

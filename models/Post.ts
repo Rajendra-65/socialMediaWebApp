@@ -18,7 +18,8 @@ const postSchema = new Schema({
         type:String,
     },
     like:{
-        type:Number
+        type:Number,
+        default:0
     },
     likedBy:[
         {

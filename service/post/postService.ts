@@ -46,3 +46,13 @@ export const savePost = async  (postId:mongoose.Types.ObjectId) => {
         console.log(e)
     }
 }
+
+export const likePost = async (userId:any,postId:any) => {
+    try{
+        console.log(typeof userId, typeof postId)
+        const response = await axios.post(`/api/like-post/${userId}/${postId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
