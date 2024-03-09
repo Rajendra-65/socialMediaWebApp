@@ -92,6 +92,7 @@ const AccountPostCard = ({
                                     }
                                     width={45}
                                     height={45}
+                                    style={{borderRadius:"10px"}}
                                     alt="profileImage of the User"
                                 />
                                 <div className="flex flex-col gap-1">

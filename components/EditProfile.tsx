@@ -1,5 +1,5 @@
 "use client"
-
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -13,14 +13,13 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import React from 'react'
-import Link from "next/link"
-import { createUser } from "@/service/user/userServiece"
-import bcrypt from "bcryptjs"
-import { usePathname } from "next/navigation"
-const SignUpForm = () => {
-    const pathName = usePathname()
-    
+import { UserEditTypes } from "@/types/user";
+import Image from "next/image";
+import { CldUploadButton } from "next-cloudinary";
+import { updateUser } from "@/service/user/userServiece";
+
+const EditProfile = ({user}:{user:UserEditTypes}) => {
+    const [imageUrl,setImageUrl] = useState<string>()
     const formSchema = z.object({
         firstName: z.string().min(2, {
             message: "firstName must be at least 2 characters.",
@@ -37,44 +36,56 @@ const SignUpForm = () => {
         }).max(12,{
             message:"UserName must not exceed 12 characters"
         }),
-        email:z.string(),
-        password:z.string().min(8,{
-            message:"Password must be of 8 characters"
-        }).max(15,{
-            message:"Password must be under 15 characters"
-        })
+        imageUrl:z.string()
     })
 
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            firstName: "",
-            lastName:"",
-            userName:"",
-            email:"",
-            password:"",
+            firstName: user.firstName,
+            lastName:user.lastName,
+            userName:user.userName,
+            imageUrl:user.profileImage || ""
         },
     })
 
-    // 2. Define a submit handler.
+    const handleUpload = (result:any) => {
+        const imageUrl = result?.info?.secure_url
+        setImageUrl(imageUrl)
+        console.log("ImageUrl is",imageUrl)
+    }
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        values.imageUrl = imageUrl as string
         console.log(values)
-        const hashedPassword = await bcrypt.hash(values.password, 10)
-        values.password = hashedPassword
-        const response = await createUser(values)
+        const response = await updateUser(values)
         console.log(response)
-        console.log(response.data)
+        // console.log(response.data)
         if(response.success){
             alert('UserCreated SuccessFully')
         }
     }
 
-
-    return (
-        <div className={`px-5 py-5 flex flex-col sm:w-[420px] w-full gap-3 ${pathName==='/sign-up' ? 'ml-0' : 'null'}`}>
-            <Form {...form}>
+    return <div className="w-full border bg-zinc-950 overflow-y-auto rounded-md px-5 py-5 flex flex-col gap-3">
+        <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <div className=" items-start flex gap-2">
+                        <Image
+                            src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
+                            width={60}
+                            height={60}
+                            style={{borderRadius:"10px"}}
+                            alt="Profile Image"
+                        />
+                        <CldUploadButton
+                            options={{ maxFiles: 1 }}
+                            onSuccess={handleUpload}
+                            uploadPreset="xntzsiah"
+                        >
+                            <h1 className="text-sm text-blue-700 mt-">Change ProfileImage</h1>
+                        </CldUploadButton>
+                    </div>
                     <FormField
                         control={form.control}
                         name="firstName"
@@ -82,7 +93,7 @@ const SignUpForm = () => {
                             <FormItem>
                                 <FormLabel>firstName</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input {...field} value={field.value} onChange={(e) => field.onChange(e.target.value)} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -95,7 +106,7 @@ const SignUpForm = () => {
                             <FormItem>
                                 <FormLabel>lastName</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input {...field} value={field.value} onChange={(e) => field.onChange(e.target.value)} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -108,49 +119,19 @@ const SignUpForm = () => {
                             <FormItem>
                                 <FormLabel>userName</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Input {...field} value={field.value} onChange={(e) => field.onChange(e.target.value)} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>email</FormLabel>
-                                <FormControl>
-                                    <Input {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>password</FormLabel>
-                                <FormControl>
-                                    <Input {...field} type="password"/>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                    
                     <div className="flex justify-center flex-col">
                         <Button type="submit">Submit</Button>
-                        <div className="flex mt-3">
-                            <h1>Already have an account ? </h1>
-                            <Link href="/log-in" className='text-blue-600 ml-1'> log-in</Link>
-                        </div>
                     </div>
                 </form>
             </Form>
-        </div>
-    )
-}
+    </div>;
+};
 
-export default SignUpForm
+export default EditProfile;

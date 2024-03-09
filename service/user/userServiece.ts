@@ -1,5 +1,7 @@
 import axios from "axios"
 import { getUserId } from "../token/tokenService";
+import mongoose from "mongoose";
+import { UserEditTypes } from "@/types/user";
 
 interface receivedValues {
     firstName:string,
@@ -43,6 +45,26 @@ export const getLogInUser = async () => {
         const userId = await getUserId()
         console.log(userId)
         const response = await axios.get(`/api/get-user/${userId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
+
+export const editProfile = async (userId:string) => {
+    try{
+        console.log(userId, typeof userId)
+        const response = await axios.get(`/api/edit-profile/${userId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
+
+export const updateUser = async (values:UserEditTypes) => {
+    try{
+        const Id = await getUserId()
+        const response = await axios.put(`/api/update-user/${Id}`,JSON.stringify(values))
         return response.data
     }catch(e){
         console.log(e)

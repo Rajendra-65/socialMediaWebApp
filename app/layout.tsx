@@ -30,6 +30,7 @@ export default function RootLayout({
             <LeftSideBar/>
             <Navbar/>            
             <BottomBar/>
+            <ToastContainer/>
             {children}
           </ThemeProvider>
       </body>

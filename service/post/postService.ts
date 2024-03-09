@@ -56,3 +56,13 @@ export const likePost = async (userId:any,postId:any) => {
         console.log(e)
     }
 }
+
+export const getSavedPost = async () => {
+    try{
+        const Id = await getUserId()
+        const response = await axios.get(`/api/get-saved-posts/${Id}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}

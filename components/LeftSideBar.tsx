@@ -14,6 +14,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { getLogInUser } from '@/service/user/userServiece';
 import { toast } from 'react-toastify';
 import PageLoader from './PageLoader';
+import { UserTypes } from '@/types/user';
 
 const leftSideBarLinks = [
     {
@@ -63,7 +64,7 @@ const leftSideBarLinks = [
 const LeftSideBar = () => {
     const pathName = usePathname()
     const router = useRouter()
-    const [user, setUser] = useState()
+    const [user, setUser] = useState<UserTypes>()
 
     const handleLogOut = () => {
         window.localStorage.removeItem('authToken')

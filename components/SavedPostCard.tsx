@@ -1,17 +1,19 @@
 import Image from "next/image";
 import React from "react";
+import { UserTypes } from "@/types/user";
+import { savedTypes } from "@/types/saved";
 
-const SavedPostCard = () => {
+const SavedPostCard = ({saved}:{saved:savedTypes}) => {
     return (
         <div className="h-[300px] w-[300px] border rounded-md relative">
             <Image
-                src="/assets/images/mountain.jpg"
+                src={saved.imageUrl}
                 layout="fill"
                 objectFit="cover"
                 alt="SavedPost card"
             />
             <Image
-                src="/assets/icons/profile-placeholder.svg"
+                src={saved.profileImage || "/assets/icons/profile-placeholder.svg"}
                 width={28}
                 height={28}
                 alt="profileImage"

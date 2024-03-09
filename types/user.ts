@@ -14,3 +14,7 @@ export interface UserTypes{
     following: mongoose.Types.ObjectId[];
     profileImage: string | null
 }
+
+export interface UserEditTypes{
+    profileImage?:string;firstName:string;lastName:string;userName:string;
+}
