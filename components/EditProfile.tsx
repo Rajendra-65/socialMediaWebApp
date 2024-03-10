@@ -17,9 +17,16 @@ import { UserEditTypes } from "@/types/user";
 import Image from "next/image";
 import { CldUploadButton } from "next-cloudinary";
 import { updateUser } from "@/service/user/userServiece";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 const EditProfile = ({user}:{user:UserEditTypes}) => {
+    
     const [imageUrl,setImageUrl] = useState<string>()
+    const [loading,setLoading] = useState<boolean>(false)
+    const router = useRouter()
+
     const formSchema = z.object({
         firstName: z.string().min(2, {
             message: "firstName must be at least 2 characters.",
@@ -57,13 +64,17 @@ const EditProfile = ({user}:{user:UserEditTypes}) => {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        setLoading(true)
         values.imageUrl = imageUrl as string
         console.log(values)
         const response = await updateUser(values)
         console.log(response)
-        // console.log(response.data)
         if(response.success){
-            alert('UserCreated SuccessFully')
+            toast.success("profile updated successFully",{position:"top-right"})
+            setLoading(false)
+            router.push('/account')
+        }else{
+            setLoading(false)
         }
     }
 
@@ -124,13 +135,14 @@ const EditProfile = ({user}:{user:UserEditTypes}) => {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
-                    
+                    />                   
                     <div className="flex justify-center flex-col">
-                        <Button type="submit">Submit</Button>
+                        {loading ? (
+                            <Loader className="w-5 h-5 animate-spin align-middle"/>
+                        ): (<Button type="submit">Submit</Button>)}
                     </div>
                 </form>
-            </Form>
+        </Form>
     </div>;
 };
 

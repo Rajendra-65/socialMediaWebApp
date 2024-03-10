@@ -8,6 +8,7 @@ import mongoose, { trusted } from "mongoose";
 import SubmitButtonLoader from "./SubmitButtonLoader";
 import { Loader2 } from "lucide-react";
 // import { Image } from 'next/image'
+import { useRouter } from "next/navigation";
 
 const AccountPostCard = ({
 
@@ -28,6 +29,7 @@ const AccountPostCard = ({
     const [currentLike, setCurrentLike] = useState<boolean>(false)
     const [initial, setInitial] = useState<boolean>(true)
     const [likeCount, setLikeCount] = useState<number>(0)
+    const router = useRouter()
 
     useEffect(() => {
         setIsMounted(true);
@@ -79,6 +81,11 @@ const AccountPostCard = ({
         console.log(response.user, response.post);
     };
 
+    const handleEditClick = async (postId:any) => {
+        console.log(typeof postId)
+        router.push(`/edit-post/${postId}`)
+    }
+
     return (
         <div className="flex justify-center place-content-center align-middle">
             <div className="h-[450px] w-[450px] border rounded-md bg-zinc-950">
@@ -110,6 +117,9 @@ const AccountPostCard = ({
                                     height={28}
                                     className="mr-2 mt-2"
                                     alt="Edit Post Image"
+                                    onClick= {()=>{
+                                        handleEditClick(post._id)
+                                    }}
                                 />
                             </div>
                         </div>

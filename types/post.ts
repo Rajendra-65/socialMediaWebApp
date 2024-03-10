@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 export interface PostTypes {
     _id:mongoose.Types.ObjectId;
     user: mongoose.Types.ObjectId;
@@ -8,4 +9,11 @@ export interface PostTypes {
     tags?: string;
     like?: number;
     likedBy?: mongoose.Types.ObjectId[];
+}
+
+export interface EditPostTypes {
+    _id?:string;
+    caption?:string;
+    location?:string;
+    tags?:string;
 }
