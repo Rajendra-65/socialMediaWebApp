@@ -70,3 +70,31 @@ export const updateUser = async (values:UserEditTypes) => {
         console.log(e)
     }
 }
+
+export const getAllUsers = async (userId:string) => {
+    try{
+        const response = await axios.get(`/api/get-all-users/${userId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
+
+export const makeFollow = async (followingId:string) => {
+    try{
+        const userId = await getUserId()
+        const response = await axios.put(`/api/make-follow/${userId}/${followingId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
+
+export const getSearchUser = async (term:string) =>{
+    try{
+        const response = await axios.get(`/api/get-search-user/${term}`)
+        return response.data
+    }catch{
+
+    }
+}

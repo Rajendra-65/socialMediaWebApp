@@ -16,5 +16,14 @@ export interface UserTypes{
 }
 
 export interface UserEditTypes{
-    profileImage?:string;firstName:string;lastName:string;userName:string;
+    profileImage?:string;
+    firstName:string;
+    lastName:string;
+    userName:string;
+}
+
+export interface AllUsersTypes{
+    _id:string;
+    profileImage?:string;
+    userName:string;
 }

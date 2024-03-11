@@ -4,7 +4,11 @@ import mongoose from "mongoose"
 import { NextResponse } from "next/server"
 import { connectDb } from "@/utils/connectDb"
 
-export const POST  = async (request:any,{params}) => {
+interface ParamsType {
+    Id:string[]
+}
+
+export const POST  = async (request:any,{params}:{params:ParamsType}) => {
     try{
         await connectDb()
         console.log(params)
