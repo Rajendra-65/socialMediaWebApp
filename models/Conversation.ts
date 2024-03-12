@@ -19,7 +19,8 @@ const conversationSchema = new Schema({
         }
     ],
     unreadMessages:{
-        type:Number
+        type:Number,
+        default:0
     },
     user:{
         type:mongoose.Schema.ObjectId,

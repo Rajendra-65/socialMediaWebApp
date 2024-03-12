@@ -3,15 +3,29 @@ import FetchFailed from '@/components/FetchFailed'
 import PageLoader from '@/components/PageLoader'
 import PeopleCard from '@/components/PeopleCard'
 import { getUserId } from '@/service/token/tokenService'
-import { getAllUsers } from '@/service/user/userServiece'
+import { getAllUsers, makeFollow } from '@/service/user/userServiece'
 import { UserTypes } from '@/types/user'
 import { getLogInUser } from '@/service/user/userServiece'
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
+import { getSearchUser } from '@/service/user/userServiece'
+import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 const page = () => {
   const [allUsers, setAllUsers] = useState<UserTypes[]>([])
   const [currentUser, setCurrentUser] = useState<UserTypes>()
   const [fetched, setFetched] = useState<boolean>(false)
+  const [searchResult, setSearchResult] = useState<boolean>(false);
+  const [searchedUsers, setSearchedUsers] = useState<UserTypes[]>([])
+  const [currentFollow, setCurrentFollow] = useState<boolean>(false)
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const params = new URLSearchParams(searchParams);
+  const termLength: string | null = params.get('query')
+
   useEffect(() => {
     const fetchAllUser = async () => {
       try {
@@ -28,9 +42,75 @@ const page = () => {
     }
     fetchAllUser()
   }, [])
+
+  const handleSearch = useDebouncedCallback(async (term) => {
+    console.log(`Searching... ${term}`);
+
+    const params = new URLSearchParams(searchParams);
+    if (term) {
+      params.set("query", term);
+    } else {
+      params.delete("query");
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+    const userName = params.get('query')
+    const response = await getSearchUser(term)
+    setSearchedUsers(response.user)
+    setSearchResult(true)
+    console.log(userName)
+
+  }, 700);
+
+  const handleFollowClick = async (userId: any) => {
+    setCurrentFollow(!currentFollow)
+    const response = await makeFollow(userId)
+    console.log(response)
+    console.log(typeof userId)
+  }
+
   return (
     <div className='flex flex-col place-content-center justify-center align-middle m-auto'>
       <h1 className='text-xl mb-5'>All Users</h1>
+      <input
+        className="px-2 py-4 border border-blue-600 rounded-md w-full bg-zinc-950 focus:border-blue-600 focus:outline-none"
+        placeholder="Search an user here"
+        onChange={(e) => {
+          handleSearch(e.target.value);
+        }}
+        defaultValue={searchParams.get("query")?.toString()}
+      />
+      {searchResult && termLength ? (
+        <div className="w-full flex flex-col gap-3 border rounded-md px-[10px] py-[10px] mb-2 mt-2">
+          {
+            searchedUsers
+              .filter(user => user._id !== currentUser?._id)
+              .map((user: UserTypes, index) => (
+                <div className="flex justify-between" key={index}>
+                  <div className="flex gap-3">
+                    <Image
+                      src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
+                      height={60}
+                      width={60}
+                      alt="Profile Image of the User"
+                    />
+                    <div>
+                      <h1 className="font-bold mt-4">{user.userName}</h1>
+                    </div>
+                  </div>
+                  <div>
+                    <Button
+                      className="bg-blue-600 mt-2"
+                      onClick={() => { handleFollowClick(user._id) }}
+                    >
+                      {currentUser?.following.includes(user._id) ? (currentFollow ? "follow" : "following") : (currentFollow ? "following" : "follow")}
+                    </Button>
+                  </div>
+                </div>
+              ))
+          }
+        </div>
+      ) : null}
       <div className='flex flex-wrap items-start gap-6 place-content-center'>
         {
           fetched ? (fetched && !allUsers ? (<FetchFailed />) : (allUsers.map((user: UserTypes, index) => (
@@ -39,7 +119,7 @@ const page = () => {
               currentUser={currentUser as UserTypes}
               key={index}
             />
-          )))) : (<PageLoader/>)
+          )))) : (<PageLoader />)
         }
       </div>
     </div>

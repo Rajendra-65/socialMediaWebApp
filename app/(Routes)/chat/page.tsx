@@ -16,6 +16,7 @@ const page = () => {
   const { replace } = useRouter();
   const params = new URLSearchParams(searchParams);
   const termLength:string | null = params.get('query')
+  
   useEffect(() => {
     setSearchResult(true);
   }, []);
