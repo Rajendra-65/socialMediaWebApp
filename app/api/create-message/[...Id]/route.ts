@@ -3,31 +3,36 @@ import { NextResponse } from "next/server"
 import { Message } from "@/models/Message"
 import { connectDb } from "@/utils/connectDb"
 import { Conversation } from "@/models/Conversation"
-// import { connectDb } from "@/utils/connectDb"
+import { pusherServer } from "@/lib/pusher"
+
 interface paramsType {
     Id:string[]
 }
 
 export const POST = async (request:any,{params}:{params:paramsType}) => {
     try{
+        
         await connectDb()
         const {Id} = params
+        
         const data = await request.json()
-        console.log("data",data)
         const senderId = new mongoose.Types.ObjectId(Id[0])
         const receiverId = new mongoose.Types.ObjectId(Id[1])
+        
         const conversation = await Conversation.findOne({
             $and: [
                 { participants: Id[0] },
                 { participants: Id[1] }
             ]
-        });
+        })
+
         if(!conversation){
             const newConversation = await new Conversation({
                 sender:senderId,
                 receiver:receiverId,
                 participants:[Id[0],Id[1]],
                 user:senderId,
+                unreadMessages:1,
                 lastMessage:data
             })
             await newConversation.save()
@@ -35,7 +40,7 @@ export const POST = async (request:any,{params}:{params:paramsType}) => {
 
         if(conversation){
             if(conversation.inChat.length < 2){
-                conversation.unreadMessage = conversation.unreadMessages + 1
+                conversation.unreadMessages = conversation.unreadMessages + 1
             }
             conversation.user = Id[0]
             conversation.lastMessage = data
@@ -47,8 +52,13 @@ export const POST = async (request:any,{params}:{params:paramsType}) => {
             content:data
         })
         
+        await pusherServer.trigger(Id[0],'messages:new',message)
+        await pusherServer.trigger(Id[1],'conversation:update',message.content)
         await message.save()
+        await conversation.save()
+
         return NextResponse.json({message:message,success:true})
+    
     }catch(e){
         console.log(e)
         return NextResponse.json({success:false})
