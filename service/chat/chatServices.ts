@@ -26,3 +26,12 @@ export const getAllMessage = async (receiverId:string) => {
         console.log(e)
     }
 }
+
+export const getChatUser = async (chatId:string) => {
+    try{
+        const response = await axios.get(`/api/get-chat-user/${chatId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}

@@ -53,8 +53,19 @@ const userSchema = new Schema({
         }
     ],
     profileImage:{
-        type:String
+        type:String,
+        default:''
     },
+    notification:[
+        {
+            type:String,
+        }
+    ],
+    notificationDp:[
+        {
+            type:String,
+        }
+    ]
 })
 
 export const User = mongoose.models?.User || mongoose.model('User',userSchema)

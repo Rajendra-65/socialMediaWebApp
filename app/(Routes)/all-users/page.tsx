@@ -70,7 +70,7 @@ const page = () => {
   }
 
   return (
-    <div className='flex flex-col place-content-center justify-center align-middle m-auto'>
+    <div className='flex flex-col place-content-center justify-center align-middle m-auto mb-[76px]'>
       <h1 className='text-xl mb-5'>All Users</h1>
       <input
         className="px-2 py-4 border border-blue-600 rounded-md w-full bg-zinc-950 focus:border-blue-600 focus:outline-none"
@@ -111,7 +111,7 @@ const page = () => {
           }
         </div>
       ) : null}
-      <div className='flex flex-wrap items-start gap-6 place-content-center'>
+      <div className='flex flex-wrap items-start gap-6 place-content-center mt-[20px]'>
         {
           fetched ? (fetched && !allUsers ? (<FetchFailed />) : (allUsers.map((user: UserTypes, index) => (
             <PeopleCard

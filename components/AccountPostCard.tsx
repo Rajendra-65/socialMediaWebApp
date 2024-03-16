@@ -97,9 +97,9 @@ const AccountPostCard = ({
                                     src={
                                         user.profileImage || "/assets/icons/profile-placeholder.svg"
                                     }
-                                    width={45}
-                                    height={45}
-                                    style={{borderRadius:"10px"}}
+                                    width={60}
+                                    height={60}
+                                    style={{borderRadius:"50%"}}
                                     alt="profileImage of the User"
                                 />
                                 <div className="flex flex-col gap-1">

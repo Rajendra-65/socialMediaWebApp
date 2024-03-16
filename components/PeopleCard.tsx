@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { AllUsersTypes, UserTypes } from "@/types/user";
 import { getLogInUser, makeFollow } from "@/service/user/userServiece";
 import PageLoader from "./PageLoader";
+import { createNotification } from "@/service/notification/notificationService";
 
 const PeopleCard = ({
   user,
@@ -26,10 +27,15 @@ const PeopleCard = ({
   //   }
   // }, []);
 
+
   const handleFollow = async (followingId: any) => {
     try {
       setCurrentFollow(!currentFollow);
       const response = await makeFollow(followingId);
+      if(response.notification){
+        const notificationResponse = await createNotification(followingId as string)
+        console.log(notificationResponse)
+      }
       console.log(response);
     } catch (e) {
       console.log(e);

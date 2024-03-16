@@ -15,11 +15,13 @@ import React, { useEffect, useState } from "react";
 import {
     createMessage,
     getAllMessage,
+    getChatUser,
 } from "../../../../service/chat/chatServices";
 import { UserTypes } from "@/types/user";
 import { getLogInUser } from "@/service/user/userServiece";
 import { pusherClient } from "@/lib/pusher";
 import { find } from "lodash";
+import FetchFailed from "@/components/FetchFailed";
 
 interface paramsType {
     Id: string;
@@ -29,8 +31,12 @@ const page = ({ params }: { params: paramsType }) => {
     const [prevMessages, setPrevMessages] = useState([]);
     const [pending, setPending] = useState<boolean>(false)
     const [recentMessages, setRecentMessages] = useState([])
+    const [recent, setRecent] = useState<boolean>(false)
+    const [realTimeMessages, setRealTimeMessages] = useState([])
+    const [realTime, setRealTime] = useState<boolean>(false)
     const [message, setMessage] = useState<string>();
     const [currentUser, setCurrentUser] = useState<UserTypes>();
+    const [chatUser,setChatUser] = useState<UserTypes>()
     const [fetched, setFetched] = useState<boolean>(false);
 
     const { Id } = params;
@@ -38,9 +44,11 @@ const page = ({ params }: { params: paramsType }) => {
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
+                const { Id } = params;
                 const response = await getLogInUser();
                 setCurrentUser(response.user);
-                const { Id } = params;
+                const chatUserResponse = await getChatUser(Id)
+                setChatUser(chatUserResponse.user)
                 const messageResponse = await getAllMessage(Id);
                 // @ts-ignore
                 setPrevMessages((prevMessages) => [
@@ -55,23 +63,25 @@ const page = ({ params }: { params: paramsType }) => {
         fetchCurrentUser();
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         const id = Id
-        const messageHandler = (message:any) => {
-            setRecentMessages((current:any) => {
-                if(find(current,{id:message.sender})){
+        setRealTime(false)
+        const messageHandler = (message: any) => {
+            setRealTime(true)
+            setRealTimeMessages((current: any) => {
+                if (find(current, { id: message.sender })) {
                     return current
                 }
-                return [...current,message]
+                return [...current, message.content]
             })
         }
         pusherClient.subscribe(id)
-        pusherClient.bind('messages:new',messageHandler)
-        return ()=>{
+        pusherClient.bind('messages:new', messageHandler)
+        return () => {
             pusherClient.unsubscribe(id)
-            pusherClient.unbind('messages:new',messageHandler)
+            pusherClient.unbind('messages:new', messageHandler)
         }
-    },[Id])
+    }, [Id])
 
     {
         console.log(prevMessages);
@@ -79,6 +89,7 @@ const page = ({ params }: { params: paramsType }) => {
     const sendClick = async () => {
         const content = message;
         setMessage("");
+        setRealTime(false)
         // @ts-ignore
         setRecentMessages((prevMessages) => [...prevMessages, content]);
         setPending(true)
@@ -93,11 +104,12 @@ const page = ({ params }: { params: paramsType }) => {
         } catch (e) {
             console.log(e);
         }
+        setRecent(false)
     };
 
     return (
         <>
-            {fetched ? (
+            {fetched && chatUser ? (
                 <div className="w-full bg-zinc-950 border rounded-md h-[74vh] md:h-[96vh] ">
                     <div className="flex w-full border px-2 py-2 gap-2 justify-between top-0">
                         <div className="flex">
@@ -106,13 +118,13 @@ const page = ({ params }: { params: paramsType }) => {
                             </div>
                             <div className="flex gap-2">
                                 <Image
-                                    src={"/assets/icons/profile-placeholder.svg"}
+                                    src={chatUser.profileImage || "/assets/icons/profile-placeholder.svg"}
                                     width={50}
                                     height={50}
                                     alt="ProfilePlaceholder"
                                 />
                                 <div>
-                                    <h1 className="font-bold">UserName</h1>
+                                    <h1 className="font-bold">{chatUser.userName}</h1>
                                     <h1 className="font-normal">2 Active Now</h1>
                                 </div>
                             </div>
@@ -137,19 +149,32 @@ const page = ({ params }: { params: paramsType }) => {
                                     ))
                                 }
                                 {
-                                    recentMessages ? recentMessages.map((message: any, index) => (
+                                    !realTime ? recentMessages.map((message: any, index) => (
                                         <div
                                             key={index}
-                                            className="flex p-1 rounded-lg w-full pb-[15px] justify-end"
+                                            className={`flex p-1 rounded-lg w-full pb-[15px] justify-end`}
                                         >
                                             <div className="border border-gray-100 p-[10px] rounded-md flex gap-1">
                                                 <div>{message}</div>
-                                                <div className="text-center align-center mt-[-7px]">{pending ? (<Clock3 className="w-6 h-6 text-white text-center" />) : (
-                                                    <ArrowRight className="w-6 h-6 text-white text-center mt-2" />
-                                                )}</div>
+                                                <div className="text-center align-center mt-[-7px]">
+                                                    {pending ? (
+                                                        <Clock3 className="w-6 h-6 text-white text-center" />
+                                                    ) : (
+                                                        <ArrowRight className="w-6 h-6 text-white text-center mt-2" />
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
-                                    )) : null
+                                    )) : realTimeMessages.map((message: any, index) => (
+                                        <div
+                                            key={index}
+                                            className={`flex p-1 rounded-lg w-full pb-[15px] justify-start`}
+                                        >
+                                            <div className="border border-gray-100 p-[10px] rounded-md flex gap-1">
+                                                <div>{message}</div>
+                                            </div>
+                                        </div>
+                                    ))
                                 }
                             </>
                         </div>
@@ -174,7 +199,7 @@ const page = ({ params }: { params: paramsType }) => {
                         </div>
                     </div>
                 </div>
-            ) : null}
+            ) : fetched && !chatUser ? <FetchFailed/> : null }
         </>
     );
 };

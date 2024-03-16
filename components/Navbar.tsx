@@ -5,9 +5,11 @@ import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import PageLoader from './PageLoader';
 import { toast } from "react-toastify";
+import { UserTypes } from '@/types/user';
+import { MessageCircleMore } from 'lucide-react';
 
 const Navbar = () => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<UserTypes>();
     const pathName = usePathname();
     const router = useRouter()
 
@@ -52,11 +54,18 @@ const Navbar = () => {
                             alt='Logout Logo'
                         />
                         <Image
-                            src="/assets/icons/profile-placeholder.svg"
-                            height={30}
-                            width={30}
+                            src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
+                            height={50}
+                            width={50}
+                            style={{borderRadius:"50%"}}
                             alt="Profile Image placeholder"
                         />
+                        <div className='flex place-content-center mt-[15px]'>
+                            <div className='flex'>
+                                <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]'/>
+                                {user.notification ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-7px]"/>) : (null)}
+                            </div>
+                        </div>
                     </div>
                 </div>
             ) : (

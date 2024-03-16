@@ -43,11 +43,12 @@ export const PUT = async (request:any,{params}:{params:ParamsType}) => {
                 secondUser.followers = []; // Ensure follower array exists
             }
             secondUser.followers.push(userId);
+            return NextResponse.json({success:true,notification:true})
         }
         
         await firstUser.save();
         await secondUser.save();
-        return NextResponse.json({firstUser:firstUser,secondUser:secondUser})
+        return NextResponse.json({firstUser:firstUser,secondUser:secondUser,success:true,notification:false})
     }catch(e){
         console.log(e)
         return NextResponse.json({success:false})

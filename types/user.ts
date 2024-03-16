@@ -12,7 +12,8 @@ export interface UserTypes{
     savedPosts: mongoose.Types.ObjectId[];
     followers: mongoose.Types.ObjectId[];
     following: mongoose.Types.ObjectId[];
-    profileImage: string | null
+    profileImage: string | null;
+    notification:string | null
 }
 
 export interface UserEditTypes{

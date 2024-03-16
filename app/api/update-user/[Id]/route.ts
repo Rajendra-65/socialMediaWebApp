@@ -18,7 +18,7 @@ export const PUT = async (request:any,{params}:{params:paramsType}) => {
             firstName:data.firstName,
             lastName:data.lastName,
             userName:data.userName,
-            profileImage:data.profileImage
+            profileImage:data.imageUrl
         },{new:true})
         return NextResponse.json({success:true,user:user})
     }catch(e){
