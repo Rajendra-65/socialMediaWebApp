@@ -18,6 +18,7 @@ import Link from "next/link"
 import { createUser } from "@/service/user/userServiece"
 import bcrypt from "bcryptjs"
 import { usePathname } from "next/navigation"
+import { toast } from "react-toastify"
 const SignUpForm = () => {
     const pathName = usePathname()
     
@@ -66,7 +67,7 @@ const SignUpForm = () => {
         console.log(response)
         console.log(response.data)
         if(response.success){
-            alert('UserCreated SuccessFully')
+            toast.success("User Created SuccessFully",{position:'top-right'})
         }
     }
 

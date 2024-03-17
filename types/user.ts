@@ -13,7 +13,9 @@ export interface UserTypes{
     followers: mongoose.Types.ObjectId[];
     following: mongoose.Types.ObjectId[];
     profileImage: string | null;
-    notification:string | null
+    notification:string[] | null;
+    notificationDp:string[] | null;
+    userNotificationId:string[] | null;
 }
 
 export interface UserEditTypes{

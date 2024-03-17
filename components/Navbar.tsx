@@ -63,7 +63,7 @@ const Navbar = () => {
                         <div className='flex place-content-center mt-[15px]'>
                             <div className='flex'>
                                 <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]'/>
-                                {user.notification ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-7px]"/>) : (null)}
+                                {user.notification?.length ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-7px]"/>) : (null)}
                             </div>
                         </div>
                     </div>

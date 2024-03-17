@@ -6,7 +6,7 @@ interface ParamsType {
     Id:string
 }
 
-export const GET = async (request:any,{params}:{params:ParamsType}) => {
+export const PUT = async (request:any,{params}:{params:ParamsType}) => {
     try{
         const {Id} = params
         const objectId = new mongoose.Types.ObjectId(Id)
@@ -14,6 +14,7 @@ export const GET = async (request:any,{params}:{params:ParamsType}) => {
         if(user){
             user.notification = []
             user.notificationDp = []
+            user.userNotificationId = []
         }
         await user.save()
         return NextResponse.json({user:user,seen:true,success:true})

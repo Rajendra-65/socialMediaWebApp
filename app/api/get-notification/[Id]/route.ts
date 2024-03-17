@@ -13,9 +13,11 @@ export const GET = async (request:any,{params}:{params:paramsType}) => {
         const {Id} = params
         const objectId = new mongoose.Types.ObjectId(Id)
         const user = await User.findById(objectId)
-
-        if(user.notification){
-            return NextResponse.json({user:user,success:true,message:true})
+        const notifications = user.notification
+        const notificationDp = user.notificationDp
+        const userNotificationId  = user.userNotificationId
+        if(user.notification.length){
+            return NextResponse.json({user:user,notifications:notifications,notificationDp:notificationDp,userNotificationId:userNotificationId,success:true,message:true})
         }else{
             return NextResponse.json({user:user,success:true,message:false})
         }

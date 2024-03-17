@@ -15,6 +15,7 @@ import { getLogInUser } from '@/service/user/userServiece';
 import { toast } from 'react-toastify';
 import PageLoader from './PageLoader';
 import { UserTypes } from '@/types/user';
+import { MessageCircleMore } from 'lucide-react';
 
 const leftSideBarLinks = [
     {
@@ -129,7 +130,7 @@ const LeftSideBar = () => {
                             ))
                         }
                     </ul>
-                    <div className="fixed bottom-4 flex gap-2 ml-2" onClick={() => { handleLogOut() }}>
+                    <div className="fixed bottom-12 flex gap-2 ml-2" onClick={() => { handleLogOut() }}>
                         <Image
                             src="/assets/icons/logout.svg"
                             width={22}
@@ -137,6 +138,11 @@ const LeftSideBar = () => {
                             alt="Logout Svg"
                         />
                         <h1 className="ml-[10px]">Logout</h1>
+                    </div>
+                    <div className='fixed bottom-2 flex gap-2 ml-2'>
+                        <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]'/>
+                        {user?.notification?.length ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]"/>) : (null)}
+                        <h1 className={`${user?.notification?.length ? "ml-[10px]" : "ml-0" }`}>Notification</h1>
                     </div>
                 </div>) : (<PageLoader />)
             }

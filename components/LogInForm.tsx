@@ -54,8 +54,8 @@ const LogInForm = () => {
             console.log(decodedToken)
             console.log("userId is",decodedToken._id)
             console.log("Saved token is",window.localStorage.getItem('authToken'))
-            router.push('/')
             toast.success("log-in successFul",{position:'top-right'})
+            router.push('/')
         }else{
             alert("LogIn False")
         }

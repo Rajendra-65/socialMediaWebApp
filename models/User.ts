@@ -65,6 +65,11 @@ const userSchema = new Schema({
         {
             type:String,
         }
+    ],
+    userNotificationId:[
+        {
+            type:String,
+        }
     ]
 })
 
