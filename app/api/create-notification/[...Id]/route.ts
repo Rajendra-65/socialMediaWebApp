@@ -2,12 +2,13 @@ import { connectDb } from "@/utils/connectDb"
 import { User } from "@/models/User"
 import mongoose from "mongoose"
 import { NextResponse } from "next/server"
+import { pusherServer } from "@/lib/pusher"
 
 interface paramsType {
     Id:string[]
 }
 
-export const PUT = async (request:any,{params}:{params:paramsType}) => {
+export const GET = async (request:any,{params}:{params:paramsType}) => {
     try{
         await connectDb()
         const {Id} = params
@@ -26,6 +27,7 @@ export const PUT = async (request:any,{params}:{params:paramsType}) => {
         }else{
             secondUser.notificationDp.push('')
         }
+        await pusherServer.trigger(Id[1],'notification:new','')
         await secondUser.save()
         return NextResponse.json({user:secondUser,success:true})
     }catch(e){

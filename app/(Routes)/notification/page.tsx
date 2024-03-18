@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { getNotification, seenNotification } from '@/service/notification/notificationService'
 import { useState } from 'react'
 import PageLoader from '@/components/PageLoader'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { makeFollow } from '@/service/user/userServiece'
 
 const page = () => {
@@ -17,31 +17,32 @@ const page = () => {
     const [userNotificationIds, setUserNotificationIds] = useState([])
     const [isNotification , setIsNotification ] = useState(false)
     const [isFollowed,setIsFollowed] = useState(false)
-    const router = useRouter()
+    const pathName = usePathname()
+    const router = useRouter();
 
     useEffect(() => {
         const getUserNotification = async () => {
             try {
-                const response = await getNotification()
-                console.log(response)
-                setNotifications(response.notifications)
-                setNotificationDp(response.notificationDp)
-                setUserNotificationIds(response.userNotificationId)
-                if(response.message){
-                    setIsNotification(true)
+                const response = await getNotification();
+                console.log(response);
+                setNotifications(response.notifications);
+                setNotificationDp(response.notificationDp);
+                setUserNotificationIds(response.userNotificationId);
+                if (response.message) {
+                    setIsNotification(true);
                 }
-                setFetched(true)
+                setFetched(true);
             } catch (e) {
-                console.log(e)
+                console.log(e);
             }
-        }
-        getUserNotification()
-        
+        };
+    
+        getUserNotification();
+    
         return () => {
-            seenNotification()
-        }
-
-    }, [router])
+            seenNotification();
+        };
+    }, [pathName]);
 
     const handleButtonClick = async (userId:string) => {
         console.log(userId)

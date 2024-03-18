@@ -7,9 +7,12 @@ import PageLoader from './PageLoader';
 import { toast } from "react-toastify";
 import { UserTypes } from '@/types/user';
 import { MessageCircleMore } from 'lucide-react';
+import { pusherClient } from '@/lib/pusher';
 
 const Navbar = () => {
+    
     const [user, setUser] = useState<UserTypes>();
+    const [realTimeNotification,setRealTimeNotification] = useState<boolean>(false)
     const pathName = usePathname();
     const router = useRouter()
 
@@ -18,6 +21,10 @@ const Navbar = () => {
         console.log(window.localStorage.getItem('authToken'))
         toast.success("User LoggedOut Successfully",{position:'top-right'})
         router.push('/log-in')
+    }
+
+    const NotificationHandler = () => {
+        setRealTimeNotification(true)
     }
 
     useEffect(() => {
@@ -34,6 +41,12 @@ const Navbar = () => {
             fetchData();
         }
     }, []);
+
+    useEffect(()=>{
+        const userId:string = `${user?._id}`
+        pusherClient.subscribe(userId)
+        pusherClient.bind('notification:new',NotificationHandler)
+    },[user])
 
     return (
         <>
@@ -63,7 +76,7 @@ const Navbar = () => {
                         <div className='flex place-content-center mt-[15px]'>
                             <div className='flex'>
                                 <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]'/>
-                                {user.notification?.length ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-7px]"/>) : (null)}
+                                {user.notification?.length || realTimeNotification ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-7px]"/>) : (null)}
                             </div>
                         </div>
                     </div>

@@ -13,6 +13,7 @@ const page = () => {
   const [searchedUsers,setSearchedUsers] = useState<UserTypes[]>([])
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const router = useRouter()
   const { replace } = useRouter();
   const params = new URLSearchParams(searchParams);
   const termLength:string | null = params.get('query')
@@ -41,6 +42,7 @@ const page = () => {
 
   const handleMessageClick = async (userId:any) => {
     console.log(typeof userId)
+    router.push(`chat/${userId}`)
   }
 
   return (

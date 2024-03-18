@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import PageLoader from './PageLoader';
 import { UserTypes } from '@/types/user';
 import { MessageCircleMore } from 'lucide-react';
+import { pusherClient } from '@/lib/pusher';
 
 const leftSideBarLinks = [
     {
@@ -63,15 +64,21 @@ const leftSideBarLinks = [
 ];
 
 const LeftSideBar = () => {
+    
     const pathName = usePathname()
     const router = useRouter()
     const [user, setUser] = useState<UserTypes>()
+    const [realTimeNotification,setRealTimeNotification] = useState<boolean>(false)
 
     const handleLogOut = () => {
         window.localStorage.removeItem('authToken')
         console.log(window.localStorage.getItem('authToken'))
         toast.success("User LoggedOut Successfully", { position: 'top-right' })
         router.push('/log-in')
+    }
+
+    const NotificationHandler = () => {
+        setRealTimeNotification(true)
     }
 
     useEffect(() => {
@@ -88,6 +95,12 @@ const LeftSideBar = () => {
             fetchData();
         }
     }, []);
+
+    useEffect(()=>{
+        const userId:string = `${user?._id}`
+        pusherClient.subscribe(userId)
+        pusherClient.bind('notification:new',NotificationHandler)
+    },[user])
 
     return (
         <>

@@ -110,7 +110,7 @@ const page = ({ params }: { params: paramsType }) => {
     return (
         <>
             {fetched && chatUser ? (
-                <div className="w-full bg-zinc-950 border rounded-md h-[74vh] md:h-[96vh] ">
+                <div className="w-full bg-zinc-950 border rounded-md h-[74vh] md:h-[94vh] ">
                     <div className="flex w-full border px-2 py-2 gap-2 justify-between top-0">
                         <div className="flex">
                             <div>
@@ -134,7 +134,7 @@ const page = ({ params }: { params: paramsType }) => {
                             <Video className="w-8 h-8 text-white" />
                         </div>
                     </div>
-                    <div className="w-full border mb-[66px] h-[54vh] overflow-y-auto">
+                    <div className="w-full border mb-[66px] h-[56vh] md:h-[76vh] overflow-y-auto">
                         <div className="mt-4 ">
                             <>
                                 {
@@ -179,11 +179,11 @@ const page = ({ params }: { params: paramsType }) => {
                             </>
                         </div>
                     </div>
-                    <div className="flex  border px-2 py-2 rounded-md absolute mb-[68px]  w-[93vw] bottom-0 justify-between bg-zinc-950">
-                        <div className="flex w-[86vw] gap-[8px]">
+                    <div className="flex  border px-2 py-2 rounded-md absolute mb-[89px] md:mb-[20px]  md:w-[62vw] w-[94vw] bottom-0 justify-between bg-zinc-950">
+                        <div className="flex w-[85vw] gap-[8px]">
                             <Camera className="w-8 h-8 text-white" />
                             <input
-                                className="rounded-md w-[79vw]"
+                                className="rounded-md w-[60vw] md:w-[50vw]"
                                 placeholder="Message..."
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
