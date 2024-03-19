@@ -7,10 +7,37 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { getSearchUser } from "@/service/user/userServiece";
 import { UserTypes } from "@/types/user";
+import { getConversations } from "@/service/conversation/conversationService";
+import PageLoader from "@/components/PageLoader";
+import { getUserId } from "@/service/token/tokenService";
+import { formatDistanceToNow } from 'date-fns';
+import { pusherClient } from "@/lib/pusher";
+
+interface ConversationUsersType {
+    _id:string;
+    userName:string;
+    profileImage:string;
+}
+
+interface ConversationTypes {
+  user:string;
+  lastMessage:string;
+  unreadMessages:Number;
+  createdAt:string;
+  updatedAt:string;
+}
 
 const page = () => {
   const [searchResult, setSearchResult] = useState<boolean>(false);
+  const [fetched,setFetched] = useState<boolean>(false)
+  const [currentUserId,setCurrentUserId] = useState<string>()
+  const [realTime,setRealTime] = useState<boolean>(false)
+  const [messageNumber,setMessageNumber] = useState<number>(0)
+  const [updatedAtDate, setUpdatedAtDate] = useState<Date | null>(null)
   const [searchedUsers,setSearchedUsers] = useState<UserTypes[]>([])
+  const [conversations,setConversations] = useState<ConversationTypes[]>([])
+  const [users,setUsers] = useState<ConversationUsersType[]>([])
+  
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter()
@@ -22,9 +49,37 @@ const page = () => {
     setSearchResult(true);
   }, []);
 
+  useEffect(()=>{
+    const fetchConversation = async () => {
+      try{
+        const userId = await getUserId()
+        setCurrentUserId(userId)
+        const response = await getConversations()
+        setConversations(response.conversations)
+        setUsers(response.users)
+        setFetched(true)
+      }catch(e){
+        console.log(e)
+      }
+    }
+    fetchConversation()
+  },[])
+
+  const LiveConversationUpdate = async () => {
+    setRealTime(true)
+    alert("ok")
+    setMessageNumber(messageNumber+1)
+    const newDate = new Date();
+    setUpdatedAtDate(newDate);
+  }
+
+  useEffect(()=>{
+    pusherClient.subscribe(currentUserId!)
+    pusherClient.bind('conversation:update',LiveConversationUpdate)
+  },[currentUserId])
+
   const handleSearch = useDebouncedCallback(async (term) => {
     console.log(`Searching... ${term}`);
-
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set("query", term);
@@ -88,72 +143,32 @@ const page = () => {
               }
             </div>
           ) : null}
-          <div className="flex justify-between">
-            <div className="flex gap-3">
-              <Image
-                src="/assets/icons/profile-placeholder.svg"
-                height={60}
-                width={60}
-                alt="Profile Image of the User"
-              />
-              <div className="flex gap-2">
-                <div className="flex flex-col gap-1">
-                  <h1 className="font-bold">UserName</h1>
-                  <h1 className="font-bold">2 new Messages</h1>
-                </div>
-                <div className="mt-7">
-                  <h1 className="text-base">2 hours ago</h1>
-                </div>
-              </div>
-            </div>
-            <div>
-              <BellRing className="text-blue-600 mr-2 mt-3" />
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <div className="flex gap-3">
-              <Image
-                src="/assets/icons/profile-placeholder.svg"
-                height={60}
-                width={60}
-                alt="Profile Image of the User"
-              />
-              <div className="flex gap-2">
-                <div className="flex flex-col gap-1">
-                  <h1 className="font-bold">UserName</h1>
-                  <h1 className="font-bold">2 new Messages</h1>
-                </div>
-                <div className="mt-7">
-                  <h1 className="text-base">2 hours ago</h1>
+          {fetched ? (conversations.map((conversation:ConversationTypes,index)=>(
+            <div className="flex justify-between cursor-pointer" onClick={()=>{
+              router.push(`/chat/${users[index]._id}`)
+            }}>
+              <div className="flex gap-3">
+                <Image
+                  src={users[index].profileImage || "/assets/icons/profile-placeholder.svg"}
+                  height={60}
+                  width={60}
+                  alt="Profile Image of the User"
+                />
+                <div className="flex gap-2">
+                  <div className="flex flex-col gap-1">
+                    <h1 className="font-bold">{users[index].userName}</h1>
+                    <h1 className="font-bold">{conversation.user === currentUserId ? "message sent" : conversation.unreadMessages === 0 && !realTime ? 'message Received' : realTime ? `${messageNumber} new messages` :`${conversation.unreadMessages} new Message` }</h1>
+                  </div>
+                  <div className="mt-7">
+                    <h1 className="text-base">{realTime ? (formatDistanceToNow(updatedAtDate! , { addSuffix: true })) : (formatDistanceToNow(new Date(conversation.updatedAt) , { addSuffix: true }))}</h1>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <BellRing className="text-blue-600 mr-2 mt-3" />
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <div className="flex gap-3">
-              <Image
-                src="/assets/icons/profile-placeholder.svg"
-                height={60}
-                width={60}
-                alt="Profile Image of the User"
-              />
-              <div className="flex gap-2">
-                <div className="flex flex-col gap-1">
-                  <h1 className="font-bold">UserName</h1>
-                  <h1 className="font-bold">2 new Messages</h1>
-                </div>
-                <div className="mt-7">
-                  <h1 className="text-base">2 hours ago</h1>
-                </div>
+              <div>
+                <BellRing className="text-blue-600 mr-2 mt-3" />
               </div>
             </div>
-            <div>
-              <BellRing className="text-blue-600 mr-2 mt-3" />
-            </div>
-          </div>
+          ))) : (<PageLoader/>)}
         </div>
       </div>
     </>
