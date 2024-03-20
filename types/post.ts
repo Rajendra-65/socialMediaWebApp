@@ -9,6 +9,8 @@ export interface PostTypes {
     tags?: string;
     like?: number;
     likedBy?: mongoose.Types.ObjectId[];
+    createdAt:Date;
+    updatedAt:Date;
 }
 
 export interface EditPostTypes {

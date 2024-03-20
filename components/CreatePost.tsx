@@ -21,7 +21,7 @@ import { Textarea } from "./ui/textarea";
 import { createUser } from "@/service/user/userServiece";
 import { getUserId } from "@/service/token/tokenService";
 import { createPost } from "@/service/post/postService";
-
+import { toast } from "react-toastify";
 const CreatePost = () => {
     
     const [imageUrl,setImageUrl] = useState<string>('')
@@ -52,6 +52,7 @@ const CreatePost = () => {
         console.log(values)
         const response = await createPost(values)
         console.log(response.data)
+        toast.success("Post Created successFully",{position:"top-right"})
         form.reset()
     }
 

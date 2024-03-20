@@ -57,7 +57,7 @@ const LogInForm = () => {
             toast.success("log-in successFul",{position:'top-right'})
             router.push('/')
         }else{
-            alert("LogIn False")
+            toast.error("login False",{position:'top-right'})
         }
         console.log(response)
     }

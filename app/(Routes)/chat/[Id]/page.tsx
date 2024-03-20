@@ -22,6 +22,8 @@ import { getLogInUser } from "@/service/user/userServiece";
 import { pusherClient } from "@/lib/pusher";
 import { find } from "lodash";
 import FetchFailed from "@/components/FetchFailed";
+import { seenConversation } from "@/service/conversation/conversationService";
+import { useRouter } from "next/router";
 
 interface paramsType {
     Id: string;
@@ -38,7 +40,8 @@ const page = ({ params }: { params: paramsType }) => {
     const [currentUser, setCurrentUser] = useState<UserTypes>();
     const [chatUser,setChatUser] = useState<UserTypes>()
     const [fetched, setFetched] = useState<boolean>(false);
-
+    const router = useRouter()
+    
     const { Id } = params;
 
     useEffect(() => {
@@ -83,9 +86,12 @@ const page = ({ params }: { params: paramsType }) => {
         }
     }, [Id])
 
-    {
-        console.log(prevMessages);
-    }
+    useEffect(()=>{
+        return()=>{
+            seenConversation(Id)
+        }
+    },[router,Id])
+
     const sendClick = async () => {
         const content = message;
         setMessage("");

@@ -71,6 +71,7 @@ const Navbar = () => {
                             height={50}
                             width={50}
                             style={{borderRadius:"50%"}}
+                            onClick={()=>{router.push(`/edit-profile/${user._id}`)}}
                             alt="Profile Image placeholder"
                         />
                         <div className='flex place-content-center mt-[15px]'>

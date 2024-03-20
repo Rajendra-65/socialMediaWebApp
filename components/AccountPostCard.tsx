@@ -34,7 +34,6 @@ const AccountPostCard = ({
     useEffect(() => {
         setIsMounted(true);
         setInitial(true)
-
     }, []);
 
     useEffect(() => {

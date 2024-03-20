@@ -45,6 +45,14 @@ const page = () => {
   const params = new URLSearchParams(searchParams);
   const termLength:string | null = params.get('query')
   
+  const LiveConversationUpdate = async () => {
+    setRealTime(true)
+    alert("ok")
+    setMessageNumber(messageNumber+1)
+    const newDate = new Date();
+    setUpdatedAtDate(newDate);
+  }
+  
   useEffect(() => {
     setSearchResult(true);
   }, []);
@@ -65,18 +73,12 @@ const page = () => {
     fetchConversation()
   },[])
 
-  const LiveConversationUpdate = async () => {
-    setRealTime(true)
-    alert("ok")
-    setMessageNumber(messageNumber+1)
-    const newDate = new Date();
-    setUpdatedAtDate(newDate);
-  }
-
   useEffect(()=>{
     pusherClient.subscribe(currentUserId!)
     pusherClient.bind('conversation:update',LiveConversationUpdate)
   },[currentUserId])
+
+  
 
   const handleSearch = useDebouncedCallback(async (term) => {
     console.log(`Searching... ${term}`);

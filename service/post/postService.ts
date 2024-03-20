@@ -92,3 +92,9 @@ export const updatePost = async (values:updatePostTypes) => {
         console.log(e)
     }
 }
+
+export const getFeedPost = async () => {
+    const userId = await getUserId()
+    const response = await axios.get(`/api/get-feed-post/${userId}`)
+    return response.data
+}

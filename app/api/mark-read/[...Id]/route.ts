@@ -7,7 +7,7 @@ interface paramsType {
     Id:string[]
 }
 
-export const GET = async (request:any,{params}:{params:paramsType}) => {
+export const PUT = async (request:any,{params}:{params:paramsType}) => {
     try{
         await connectDb()
         const {Id} = params
@@ -18,11 +18,7 @@ export const GET = async (request:any,{params}:{params:paramsType}) => {
                 { participants: Id[1] }
             ]
         })
-        const objectId = new mongoose.Types.ObjectId(Id[1])
-        console.log(typeof objectId)
-        console.log(typeof conversation.user)
-        console.log(objectId,conversation.user)
-        if(conversation.user === objectId){
+        if(conversation.user.toString() === Id[1]){
             conversation.unreadMessages = 0
             await conversation.save()
         }

@@ -10,3 +10,13 @@ export const getConversations = async () => {
         console.log(e)
     }
 }
+
+export const seenConversation = async (receiverId:string) => {
+    try{
+        const userId = await getUserId()
+        const response= await axios.put(`/api/mark-read/${userId}/${receiverId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}

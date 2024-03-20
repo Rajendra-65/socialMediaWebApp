@@ -152,7 +152,10 @@ const LeftSideBar = () => {
                         />
                         <h1 className="ml-[10px]">Logout</h1>
                     </div>
-                    <div className='fixed bottom-2 flex gap-2 ml-2'>
+                    <div 
+                        className='fixed bottom-2 flex gap-2 ml-2' 
+                        onClick={()=>{router.push(`/edit-profile/${user._id}`)}}
+                    >
                         <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]'/>
                         {user?.notification?.length ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]"/>) : (null)}
                         <h1 className={`${user?.notification?.length ? "ml-[10px]" : "ml-0" }`}>Notification</h1>
