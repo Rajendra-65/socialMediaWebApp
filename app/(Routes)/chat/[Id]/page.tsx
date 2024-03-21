@@ -22,27 +22,37 @@ import { getLogInUser } from "@/service/user/userServiece";
 import { pusherClient } from "@/lib/pusher";
 import { find } from "lodash";
 import FetchFailed from "@/components/FetchFailed";
-import { seenConversation } from "@/service/conversation/conversationService";
-import { useRouter } from "next/router";
-
+import { RemoveFromChat, pushToChat, seenConversation } from "@/service/conversation/conversationService";
+import { useRouter } from "next/navigation";
 interface paramsType {
     Id: string;
 }
 
 const page = ({ params }: { params: paramsType }) => {
-    const [prevMessages, setPrevMessages] = useState([]);
     const [pending, setPending] = useState<boolean>(false)
-    const [recentMessages, setRecentMessages] = useState([])
     const [recent, setRecent] = useState<boolean>(false)
-    const [realTimeMessages, setRealTimeMessages] = useState([])
     const [realTime, setRealTime] = useState<boolean>(false)
+    const [fetched, setFetched] = useState<boolean>(false);
+    const [activeNow,setActiveNow] = useState<boolean>(false)
+    const [prevMessages, setPrevMessages] = useState([]);
+    const [recentMessages, setRecentMessages] = useState([])
+    const [realTimeMessages, setRealTimeMessages] = useState([])
     const [message, setMessage] = useState<string>();
     const [currentUser, setCurrentUser] = useState<UserTypes>();
-    const [chatUser,setChatUser] = useState<UserTypes>()
-    const [fetched, setFetched] = useState<boolean>(false);
+    const [chatUser, setChatUser] = useState<UserTypes>()
     const router = useRouter()
-    
+
     const { Id } = params;
+
+    const handleArrowClick = async () => {
+        try{
+            console.log("HandleArrow clicked...")
+            await RemoveFromChat(Id)
+            router.push('/chat')
+        }catch(e){
+            console.log(e)
+        }
+    }
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
@@ -50,6 +60,7 @@ const page = ({ params }: { params: paramsType }) => {
                 const { Id } = params;
                 const response = await getLogInUser();
                 setCurrentUser(response.user);
+                await pushToChat(Id)
                 const chatUserResponse = await getChatUser(Id)
                 setChatUser(chatUserResponse.user)
                 const messageResponse = await getAllMessage(Id);
@@ -69,6 +80,7 @@ const page = ({ params }: { params: paramsType }) => {
     useEffect(() => {
         const id = Id
         setRealTime(false)
+        
         const messageHandler = (message: any) => {
             setRealTime(true)
             setRealTimeMessages((current: any) => {
@@ -78,19 +90,31 @@ const page = ({ params }: { params: paramsType }) => {
                 return [...current, message.content]
             })
         }
+
+        const chatHandler = (data:any) =>{
+            if(data){
+                setActiveNow(true)
+            }else{
+                setActiveNow(false)
+            }
+        }
+
         pusherClient.subscribe(id)
         pusherClient.bind('messages:new', messageHandler)
+        pusherClient.bind('inTheChat',chatHandler)
         return () => {
             pusherClient.unsubscribe(id)
             pusherClient.unbind('messages:new', messageHandler)
+            pusherClient.unbind('inTheChat',chatHandler)
         }
     }, [Id])
 
-    useEffect(()=>{
-        return()=>{
+    useEffect(() => {
+        return () => {
             seenConversation(Id)
+
         }
-    },[router,Id])
+    }, [router, Id])
 
     const sendClick = async () => {
         const content = message;
@@ -120,7 +144,10 @@ const page = ({ params }: { params: paramsType }) => {
                     <div className="flex w-full border px-2 py-2 gap-2 justify-between top-0">
                         <div className="flex">
                             <div>
-                                <ArrowLeft className="w-8 h-8 text-white mt-[9px]" />
+                                <ArrowLeft 
+                                    className="w-8 h-8 text-white mt-[9px]" 
+                                    onClick={()=>{handleArrowClick()}}
+                                />
                             </div>
                             <div className="flex gap-2">
                                 <Image
@@ -131,7 +158,16 @@ const page = ({ params }: { params: paramsType }) => {
                                 />
                                 <div>
                                     <h1 className="font-bold">{chatUser.userName}</h1>
-                                    <h1 className="font-normal">2 Active Now</h1>
+                                    <h1 className="font-normal">
+                                    {
+                                        activeNow ? (
+                                            <div className="flex gap-2">
+                                                <div className="w-3 h-3 mt-2 bg-emerald-600 rounded-full"/>
+                                                <h1>Active Now</h1>
+                                            </div>
+                                        ): (null)
+                                    }
+                                    </h1>
                                 </div>
                             </div>
                         </div>
@@ -155,7 +191,7 @@ const page = ({ params }: { params: paramsType }) => {
                                     ))
                                 }
                                 {
-                                    !realTime ? recentMessages.map((message: any, index) => (
+                                    recentMessages ? recentMessages.map((message: any, index) => (
                                         <div
                                             key={index}
                                             className={`flex p-1 rounded-lg w-full pb-[15px] justify-end`}
@@ -171,17 +207,9 @@ const page = ({ params }: { params: paramsType }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                    )) : realTimeMessages.map((message: any, index) => (
-                                        <div
-                                            key={index}
-                                            className={`flex p-1 rounded-lg w-full pb-[15px] justify-start`}
-                                        >
-                                            <div className="border border-gray-100 p-[10px] rounded-md flex gap-1">
-                                                <div>{message}</div>
-                                            </div>
-                                        </div>
-                                    ))
+                                    )) : null
                                 }
+
                             </>
                         </div>
                     </div>
@@ -205,7 +233,7 @@ const page = ({ params }: { params: paramsType }) => {
                         </div>
                     </div>
                 </div>
-            ) : fetched && !chatUser ? <FetchFailed/> : null }
+            ) : fetched && !chatUser ? <FetchFailed /> : null}
         </>
     );
 };

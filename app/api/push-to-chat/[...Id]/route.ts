@@ -1,12 +1,12 @@
 import { Conversation } from "@/models/Conversation"
 import { connectDb } from "@/utils/connectDb"
 import { NextResponse } from "next/server"
-
+import { pusherServer } from "@/lib/pusher"
 interface ParamsType {
     Id:string[]
 }
 
-export const GET = async (request:any,{params}:{params:ParamsType}) => {
+export const PUT = async (request:any,{params}:{params:ParamsType}) => {
     try{
         await connectDb()
         const {Id} = params
@@ -21,8 +21,16 @@ export const GET = async (request:any,{params}:{params:ParamsType}) => {
         if(!conversation){
             return NextResponse.json({success:true,noConversation:true})
         }
-        conversation.inChat.push(senderId)
-        await conversation.save()
+        
+        if (!conversation.inChat.includes(senderId)) {
+            conversation.inChat.push(senderId)
+            await conversation.save();
+            if(conversation.inChat.length >=2){
+                pusherServer.trigger(Id[0],'inTheChat',true)
+                pusherServer.trigger(Id[1],'inTheChat',true)
+            }
+            pusherServer.trigger(Id[0],'inTheChat',false)
+        }
         return NextResponse.json({success:true,data:conversation})
     }catch(e){
         console.log(e)

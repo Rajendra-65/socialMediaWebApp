@@ -20,3 +20,23 @@ export const seenConversation = async (receiverId:string) => {
         console.log(e)
     }
 }
+
+export const pushToChat = async (receiverId:string) => {
+    try{
+        const userId = await getUserId()
+        const response= await axios.put(`/api/push-to-chat/${userId}/${receiverId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
+
+export const RemoveFromChat = async (receiverId:string) => {
+    try{
+        const userId = await getUserId()
+        const response= await axios.put(`/api/remove-from-chat/${userId}/${receiverId}`)
+        return response.data
+    }catch(e){
+
+    }
+} 

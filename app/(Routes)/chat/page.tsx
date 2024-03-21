@@ -47,8 +47,7 @@ const page = () => {
   
   const LiveConversationUpdate = async () => {
     setRealTime(true)
-    alert("ok")
-    setMessageNumber(messageNumber+1)
+    setMessageNumber(prevNumber => prevNumber + 1)
     const newDate = new Date();
     setUpdatedAtDate(newDate);
   }
@@ -74,9 +73,19 @@ const page = () => {
   },[])
 
   useEffect(()=>{
-    pusherClient.subscribe(currentUserId!)
-    pusherClient.bind('conversation:update',LiveConversationUpdate)
-  },[currentUserId])
+    if(currentUserId){
+      pusherClient.subscribe(currentUserId!)
+      pusherClient.bind('conversation:update',LiveConversationUpdate)
+    }
+    
+    return () => {
+      if(currentUserId){
+        pusherClient.unsubscribe(currentUserId!)
+        pusherClient.unbind('conversation:update', LiveConversationUpdate)
+      }
+      
+  }
+  },[currentUserId,fetched])
 
   
 
