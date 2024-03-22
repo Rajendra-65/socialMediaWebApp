@@ -12,7 +12,7 @@ import PageLoader from "@/components/PageLoader";
 import { getUserId } from "@/service/token/tokenService";
 import { formatDistanceToNow } from 'date-fns';
 import { pusherClient } from "@/lib/pusher";
-
+import isAuth from "@/components/isAuth";
 interface ConversationUsersType {
     _id:string;
     userName:string;
@@ -186,4 +186,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default isAuth(page);

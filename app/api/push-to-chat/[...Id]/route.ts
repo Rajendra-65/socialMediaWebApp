@@ -25,11 +25,6 @@ export const PUT = async (request:any,{params}:{params:ParamsType}) => {
         if (!conversation.inChat.includes(senderId)) {
             conversation.inChat.push(senderId)
             await conversation.save();
-            if(conversation.inChat.length >=2){
-                pusherServer.trigger(Id[0],'inTheChat',true)
-                pusherServer.trigger(Id[1],'inTheChat',true)
-            }
-            pusherServer.trigger(Id[0],'inTheChat',false)
         }
         return NextResponse.json({success:true,data:conversation})
     }catch(e){

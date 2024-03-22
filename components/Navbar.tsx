@@ -56,13 +56,16 @@ const Navbar = () => {
                         src="/assets/images/logo.svg"
                         height={190}
                         width={190}
+                        className='cursor-pointer'
                         alt="Logo of the snapGram"
+                        onClick={()=>{router.push('/')}}
                     />
                     <div className='flex gap-2 mr-3'>
                         <Image
                             src="/assets/icons/logout.svg"
                             height={30}
                             width={30}
+                            className='cursor-pointer'
                             onClick={()=>{handleLogOut()}}
                             alt='Logout Logo'
                         />
@@ -75,7 +78,7 @@ const Navbar = () => {
                             alt="Profile Image placeholder"
                         />
                         <div className='flex place-content-center mt-[15px]'>
-                            <div className='flex'>
+                            <div className='flex' onClick={()=>{router.push('/notification')}}>
                                 <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]'/>
                                 {user.notification?.length || realTimeNotification ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-7px]"/>) : (null)}
                             </div>

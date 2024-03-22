@@ -13,7 +13,7 @@ export const GET = async (request:any,{params}:{params:paramsType}) => {
         await connectDb()
         const {Id} = params
         let users = []
-        const conversations = await Conversation.find({ participants: { $in: [Id] } });
+        const conversations = await Conversation.find({ participants: { $in: [Id] }}).sort('timestamps');
         const Ids = conversations.map((conversation) => {
             return conversation.participants.filter((participant:any) => participant !== Id);
         }).flat()        

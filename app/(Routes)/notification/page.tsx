@@ -8,6 +8,7 @@ import { useState } from 'react'
 import PageLoader from '@/components/PageLoader'
 import { usePathname, useRouter } from 'next/navigation'
 import { makeFollow } from '@/service/user/userServiece'
+import isAuth from '@/components/isAuth'
 
 const page = () => {
 
@@ -92,4 +93,4 @@ const page = () => {
     );
 }
 
-export default page
+export default isAuth(page)

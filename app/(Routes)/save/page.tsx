@@ -4,6 +4,7 @@ import React,{useEffect,useState} from 'react'
 import { UserTypes } from '@/types/user'
 import { savedTypes } from '@/types/saved'
 import { getSavedPost } from '@/service/post/postService'
+import isAuth from '@/components/isAuth'
 
 const page = () => {
   const [allSaved, setAllSaved] = useState<savedTypes[]>([])
@@ -37,4 +38,4 @@ const page = () => {
   )
 }
 
-export default page
+export default isAuth(page)

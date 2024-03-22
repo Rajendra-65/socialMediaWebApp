@@ -6,6 +6,8 @@ import mongoose from 'mongoose'
 import EditProfile from '@/components/EditProfile'
 import { UserEditTypes } from '@/types/user'
 import PageLoader from '@/components/PageLoader'
+import isAuth from '@/components/isAuth'
+
 const page = () => {
     const [user, setUser] = useState<UserEditTypes>()
     useEffect(() => {
@@ -37,4 +39,4 @@ const page = () => {
     )
 }
 
-export default page
+export default isAuth(page)

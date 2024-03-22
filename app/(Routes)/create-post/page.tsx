@@ -2,7 +2,7 @@
 import CreatePost from "@/components/CreatePost";
 import Image from "next/image";
 import React from "react";
-
+import isAuth from "@/components/isAuth";
 const page = () => {
   return (
     <div className="flex m-auto place-content-center justify-center align-middle">
@@ -26,4 +26,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default isAuth(page);

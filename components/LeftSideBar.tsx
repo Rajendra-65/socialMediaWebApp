@@ -110,14 +110,15 @@ const LeftSideBar = () => {
                         src="/assets/images/logo.svg"
                         width={200}
                         height={200}
-                        className='mt-2 mb-3'
+                        className='mt-2 mb-3 cursor-pointer'
                         alt="Logo of the snapGram"
                     />
-                    <div className="flex gap-2 mb-5">
+                    <div className="flex gap-2 mb-5 cursor-pointer" onClick={()=>{router.push('/edit-profile')}}>
                         <Image
                             src="/assets/icons/profile-placeholder.svg"
                             width={38}
                             height={38}
+                            className='cursor-pointer'
                             alt="Image of the user"
                         />
                         <div className=" flex flex-col">
@@ -143,7 +144,7 @@ const LeftSideBar = () => {
                             ))
                         }
                     </ul>
-                    <div className="fixed bottom-12 flex gap-2 ml-2" onClick={() => { handleLogOut() }}>
+                    <div className="fixed bottom-12 flex gap-2 ml-2 cursor-pointer" onClick={() => { handleLogOut() }}>
                         <Image
                             src="/assets/icons/logout.svg"
                             width={22}
@@ -153,7 +154,7 @@ const LeftSideBar = () => {
                         <h1 className="ml-[10px]">Logout</h1>
                     </div>
                     <div 
-                        className='fixed bottom-2 flex gap-2 ml-2' 
+                        className='fixed bottom-2 flex gap-2 ml-2 cursor-pointer' 
                         onClick={()=>{router.push(`/edit-profile/${user._id}`)}}
                     >
                         <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]'/>

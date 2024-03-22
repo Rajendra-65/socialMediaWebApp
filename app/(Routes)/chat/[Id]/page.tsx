@@ -11,7 +11,7 @@ import {
     Video,
 } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
     createMessage,
     getAllMessage,
@@ -41,6 +41,7 @@ const page = ({ params }: { params: paramsType }) => {
     const [currentUser, setCurrentUser] = useState<UserTypes>();
     const [chatUser, setChatUser] = useState<UserTypes>()
     const router = useRouter()
+    const chatContainerRef = useRef(null)
 
     const { Id } = params;
 
@@ -89,34 +90,33 @@ const page = ({ params }: { params: paramsType }) => {
                 }
                 return [...current, message.content]
             })
+            scrollToBottom()
         }
 
-        const chatHandler = (data:any) =>{
-            if(data){
-                setActiveNow(true)
-            }else{
-                setActiveNow(false)
-            }
-        }
-
+        
         pusherClient.subscribe(id)
         pusherClient.bind('messages:new', messageHandler)
-        pusherClient.bind('inTheChat',chatHandler)
         return () => {
             pusherClient.unsubscribe(id)
             pusherClient.unbind('messages:new', messageHandler)
-            pusherClient.unbind('inTheChat',chatHandler)
         }
     }, [Id])
 
     useEffect(() => {
         return () => {
             seenConversation(Id)
-
         }
     }, [router, Id])
 
+    const scrollToBottom = () => {
+        if (chatContainerRef.current) {
+            // @ts-ignore
+          chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+      }
+
     const sendClick = async () => {
+        scrollToBottom()
         const content = message;
         setMessage("");
         setRealTime(false)
@@ -128,7 +128,6 @@ const page = ({ params }: { params: paramsType }) => {
             const response = await createMessage(Id, content as string);
             // @ts-ignore
             if (response.message) {
-
                 setPending(false)
             }
         } catch (e) {
@@ -159,14 +158,7 @@ const page = ({ params }: { params: paramsType }) => {
                                 <div>
                                     <h1 className="font-bold">{chatUser.userName}</h1>
                                     <h1 className="font-normal">
-                                    {
-                                        activeNow ? (
-                                            <div className="flex gap-2">
-                                                <div className="w-3 h-3 mt-2 bg-emerald-600 rounded-full"/>
-                                                <h1>Active Now</h1>
-                                            </div>
-                                        ): (null)
-                                    }
+                                    
                                     </h1>
                                 </div>
                             </div>
@@ -176,7 +168,7 @@ const page = ({ params }: { params: paramsType }) => {
                             <Video className="w-8 h-8 text-white" />
                         </div>
                     </div>
-                    <div className="w-full border mb-[66px] h-[56vh] md:h-[76vh] overflow-y-auto">
+                    <div className="w-full border mb-[66px] h-[56vh] md:h-[76vh] overflow-y-auto " ref={chatContainerRef}>
                         <div className="mt-4 ">
                             <>
                                 {

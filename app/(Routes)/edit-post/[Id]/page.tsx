@@ -25,7 +25,7 @@ import { getPostDetails, updatePost } from "@/service/post/postService";
 import EditPost from "@/components/EditPost";
 import PageLoader from "@/components/PageLoader";
 import FetchFailed from "@/components/FetchFailed";
-
+import isAuth from "@/components/isAuth";
 interface ParamsTypes {
     Id: string
 }
@@ -61,4 +61,4 @@ const page = ({ params }: { params: ParamsTypes }) => {
     )
 }
 
-export default page
+export default isAuth(page)

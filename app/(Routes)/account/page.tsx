@@ -7,13 +7,16 @@ import { getLogInUser } from "@/service/user/userServiece";
 import { getPost } from "@/service/post/postService";
 import PageLoader from "@/components/PageLoader";
 import FetchFailed from "@/components/FetchFailed";
+import isAuth from "@/components/isAuth";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [mounted, setIsMounted] = useState<boolean>(false);
   const [user, setUser] = useState<UserTypes | null>();
   const [posts, setPosts] = useState<PostTypes[]>();
   const [fetched, setFetched] = useState<boolean>(false);
-
+  const router = useRouter()
+  
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -37,22 +40,28 @@ const page = () => {
   return (
     <div className="flex place-content-center justify-center flex-col gap-6">
       {
-    fetched && user && posts ? (
-        posts.map((post,index) => (
+        fetched && user  ? (
+          posts?.length ? (posts.map((post, index) => (
             <AccountPostCard
-                key={index} // Assuming each post has a unique identifier
-                post={post}
-                user={user}
+              key={index} 
+              post={post}
+              user={user}
             />
-        ))
-    ) : fetched && (!user || !posts) ? (
-        <FetchFailed />
-    ) : (
-        <PageLoader />
-    )
-}
+          ))) : (<div className='ml-[18px] md:ml-0 w-[95%] border px-5 py-5 place-content-center m-auto'>
+            You haven't Post Yet HeadOver to the 
+            <span      
+              className='text-blue-600 underline cursor-pointer'
+              onClick={() => { router.push('/all-users') }}
+            >create-post</span> Page and createOne
+          </div>)
+        ) : fetched && (!user || !posts) ? (
+          <FetchFailed />
+        ) : (
+          <PageLoader />
+        )
+      }
     </div>
   );
 };
 
-export default page;
+export default isAuth(page);

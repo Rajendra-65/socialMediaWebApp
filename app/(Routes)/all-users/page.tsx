@@ -12,6 +12,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import { getSearchUser } from '@/service/user/userServiece'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import isAuth from '@/components/isAuth'
 
 const page = () => {
   const [allUsers, setAllUsers] = useState<UserTypes[]>([])
@@ -126,4 +127,4 @@ const page = () => {
   )
 }
 
-export default page
+export default isAuth(page)
