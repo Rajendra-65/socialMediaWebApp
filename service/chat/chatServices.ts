@@ -35,3 +35,13 @@ export const getChatUser = async (chatId:string) => {
         console.log(e)
     }
 }
+
+export const haveChat = async () => {
+    try{
+        const userId = await getUserId()
+        const response = await axios.get(`/api/have-chat/${userId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}

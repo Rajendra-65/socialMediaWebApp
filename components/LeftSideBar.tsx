@@ -17,6 +17,7 @@ import PageLoader from './PageLoader';
 import { UserTypes } from '@/types/user';
 import { MessageCircleMore } from 'lucide-react';
 import { pusherClient } from '@/lib/pusher';
+import { haveChat } from '@/service/chat/chatServices';
 
 const leftSideBarLinks = [
     {
@@ -64,11 +65,13 @@ const leftSideBarLinks = [
 ];
 
 const LeftSideBar = () => {
-    
+
     const pathName = usePathname()
     const router = useRouter()
     const [user, setUser] = useState<UserTypes>()
-    const [realTimeNotification,setRealTimeNotification] = useState<boolean>(false)
+    const [realTimeNotification, setRealTimeNotification] = useState<boolean>(false)
+    const [messages, setMessages] = useState<boolean>(false)
+    const [indicator, setIndicator] = useState<boolean>(true)
 
     const handleLogOut = () => {
         window.localStorage.removeItem('authToken')
@@ -77,8 +80,21 @@ const LeftSideBar = () => {
         router.push('/log-in')
     }
 
+    const listItemClick = async (route: string) => {
+        if (route === 'Chat') {
+            setIndicator(false)
+        }
+        router.push(route)
+    }
+
     const NotificationHandler = () => {
         setRealTimeNotification(true)
+    }
+
+    const LiveConversationUpdate = async (data:string) => {
+        if(data === user?._id.toString()){
+            setMessages(true)
+        }
     }
 
     useEffect(() => {
@@ -87,6 +103,13 @@ const LeftSideBar = () => {
                 const userData = await getLogInUser();
                 console.log(userData);
                 setUser(userData.user);
+                const messageResponse = await haveChat()
+                if (messageResponse.chat) {
+                    setMessages(true)
+                }
+                else {
+                    setMessages(false)
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -96,11 +119,20 @@ const LeftSideBar = () => {
         }
     }, []);
 
-    useEffect(()=>{
-        const userId:string = `${user?._id}`
+    useEffect(() => {
+        const userId: string = `${user?._id}`
         pusherClient.subscribe(userId)
-        pusherClient.bind('notification:new',NotificationHandler)
-    },[user])
+        pusherClient.bind('notification:new', NotificationHandler)
+        pusherClient.bind('conversation:update',LiveConversationUpdate)
+
+        return () => {
+            if (userId) {
+                pusherClient.unsubscribe(userId!)
+                pusherClient.unbind('notification:new', NotificationHandler)
+                pusherClient.unbind('conversation:update', LiveConversationUpdate)
+            }
+        }
+    }, [user])
 
     return (
         <>
@@ -113,7 +145,7 @@ const LeftSideBar = () => {
                         className='mt-2 mb-3 cursor-pointer'
                         alt="Logo of the snapGram"
                     />
-                    <div className="flex gap-2 mb-5 cursor-pointer" onClick={()=>{router.push('/edit-profile')}}>
+                    <div className="flex gap-2 mb-5 cursor-pointer" onClick={() => { router.push('/edit-profile') }}>
                         <Image
                             src="/assets/icons/profile-placeholder.svg"
                             width={38}
@@ -132,12 +164,13 @@ const LeftSideBar = () => {
                                 <li
                                     key={index}
                                     onClick={() => {
-                                        router.push(`${item.href}`);
+                                        listItemClick(item.href);
                                     }}
                                     className={`cursor-pointer ${pathName === item.href ? 'bg-purple-600 border  rounded-md' : 'null'}`}
                                 >
                                     <div className="flex gap-4 h-8 mt-1">
                                         <item.icon className={`w-6 h-6 ${item.color}`} />
+                                        {item.label === 'Chat' ? (messages && indicator ? <div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]" /> : null) : null}
                                         {item.label}
                                     </div>
                                 </li>
@@ -153,13 +186,13 @@ const LeftSideBar = () => {
                         />
                         <h1 className="ml-[10px]">Logout</h1>
                     </div>
-                    <div 
-                        className='fixed bottom-2 flex gap-2 ml-2 cursor-pointer' 
-                        onClick={()=>{router.push(`/edit-profile/${user._id}`)}}
+                    <div
+                        className='fixed bottom-2 flex gap-2 ml-2 cursor-pointer'
+                        onClick={() => { router.push(`/edit-profile/${user._id}`) }}
                     >
-                        <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]'/>
-                        {user?.notification?.length ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]"/>) : (null)}
-                        <h1 className={`${user?.notification?.length ? "ml-[10px]" : "ml-0" }`}>Notification</h1>
+                        <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]' />
+                        {user?.notification?.length || realTimeNotification ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]" />) : (null)}
+                        <h1 className={`${user?.notification?.length ? "ml-[10px]" : "ml-0"}`}>Notification</h1>
                     </div>
                 </div>) : (<PageLoader />)
             }

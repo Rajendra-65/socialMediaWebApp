@@ -20,6 +20,7 @@ interface ConversationUsersType {
 }
 
 interface ConversationTypes {
+  _id:string
   user:string;
   lastMessage:string;
   unreadMessages:Number;
@@ -32,6 +33,7 @@ const page = () => {
   const [fetched,setFetched] = useState<boolean>(false)
   const [currentUserId,setCurrentUserId] = useState<string>()
   const [realTime,setRealTime] = useState<boolean>(false)
+  const [realTimeChatId,setRealTimeChatId] = useState()
   const [messageNumber,setMessageNumber] = useState<number>(0)
   const [updatedAtDate, setUpdatedAtDate] = useState<Date | null>(null)
   const [searchedUsers,setSearchedUsers] = useState<UserTypes[]>([])
@@ -45,11 +47,12 @@ const page = () => {
   const params = new URLSearchParams(searchParams);
   const termLength:string | null = params.get('query')
   
-  const LiveConversationUpdate = async () => {
+  const LiveConversationUpdate = async (data:any) => {
     setRealTime(true)
     setMessageNumber(prevNumber => prevNumber + 1)
     const newDate = new Date();
     setUpdatedAtDate(newDate);
+    setRealTimeChatId(data)
   }
   
   useEffect(() => {
@@ -77,17 +80,13 @@ const page = () => {
       pusherClient.subscribe(currentUserId!)
       pusherClient.bind('conversation:update',LiveConversationUpdate)
     }
-    
     return () => {
       if(currentUserId){
         pusherClient.unsubscribe(currentUserId!)
         pusherClient.unbind('conversation:update', LiveConversationUpdate)
       }
-      
   }
   },[currentUserId,fetched])
-
-  
 
   const handleSearch = useDebouncedCallback(async (term) => {
     console.log(`Searching... ${term}`);
@@ -171,7 +170,7 @@ const page = () => {
                     <h1 className="font-bold">{conversation.user === currentUserId ? "message sent" : conversation.unreadMessages === 0 && !realTime ? 'message Received' : realTime ? `${messageNumber} new messages` :`${conversation.unreadMessages} new Message` }</h1>
                   </div>
                   <div className="mt-7">
-                    <h1 className="text-base">{realTime ? (formatDistanceToNow(updatedAtDate! , { addSuffix: true })) : (formatDistanceToNow(new Date(conversation.updatedAt) , { addSuffix: true }))}</h1>
+                    <h1 className="text-base">{conversation._id.toString() === realTimeChatId && realTime ? (formatDistanceToNow(updatedAtDate! , { addSuffix: true })) : (formatDistanceToNow(new Date(conversation.updatedAt) , { addSuffix: true }))}</h1>
                   </div>
                 </div>
               </div>

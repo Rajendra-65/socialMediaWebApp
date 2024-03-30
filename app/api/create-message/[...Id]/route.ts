@@ -25,7 +25,10 @@ export const POST = async (request:any,{params}:{params:paramsType}) => {
                 { participants: Id[1] }
             ]
         })
-
+        if(conversation){
+            conversation.sender = senderId
+            conversation.receiver = receiverId
+        }
         if(!conversation){
             const newConversation = await new Conversation({
                 sender:senderId,
@@ -53,10 +56,11 @@ export const POST = async (request:any,{params}:{params:paramsType}) => {
         })
         
         await pusherServer.trigger(Id[0],'messages:new',message)
-        await pusherServer.trigger(Id[1],'conversation:update',message.content)
+        await pusherServer.trigger(Id[1],'conversation:update',conversation._id)
         await message.save()
-        await conversation.save()
-
+        if(conversation){
+            await conversation.save()
+        }
         return NextResponse.json({message:message,success:true})
     
     }catch(e){
