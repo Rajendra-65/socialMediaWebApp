@@ -37,12 +37,19 @@ const page = () => {
                 console.log(e);
             }
         };
+
+        const handleBeforeUnload = () => {
+            seenNotification();
+        };
     
         getUserNotification();
     
+        window.addEventListener('beforeunload', handleBeforeUnload);
+    
         return () => {
-            seenNotification();
+            window.removeEventListener('beforeunload', handleBeforeUnload);
         };
+        
     }, [pathName]);
 
     const handleButtonClick = async (userId:string) => {

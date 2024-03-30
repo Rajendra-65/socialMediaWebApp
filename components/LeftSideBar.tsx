@@ -114,7 +114,7 @@ const LeftSideBar = () => {
                 console.log(error);
             }
         };
-        if (pathName != 'log-in') {
+        if (pathName != '/log-in') {
             fetchData();
         }
     }, []);
@@ -123,13 +123,13 @@ const LeftSideBar = () => {
         const userId: string = `${user?._id}`
         pusherClient.subscribe(userId)
         pusherClient.bind('notification:new', NotificationHandler)
-        pusherClient.bind('conversation:update',LiveConversationUpdate)
+        pusherClient.bind('chat:update',LiveConversationUpdate)
 
         return () => {
             if (userId) {
                 pusherClient.unsubscribe(userId!)
                 pusherClient.unbind('notification:new', NotificationHandler)
-                pusherClient.unbind('conversation:update', LiveConversationUpdate)
+                pusherClient.unbind('chat:update', LiveConversationUpdate)
             }
         }
     }, [user])
@@ -170,7 +170,7 @@ const LeftSideBar = () => {
                                 >
                                     <div className="flex gap-4 h-8 mt-1">
                                         <item.icon className={`w-6 h-6 ${item.color}`} />
-                                        {item.label === 'Chat' ? (messages && indicator ? <div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]" /> : null) : null}
+                                        {item.label === 'Chat' ? (messages && indicator ? (pathName != '/chat' ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]" />):null) : null) : null}
                                         {item.label}
                                     </div>
                                 </li>
@@ -188,7 +188,7 @@ const LeftSideBar = () => {
                     </div>
                     <div
                         className='fixed bottom-2 flex gap-2 ml-2 cursor-pointer'
-                        onClick={() => { router.push(`/edit-profile/${user._id}`) }}
+                        onClick={() => { router.push(`/notification`) }}
                     >
                         <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]' />
                         {user?.notification?.length || realTimeNotification ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]" />) : (null)}

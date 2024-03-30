@@ -167,7 +167,7 @@ const page = () => {
                 <div className="flex gap-2">
                   <div className="flex flex-col gap-1">
                     <h1 className="font-bold">{users[index].userName}</h1>
-                    <h1 className="font-bold">{conversation.user === currentUserId ? "message sent" : conversation.unreadMessages === 0 && !realTime ? 'message Received' : realTime ? `${messageNumber} new messages` :`${conversation.unreadMessages} new Message` }</h1>
+                    <h1 className="font-bold">{conversation.user === currentUserId ? "message sent" : conversation.unreadMessages === 0 && !realTime ? 'message Received' :conversation._id.toString() === realTimeChatId && realTime ? `${messageNumber} new messages` :`${conversation.unreadMessages} new Message` }</h1>
                   </div>
                   <div className="mt-7">
                     <h1 className="text-base">{conversation._id.toString() === realTimeChatId && realTime ? (formatDistanceToNow(updatedAtDate! , { addSuffix: true })) : (formatDistanceToNow(new Date(conversation.updatedAt) , { addSuffix: true }))}</h1>

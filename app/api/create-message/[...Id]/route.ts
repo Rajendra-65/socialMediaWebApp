@@ -57,6 +57,7 @@ export const POST = async (request:any,{params}:{params:paramsType}) => {
         
         await pusherServer.trigger(Id[0],'messages:new',message)
         await pusherServer.trigger(Id[1],'conversation:update',conversation._id)
+        await pusherServer.trigger(Id[1],'chat:update',Id[1])
         await message.save()
         if(conversation){
             await conversation.save()

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-    ArrowBigLeft,
     ArrowLeft,
     ArrowRight,
     Camera,
@@ -10,6 +9,7 @@ import {
     SendHorizonal,
     Video,
 } from "lucide-react";
+
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 import {
@@ -23,7 +23,8 @@ import { pusherClient } from "@/lib/pusher";
 import { find } from "lodash";
 import FetchFailed from "@/components/FetchFailed";
 import { RemoveFromChat, pushToChat, seenConversation } from "@/service/conversation/conversationService";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
 interface paramsType {
     Id: string;
 }
@@ -42,7 +43,7 @@ const page = ({ params }: { params: paramsType }) => {
     const [chatUser, setChatUser] = useState<UserTypes>()
     const router = useRouter()
     const chatContainerRef = useRef(null)
-
+    const pathName=usePathname()
     const { Id } = params;
 
     const handleArrowClick = async () => {
@@ -76,6 +77,7 @@ const page = ({ params }: { params: paramsType }) => {
             }
         };
         fetchCurrentUser();
+        
     }, []);
 
     useEffect(() => {
@@ -107,6 +109,16 @@ const page = ({ params }: { params: paramsType }) => {
             seenConversation(Id)
         }
     }, [router, Id])
+
+    useEffect(()=>{
+        const handleBeforeUnload = () => {
+            RemoveFromChat(Id);
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    },[pathName])
 
     const scrollToBottom = () => {
         if (chatContainerRef.current) {
@@ -168,8 +180,8 @@ const page = ({ params }: { params: paramsType }) => {
                             <Video className="w-8 h-8 text-white" />
                         </div>
                     </div>
-                    <div className="w-full border mb-[66px] h-[56vh] md:h-[76vh] overflow-y-auto " ref={chatContainerRef}>
-                        <div className="mt-4 ">
+                    <div className="w-full border mb-[66px] h-[56vh] md:h-[76vh] overflow-y-auto " >
+                        <div className="mt-4 " ref={chatContainerRef}>
                             <>
                                 {
                                     // @ts-ignore
@@ -191,17 +203,27 @@ const page = ({ params }: { params: paramsType }) => {
                                             <div className="border border-gray-100 p-[10px] rounded-md flex gap-1">
                                                 <div>{message}</div>
                                                 <div className="text-center align-center mt-[-7px]">
-                                                    {pending ? (
+                                                    {pending && index === recentMessages.length - 1 ? (
                                                         <Clock3 className="w-6 h-6 text-white text-center" />
                                                     ) : (
-                                                        <ArrowRight className="w-6 h-6 text-white text-center mt-2" />
+                                                        index === recentMessages.length - 1 ? (<ArrowRight className="w-6 h-6 text-white text-center mt-2" />) : null
                                                     )}
                                                 </div>
                                             </div>
                                         </div>
                                     )) : null
                                 }
-
+                                {
+                                    realTime ? realTimeMessages.map((message: any, index) => (
+                                        <div
+                                            key={index}
+                                            className={`flex p-1 rounded-lg w-full pb-[15px] justify-start`}
+                                        >
+                                            <div className="border border-gray-100 p-[10px] rounded-md flex gap-1">
+                                                <div>{message}</div>
+                                            </div>
+                                        </div>)) : null
+                                }
                             </>
                         </div>
                     </div>

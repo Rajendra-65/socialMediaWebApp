@@ -7,6 +7,8 @@ export interface UserTypes{
     userName: string;
     email: string;
     password: string;
+    active:boolean;
+    lastActiveTime:Date;
     posts: mongoose.Types.ObjectId[];
     likedPost: mongoose.Types.ObjectId[];
     savedPosts: mongoose.Types.ObjectId[];

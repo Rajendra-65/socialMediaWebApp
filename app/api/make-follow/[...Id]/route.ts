@@ -25,9 +25,6 @@ export const PUT = async (request:any,{params}:{params:ParamsType}) => {
             return;
         }
         
-        console.log('firstUser', firstUser);
-        console.log('secondUser', secondUser);
-        
         if (firstUser.following && firstUser.following.includes(followingId)) {
             firstUser.following.pull(followingId);
             if (!secondUser.followers) {

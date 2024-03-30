@@ -8,7 +8,7 @@ interface paramsType {
     Id:string[]
 }
 
-export const GET = async (request:any,{params}:{params:paramsType}) => {
+export const PUT = async (request:any,{params}:{params:paramsType}) => {
     try{
         await connectDb()
         const {Id} = params

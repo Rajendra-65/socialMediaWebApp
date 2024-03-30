@@ -22,6 +22,12 @@ const userSchema = new Schema({
         type:String,
         required:true
     },
+    active:{
+        type:Boolean,
+    },
+    lastActiveTime:{
+        type:Date,
+    },
     posts:[
         {
             type:mongoose.Schema.ObjectId,
