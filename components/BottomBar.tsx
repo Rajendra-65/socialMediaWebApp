@@ -122,7 +122,7 @@ const BottomBar = () => {
                         <div className="flex flex-col gap-1 place-content-center align-middle">
                             <div className="flex place-content-center align-middle">
                                 <item.icon className={`w-5 h-5 ${item.color}`} />
-                                {item.label === 'Chat' ? (messages && indicator ? pathName != '/chat' ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]"/>): null : null) : null}
+                                {item.label === 'Chat' ? (messages && indicator ? pathName.startsWith('/chat/') ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]"/>): null : null) : null}
                             </div>
                             {item.label}
                         </div>

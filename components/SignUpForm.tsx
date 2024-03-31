@@ -13,13 +13,17 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import React from 'react'
+import React, { useState } from 'react'
 import Link from "next/link"
 import { createUser } from "@/service/user/userServiece"
 import bcrypt from "bcryptjs"
 import { usePathname } from "next/navigation"
 import { toast } from "react-toastify"
+import { Loader2 } from "lucide-react"
 const SignUpForm = () => {
+    
+    const [submitLoading,setSubmitLoading] = useState(false)
+
     const pathName = usePathname()
     
     const formSchema = z.object({
@@ -61,13 +65,18 @@ const SignUpForm = () => {
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values)
+        setSubmitLoading(true)
         const hashedPassword = await bcrypt.hash(values.password, 10)
         values.password = hashedPassword
         const response = await createUser(values)
         console.log(response)
         console.log(response.data)
-        if(response.success){
+        if(response.success || response.data){
             toast.success("User Created SuccessFully",{position:'top-right'})
+            setSubmitLoading(true)
+            form.reset()
+        }else{
+            toast.error('userCreation Failed',{position:'top-right'})
         }
     }
 
@@ -142,7 +151,7 @@ const SignUpForm = () => {
                         )}
                     />
                     <div className="flex justify-center flex-col">
-                        <Button type="submit">Submit</Button>
+                        {submitLoading ? (<Loader2 className="h-4 w-4 animate-spin text-center m-auto"/>) : (<Button type="submit">Submit</Button>)}
                         <div className="flex mt-3">
                             <h1>Already have an account ? </h1>
                             <Link href="/log-in" className='text-blue-600 ml-1'> log-in</Link>

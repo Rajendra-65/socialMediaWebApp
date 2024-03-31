@@ -11,7 +11,7 @@ import {
     Wallpaper,
 } from "lucide-react";
 import { usePathname, useRouter } from 'next/navigation';
-import { getLogInUser } from '@/service/user/userServiece';
+import { getLogInUser, setUnActive } from '@/service/user/userServiece';
 import { toast } from 'react-toastify';
 import PageLoader from './PageLoader';
 import { UserTypes } from '@/types/user';
@@ -73,10 +73,11 @@ const LeftSideBar = () => {
     const [messages, setMessages] = useState<boolean>(false)
     const [indicator, setIndicator] = useState<boolean>(true)
 
-    const handleLogOut = () => {
+    const handleLogOut = async () => {
         window.localStorage.removeItem('authToken')
         console.log(window.localStorage.getItem('authToken'))
         toast.success("User LoggedOut Successfully", { position: 'top-right' })
+        await setUnActive()
         router.push('/log-in')
     }
 
@@ -170,7 +171,7 @@ const LeftSideBar = () => {
                                 >
                                     <div className="flex gap-4 h-8 mt-1">
                                         <item.icon className={`w-6 h-6 ${item.color}`} />
-                                        {item.label === 'Chat' ? (messages && indicator ? (pathName != '/chat' ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]" />):null) : null) : null}
+                                        {item.label === 'Chat' ? (messages && indicator ? (pathName.startsWith('/chat/') ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]" />):null) : null) : null}
                                         {item.label}
                                     </div>
                                 </li>

@@ -24,9 +24,11 @@ const userSchema = new Schema({
     },
     active:{
         type:Boolean,
+        default:false,
     },
     lastActiveTime:{
-        type:Date,
+        type: Date,
+        default: Date.now
     },
     posts:[
         {

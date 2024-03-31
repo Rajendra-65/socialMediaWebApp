@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -15,13 +15,14 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { logInUser } from '@/service/user/userServiece'
-import jwt from "jsonwebtoken"
+import { Loader2 } from 'lucide-react'
 import { jwtDecode } from 'jwt-decode'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 
 
 const LogInForm = () => {
+    const [submitLoading,setSubmitLoading] = useState(false)
     const router = useRouter()
     const formSchema = z.object({
         email: z.string(),
@@ -43,6 +44,7 @@ const LogInForm = () => {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        setSubmitLoading(true)
         console.log(values)
         const response = await logInUser(values)
         const user = response.user
@@ -52,9 +54,11 @@ const LogInForm = () => {
             window.localStorage.setItem('authToken',token)
             const decodedToken = jwtDecode(token)
             console.log(decodedToken)
+            // @ts-ignore
             console.log("userId is",decodedToken._id)
             console.log("Saved token is",window.localStorage.getItem('authToken'))
             toast.success("log-in successFul",{position:'top-right'})
+            setSubmitLoading(false)
             router.push('/')
         }else{
             toast.error("login False",{position:'top-right'})
@@ -93,7 +97,7 @@ const LogInForm = () => {
                         )}
                     />
                     <div className="flex justify-center flex-col">
-                        <Button type="submit">Submit</Button>
+                    {submitLoading ? (<Loader2 className="h-4 w-4 animate-spin text-center m-auto"/>) : (<Button type="submit">Submit</Button>)}
                         <div className="flex mt-3">
                             <h1>New to snapGram ? </h1>
                             <Link href="/sign-up" className='text-blue-600 ml-1'> sign-up </Link>

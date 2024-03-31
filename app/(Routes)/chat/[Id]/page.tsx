@@ -18,12 +18,13 @@ import {
     getChatUser,
 } from "../../../../service/chat/chatServices";
 import { UserTypes } from "@/types/user";
-import { getLogInUser } from "@/service/user/userServiece";
+import { getActiveStatus, getLogInUser } from "@/service/user/userServiece";
 import { pusherClient } from "@/lib/pusher";
 import { find } from "lodash";
 import FetchFailed from "@/components/FetchFailed";
 import { RemoveFromChat, pushToChat, seenConversation } from "@/service/conversation/conversationService";
 import { usePathname, useRouter } from "next/navigation";
+import { formatDistanceToNow } from "date-fns";
 
 interface paramsType {
     Id: string;
@@ -34,7 +35,8 @@ const page = ({ params }: { params: paramsType }) => {
     const [recent, setRecent] = useState<boolean>(false)
     const [realTime, setRealTime] = useState<boolean>(false)
     const [fetched, setFetched] = useState<boolean>(false);
-    const [activeNow,setActiveNow] = useState<boolean>(false)
+    const [activeNow, setActiveNow] = useState<boolean>(false)
+    const [lastActive, setLastActive] = useState(Date)
     const [prevMessages, setPrevMessages] = useState([]);
     const [recentMessages, setRecentMessages] = useState([])
     const [realTimeMessages, setRealTimeMessages] = useState([])
@@ -43,15 +45,15 @@ const page = ({ params }: { params: paramsType }) => {
     const [chatUser, setChatUser] = useState<UserTypes>()
     const router = useRouter()
     const chatContainerRef = useRef(null)
-    const pathName=usePathname()
+    const pathName = usePathname()
     const { Id } = params;
 
     const handleArrowClick = async () => {
-        try{
+        try {
             console.log("HandleArrow clicked...")
             await RemoveFromChat(Id)
             router.push('/chat')
-        }catch(e){
+        } catch (e) {
             console.log(e)
         }
     }
@@ -72,18 +74,19 @@ const page = ({ params }: { params: paramsType }) => {
                     messageResponse.message,
                 ]);
                 setFetched(true);
+                await getActiveStatus(Id)
             } catch (e) {
                 console.log(e);
             }
         };
         fetchCurrentUser();
-        
+
     }, []);
 
     useEffect(() => {
         const id = Id
         setRealTime(false)
-        
+
         const messageHandler = (message: any) => {
             setRealTime(true)
             setRealTimeMessages((current: any) => {
@@ -95,11 +98,21 @@ const page = ({ params }: { params: paramsType }) => {
             scrollToBottom()
         }
 
-        
+        const ActiveStatusHandler = (data: any) => {
+            if (!data) {
+                setActiveNow(true)
+            } else {
+                setActiveNow(false)
+                setLastActive(data)
+            }
+        }
+
         pusherClient.subscribe(id)
         pusherClient.bind('messages:new', messageHandler)
+        pusherClient.bind('active:status', ActiveStatusHandler)
         return () => {
             pusherClient.unsubscribe(id)
+            pusherClient.unbind('active:status', ActiveStatusHandler)
             pusherClient.unbind('messages:new', messageHandler)
         }
     }, [Id])
@@ -110,7 +123,7 @@ const page = ({ params }: { params: paramsType }) => {
         }
     }, [router, Id])
 
-    useEffect(()=>{
+    useEffect(() => {
         const handleBeforeUnload = () => {
             RemoveFromChat(Id);
         };
@@ -118,14 +131,14 @@ const page = ({ params }: { params: paramsType }) => {
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    },[pathName])
+    }, [pathName])
 
     const scrollToBottom = () => {
         if (chatContainerRef.current) {
             // @ts-ignore
-          chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
-      }
+    }
 
     const sendClick = async () => {
         scrollToBottom()
@@ -155,9 +168,9 @@ const page = ({ params }: { params: paramsType }) => {
                     <div className="flex w-full border px-2 py-2 gap-2 justify-between top-0">
                         <div className="flex">
                             <div>
-                                <ArrowLeft 
-                                    className="w-8 h-8 text-white mt-[9px]" 
-                                    onClick={()=>{handleArrowClick()}}
+                                <ArrowLeft
+                                    className="w-8 h-8 text-white mt-[9px] cursor-pointer"
+                                    onClick={() => { handleArrowClick() }}
                                 />
                             </div>
                             <div className="flex gap-2">
@@ -170,7 +183,19 @@ const page = ({ params }: { params: paramsType }) => {
                                 <div>
                                     <h1 className="font-bold">{chatUser.userName}</h1>
                                     <h1 className="font-normal">
-                                    
+                                        {
+                                            activeNow ? (
+                                                <div className="flex gap-1">
+                                                    <div className="h-2 w-2 rounded-full bg-emerald-600 mt-2" />
+                                                    <h1 className='text-xs mt-1'>Active Now</h1>
+                                                </div>
+                                            ) : (
+                                                <div className="flex gap-1">
+                                                    <h1>Active</h1>
+                                                    {formatDistanceToNow(lastActive, { addSuffix: true })}
+                                                </div>
+                                            )
+                                        }
                                     </h1>
                                 </div>
                             </div>

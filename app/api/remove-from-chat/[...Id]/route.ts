@@ -15,18 +15,15 @@ export const PUT = async (request:any,{params}:{params:ParamsType}) => {
         const senderId = Id[0]
         const receiverId = Id[1]
         const conversation = await Conversation.findOne({
-            $and: [
-                { participants: Id[0] },
-                { participants: Id[1] }
-            ]
+            participants: { $all: [senderId, receiverId] }
         });
         if(!conversation){
             return NextResponse.json({success:true,noConversation:true})
         }
-        if(conversation.inChat.includes(senderId)){
-            conversation.inChat = conversation.inChat.filter((id:string) => id !== senderId);
+        if (conversation.inChat.every((id: string) => id !== senderId)) {
+            conversation.inChat.pull(senderId);
             await conversation.save();
-            await pusherServer.trigger(Id[0],'inTheChat',false)
+            await pusherServer.trigger(Id[0], 'inTheChat', false);
         }
         return NextResponse.json({success:true,data:conversation})
     }catch(e){

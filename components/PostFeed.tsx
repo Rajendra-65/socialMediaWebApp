@@ -4,7 +4,7 @@ import PostCard from './PostCard'
 import { PostTypes } from '@/types/post'
 import { UserTypes } from '@/types/user'
 import { getFeedPost } from '@/service/post/postService'
-import { getLogInUser } from '@/service/user/userServiece'
+import { getActiveStatus, getLogInUser } from '@/service/user/userServiece'
 import PageLoader from './PageLoader'
 import { Router } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -35,6 +35,7 @@ const PostFeed = () => {
                 const userResponse = await getLogInUser()
                 setCurrentUser(userResponse.user)
                 setFetched(true)
+                await getActiveStatus()
             } catch (e) {
                 console.log(e)
             }

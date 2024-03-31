@@ -94,7 +94,36 @@ export const getSearchUser = async (term:string) =>{
     try{
         const response = await axios.get(`/api/get-search-user/${term}`)
         return response.data
-    }catch{
+    }catch(e){
+        console.log(e)
+    }
+}
 
+export const getActiveStatus = async (secondUserId:string) => {
+    try{
+        const response = await axios.get(`/api/get-active-status/${secondUserId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
+
+export const setActive = async () => {
+    try{
+        const userId = await getUserId()
+        const response = await axios.put(`/api/set-active/${userId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
+
+export const setUnActive = async () => {
+    try{
+        const userId = await getUserId()
+        const response = await axios.put(`/api/set-un-active/${userId}`)
+        return response.data
+    }catch(e){
+        console.log(e)
     }
 }

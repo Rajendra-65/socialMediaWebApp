@@ -1,5 +1,5 @@
 "use client"
-import { getLogInUser } from '@/service/user/userServiece';
+import { getLogInUser, setUnActive } from '@/service/user/userServiece';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -16,10 +16,11 @@ const Navbar = () => {
     const pathName = usePathname();
     const router = useRouter()
 
-    const handleLogOut = () => {
+    const handleLogOut = async () => {
         window.localStorage.removeItem('authToken')
         console.log(window.localStorage.getItem('authToken'))
         toast.success("User LoggedOut Successfully",{position:'top-right'})
+        await setUnActive()
         router.push('/log-in')
     }
 
