@@ -15,19 +15,6 @@ const PeopleCard = ({
   currentUser: UserTypes;
 }) => {
   const [currentFollow, setCurrentFollow] = useState<boolean>(false);
-  const [mounted,setIsMounted] = useState(false)
-  useEffect(()=>{setIsMounted(true)},[])
-  console.log(user);
-  console.log(currentUser);
-
-  // useEffect(() => {
-  //   console.log("Second UseEffect Reached...");
-  //   if (currentUser?.following.includes(user._id)) {
-  //     setCurrentFollow(true);
-  //     setFinalEffect(true);
-  //   }
-  // }, []);
-
 
   const handleFollow = async (followingId: any) => {
     try {
@@ -35,9 +22,7 @@ const PeopleCard = ({
       const response = await makeFollow(followingId);
       if(response.notification){
         const notificationResponse = await createNotification(followingId as string)
-        console.log(notificationResponse)
       }
-      console.log(response);
     } catch (e) {
       console.log(e);
     }

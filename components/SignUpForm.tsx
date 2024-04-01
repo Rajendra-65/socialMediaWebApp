@@ -25,7 +25,6 @@ const SignUpForm = () => {
     const [submitLoading,setSubmitLoading] = useState(false)
     const [mounted,setIsMounted] = useState(false)
     const pathName = usePathname()
-    useEffect(()=>{setIsMounted(true)},[])
     const formSchema = z.object({
         firstName: z.string().min(2, {
             message: "firstName must be at least 2 characters.",
@@ -62,15 +61,11 @@ const SignUpForm = () => {
         },
     })
 
-    // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
         setSubmitLoading(true)
         const hashedPassword = await bcrypt.hash(values.password, 10)
         values.password = hashedPassword
         const response = await createUser(values)
-        console.log(response)
-        console.log(response.data)
         if(response.success || response.data){
             toast.success("User Created SuccessFully",{position:'top-right'})
             setSubmitLoading(true)

@@ -12,7 +12,6 @@ export const PUT = async (request:any,{params}:{params:paramsType}) => {
         await connectDb()
         const {Id} = params
         const data = await request.json()
-        console.log(data)
         const ObjectId = new mongoose.Types.ObjectId(Id)
         const user = await User.findByIdAndUpdate(ObjectId,{
             firstName:data.firstName,

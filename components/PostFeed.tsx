@@ -21,9 +21,7 @@ const PostFeed = () => {
     const [AllPosts, setAllPosts] = useState<PostTypes[]>([])
     const [postUsers,setPostUsers] =useState<PostUserTypes[]>([])
     const [currentUser,setCurrentUser] = useState<UserTypes>()
-    const [mounted,setIsMounted] = useState(false)
     const router = useRouter()
-    useEffect(()=>{setIsMounted(true)},[])
     useEffect(() => {
         const fetchFeedPost = async () => {
             try {
@@ -37,7 +35,6 @@ const PostFeed = () => {
                 const userResponse = await getLogInUser()
                 setCurrentUser(userResponse.user)
                 setFetched(true)
-                // await getActiveStatus()
             } catch (e) {
                 console.log(e)
             }

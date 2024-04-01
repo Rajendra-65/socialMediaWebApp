@@ -23,9 +23,7 @@ import { useRouter } from 'next/navigation'
 
 const LogInForm = () => {
     const [submitLoading,setSubmitLoading] = useState(false)
-    const [mounted,setIsMounted] = useState(false)
     const router = useRouter()
-    useEffect(()=>{setIsMounted(true)},[])
     const formSchema = z.object({
         email: z.string(),
         password: z.string().min(8, {
@@ -44,28 +42,21 @@ const LogInForm = () => {
         },
     })
 
-    // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setSubmitLoading(true)
-        console.log(values)
         const response = await logInUser(values)
         const user = response.user
         if(response.logIn){
             const token = response.token
-            console.log(token)
             window.localStorage.setItem('authToken',token)
             const decodedToken = jwtDecode(token)
-            console.log(decodedToken)
             // @ts-ignore
-            console.log("userId is",decodedToken._id)
-            console.log("Saved token is",window.localStorage.getItem('authToken'))
             toast.success("log-in successFul",{position:'top-right'})
             setSubmitLoading(false)
             router.push('/')
         }else{
             toast.error("login False",{position:'top-right'})
         }
-        console.log(response)
     }
 
     return (

@@ -66,7 +66,6 @@ const BottomBar = () => {
     const pathName = usePathname()
     const [messages,setMessages] = useState<boolean>(false)
     const [indicator,setIndicator] = useState<boolean>(true)
-    const [mounted,setIsMounted] = useState(false)
     const [user,setUser] = useState<UserTypes>()
 
     const listItemClick = async (route:string) => {
@@ -78,10 +77,6 @@ const BottomBar = () => {
     const LiveConversationUpdate = () => {
         setMessages(true)
     }
-
-    useEffect(()=>{
-        setIsMounted(true)
-    },[])
 
     useEffect(()=>{
         const fetchChat = async () => {

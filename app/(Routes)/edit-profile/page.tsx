@@ -17,7 +17,6 @@ const page = () => {
                 const userId = await getUserId()
                 const response = await editProfile(userId)
                 setUser(response.user)
-                console.log(response)
             } catch (e) {
                 console.log(e)
             }

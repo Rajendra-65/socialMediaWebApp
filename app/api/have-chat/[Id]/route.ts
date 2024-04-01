@@ -20,7 +20,6 @@ export const GET = async (request:any,{params}:{params:paramsType}) => {
                     flag =1 
                     break
                 }
-                console.log(conversations[i].sender , objectId)
             }
         }
         if(flag){

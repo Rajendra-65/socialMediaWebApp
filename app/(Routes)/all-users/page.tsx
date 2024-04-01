@@ -35,7 +35,6 @@ const page = () => {
         const currentUserResponse = await getLogInUser()
         setCurrentUser(currentUserResponse.user)
         const response = await getAllUsers(userId as string)
-        console.log(response)
         setAllUsers(response.users)
         setFetched(true)
       } catch (e) {
@@ -50,8 +49,7 @@ const page = () => {
   },[])
 
   const handleSearch = useDebouncedCallback(async (term) => {
-    console.log(`Searching... ${term}`);
-
+    
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set("query", term);
@@ -64,15 +62,12 @@ const page = () => {
     const response = await getSearchUser(term)
     setSearchedUsers(response.user)
     setSearchResult(true)
-    console.log(userName)
 
   }, 700);
 
   const handleFollowClick = async (userId: any) => {
     setCurrentFollow(!currentFollow)
     const response = await makeFollow(userId)
-    console.log(response)
-    console.log(typeof userId)
   }
 
   return (

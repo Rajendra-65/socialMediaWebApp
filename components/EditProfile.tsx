@@ -24,10 +24,8 @@ import { Loader } from "lucide-react";
 const EditProfile = ({user}:{user:UserEditTypes}) => {
     
     const [imageUrl,setImageUrl] = useState<string>()
-    const [mounted,setIsMounted] = useState(false)
     const [loading,setLoading] = useState<boolean>(false)
     const router = useRouter()
-    useEffect(()=>{setIsMounted(true)},[])
     const formSchema = z.object({
         firstName: z.string().min(2, {
             message: "firstName must be at least 2 characters.",
@@ -61,15 +59,12 @@ const EditProfile = ({user}:{user:UserEditTypes}) => {
     const handleUpload = (result:any) => {
         const imageUrl = result?.info?.secure_url
         setImageUrl(imageUrl)
-        console.log("ImageUrl is",imageUrl)
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true)
         values.imageUrl = imageUrl as string
-        console.log(values)
         const response = await updateUser(values)
-        console.log(response)
         if(response.success){
             toast.success("profile updated successFully",{position:"top-right"})
             setLoading(false)

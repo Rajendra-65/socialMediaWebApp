@@ -13,7 +13,6 @@ const page = () => {
     const fetchData = async () => {
       try{
         const response = await getSavedPost()
-        console.log(response.allSaved)
         setAllSaved(response.allSaved)
       }catch(e){
         console.log(e)

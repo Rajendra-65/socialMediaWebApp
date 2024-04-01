@@ -30,7 +30,6 @@ const page = () => {
         const getUserNotification = async () => {
             try {
                 const response = await getNotification();
-                console.log(response);
                 setNotifications(response.notifications);
                 setNotificationDp(response.notificationDp);
                 setUserNotificationIds(response.userNotificationId);
@@ -58,7 +57,6 @@ const page = () => {
     }, [pathName]);
 
     const handleButtonClick = async (userId:string) => {
-        console.log(userId)
         setIsFollowed(true)
         await makeFollow(userId)
     }

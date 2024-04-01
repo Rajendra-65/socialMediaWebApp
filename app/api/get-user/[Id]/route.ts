@@ -9,7 +9,6 @@ interface ParamsType {
 export const GET = async (request:any,{ params } : { params : ParamsType }) => {
     try{
         const {Id} = params
-        console.log(Id,typeof Id)
         await connectDb()
         const userObjectId = new mongoose.Types.ObjectId(Id)
         const currentUser = await User.findById(userObjectId)

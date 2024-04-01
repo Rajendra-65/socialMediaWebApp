@@ -7,7 +7,6 @@ import { likePost, savePost } from "@/service/post/postService";
 import mongoose, { trusted } from "mongoose";
 import SubmitButtonLoader from "./SubmitButtonLoader";
 import { Loader2 } from "lucide-react";
-// import { Image } from 'next/image'
 import { useRouter } from "next/navigation";
 
 const AccountPostCard = ({
@@ -21,8 +20,6 @@ const AccountPostCard = ({
     user: UserTypes;
 
 }) => {
-
-    const [mounted, setIsMounted] = useState<boolean>(false);
     const [saveLoading, setSaveLoading] = useState<boolean>(false);
     const [currentSave, setCurrentSave] = useState<boolean>(false);
     const [reChange, setReChange] = useState<boolean>(false);
@@ -32,7 +29,6 @@ const AccountPostCard = ({
     const router = useRouter()
 
     useEffect(() => {
-        setIsMounted(true);
         setInitial(true)
     }, []);
 
@@ -53,7 +49,6 @@ const AccountPostCard = ({
             setSaveLoading(true);
             setInitial(!initial)
             const response = await savePost(Id);
-            console.log(response.user);
             if (response.success) {
                 setSaveLoading(false);
                 setCurrentSave(!currentSave);
@@ -69,7 +64,6 @@ const AccountPostCard = ({
         const userId = user._id;
         const response = await likePost(userId, postId);
         setLikeCount(likeCount + 1)
-        console.log(response.user, response.post);
     };
 
     const handleUnLike = async (postId: mongoose.Types.ObjectId) => {
@@ -77,11 +71,9 @@ const AccountPostCard = ({
         const userId = user._id;
         const response = await likePost(userId, postId);
         setLikeCount(likeCount - 1)
-        console.log(response.user, response.post);
     };
 
     const handleEditClick = async (postId:any) => {
-        console.log(typeof postId)
         router.push(`/edit-post/${postId}`)
     }
 

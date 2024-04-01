@@ -76,7 +76,6 @@ const LeftSideBar = () => {
     useEffect(()=>{setIsMounted(true)},[])
     const handleLogOut = async () => {
         window.localStorage.removeItem('authToken')
-        console.log(window.localStorage.getItem('authToken'))
         toast.success("User LoggedOut Successfully", { position: 'top-right' })
         await setUnActive()
         router.push('/log-in')
@@ -103,7 +102,6 @@ const LeftSideBar = () => {
         const fetchData = async () => {
             try {
                 const userData = await getLogInUser();
-                console.log(userData);
                 setUser(userData.user);
                 const messageResponse = await haveChat()
                 if (messageResponse.chat) {

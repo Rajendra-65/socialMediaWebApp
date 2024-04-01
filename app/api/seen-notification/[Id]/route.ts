@@ -8,7 +8,6 @@ interface ParamsType {
 
 export const PUT = async (request:any,{params}:{params:ParamsType}) => {
     try{
-        console.log("SeenNotification is Reached....")
         const {Id} = params
         const objectId = new mongoose.Types.ObjectId(Id)
         const user = await User.findById(objectId)

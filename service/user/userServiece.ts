@@ -43,7 +43,6 @@ export const logInUser = async(values:receivedLoggedInValues) => {
 export const getLogInUser = async () => {
     try{
         const userId = await getUserId()
-        console.log(userId)
         const response = await axios.get(`/api/get-user/${userId}`)
         return response.data
     }catch(e){
@@ -53,7 +52,6 @@ export const getLogInUser = async () => {
 
 export const editProfile = async (userId:string) => {
     try{
-        console.log(userId, typeof userId)
         const response = await axios.get(`/api/edit-profile/${userId}`)
         return response.data
     }catch(e){

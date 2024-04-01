@@ -47,7 +47,6 @@ export const savePost = async (postId: mongoose.Types.ObjectId) => {
     try {
         const userId = await getUserId()
         const convertedId = new mongoose.Types.ObjectId(userId)
-        // console.log(postId,typeof postId,userId,typeof convertedId)
         const response = await axios.get(`/api/save-post/${convertedId}/${postId}`)
         return response.data
     } catch (e) {
@@ -57,7 +56,6 @@ export const savePost = async (postId: mongoose.Types.ObjectId) => {
 
 export const likePost = async (userId: any, postId: any) => {
     try {
-        console.log(typeof userId, typeof postId)
         const response = await axios.post(`/api/like-post/${userId}/${postId}`)
         return response.data
     } catch (e) {

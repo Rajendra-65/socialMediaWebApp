@@ -7,7 +7,6 @@ export const getUserId = async () => {
         const decodedToken = jwtDecode(token!)
         // @ts-ignore
         const Id = decodedToken._id
-        console.log('decodedId from token is',Id)
         return Id 
     }catch(e){
         console.log(e)

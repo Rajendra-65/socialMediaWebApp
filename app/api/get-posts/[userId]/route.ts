@@ -13,7 +13,6 @@ export const GET = async (request:any,{ params }: { params: ParamsType }) => {
         const {userId} = params
         const ObjectId = new mongoose.Types.ObjectId(userId)
         const post = await Post.find({user:ObjectId})
-        console.log(post)
         if(!post.length){
             return NextResponse.json({success:true,post:false})
         }

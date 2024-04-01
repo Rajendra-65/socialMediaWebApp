@@ -20,24 +20,22 @@ export const PUT = async (request:any,{params}:{params:ParamsType}) => {
         const secondUser = await User.findById(secondUserObjectId);
         
         if (!firstUser || !secondUser) {
-            // Handle scenario where either user is not found
-            console.log("User not found");
             return;
         }
         
         if (firstUser.following && firstUser.following.includes(followingId)) {
             firstUser.following.pull(followingId);
             if (!secondUser.followers) {
-                secondUser.followers = []; // Ensure follower array exists
+                secondUser.followers = []; 
             }
             secondUser.followers.pull(userId);
         } else {
             if (!firstUser.following) {
-                firstUser.following = []; // Ensure following array exists
+                firstUser.following = []; 
             }
             firstUser.following.push(followingId);
             if (!secondUser.followers) {
-                secondUser.followers = []; // Ensure follower array exists
+                secondUser.followers = []; 
             }
             secondUser.followers.push(userId);
             await firstUser.save()

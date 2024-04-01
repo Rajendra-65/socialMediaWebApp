@@ -10,7 +10,6 @@ interface paramsTypes {
 export const GET = async (request:any,{params}:{params:paramsTypes}) => {
     try{
         const {Id} = params
-        console.log(typeof Id)
         if(typeof Id === "string"){
             const objectId = new mongoose.Types.ObjectId(Id)
             const user = await User.findOne({_id:objectId}).select({profileImage:1,firstName:1,lastName:1,userName:1,email:1})

@@ -26,7 +26,6 @@ const page = () => {
   useEffect(() => {
     const handleBeforeUnload = async () => {
       try {
-        console.log('unActive event triggered....')
         await setUnActive();
       } catch (error) {
         console.error("Error setting user inactive:", error);

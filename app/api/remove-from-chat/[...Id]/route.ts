@@ -9,7 +9,6 @@ interface ParamsType {
 
 export const PUT = async (request:any,{params}:{params:ParamsType}) => {
     try{
-        console.log("RemoveFrom the chat Reached...")
         await connectDb()
         const {Id} = params
         const senderId = Id[0]

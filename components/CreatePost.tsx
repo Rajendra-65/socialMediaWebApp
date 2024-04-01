@@ -23,18 +23,11 @@ import { getUserId } from "@/service/token/tokenService";
 import { createPost } from "@/service/post/postService";
 import { toast } from "react-toastify";
 const CreatePost = () => {
-    
     const [imageUrl,setImageUrl] = useState<string>('')
-    const [mounted,setIsMounted] = useState(false)
-
-    useEffect(()=>{
-        setIsMounted(true)
-    },[])
 
     const handleUpload = (result:any) => {
         const imageUrl = result?.info?.secure_url
         setImageUrl(imageUrl)
-        console.log("ImageUrl is",imageUrl)
     }
 
     const formSchema = z.object({
@@ -52,11 +45,8 @@ const CreatePost = () => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         values.imageUrl = imageUrl
         const userId = await getUserId()
-        console.log(userId)
         values.user = userId
-        console.log(values)
         const response = await createPost(values)
-        console.log(response.data)
         toast.success("Post Created successFully",{position:"top-right"})
         form.reset()
     }

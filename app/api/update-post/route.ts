@@ -7,8 +7,6 @@ export const PUT = async (request:any) => {
         
         const data = await request.json()
         const Id = new mongoose.Types.ObjectId(data.id)
-        console.log(Id,typeof Id)
-
         const updatedPost = await Post.findByIdAndUpdate(Id,{
                 caption:data.caption,
                 tags:data.tags,

@@ -13,13 +13,10 @@ const Navbar = () => {
     
     const [user, setUser] = useState<UserTypes>();
     const [realTimeNotification,setRealTimeNotification] = useState<boolean>(false)
-    const [mounted,setIsMounted] = useState(false)
     const pathName = usePathname();
     const router = useRouter()
-    useEffect(()=>{setIsMounted(true)},[])
     const handleLogOut = async () => {
         window.localStorage.removeItem('authToken')
-        console.log(window.localStorage.getItem('authToken'))
         toast.success("User LoggedOut Successfully",{position:'top-right'})
         await setUnActive()
         router.push('/log-in')
@@ -33,7 +30,6 @@ const Navbar = () => {
         const fetchData = async () => {
             try {
                 const userData = await getLogInUser();
-                console.log(userData);
                 setUser(userData.user);
             } catch (error) {
                 console.log(error);

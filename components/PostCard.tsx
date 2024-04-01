@@ -43,7 +43,6 @@ const PostCard = ({
             setSaveLoading(true);
             setInitial(!initial)
             const response = await savePost(Id);
-            console.log(response.user);
             if (response.success) {
                 setSaveLoading(false);
                 setCurrentSave(!currentSave);
@@ -59,7 +58,6 @@ const PostCard = ({
         const userId = currentUser._id;
         const response = await likePost(userId, postId);
         setLikeCount(likeCount + 1)
-        console.log(response.user, response.post);
     };
 
     const handleUnLike = async (postId: mongoose.Types.ObjectId) => {
@@ -67,7 +65,6 @@ const PostCard = ({
         const userId = currentUser._id;
         const response = await likePost(userId, postId);
         setLikeCount(likeCount - 1)
-        console.log(response.user, response.post);
     };
 
     useEffect(() => {

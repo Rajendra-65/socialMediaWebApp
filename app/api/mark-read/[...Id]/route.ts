@@ -11,7 +11,6 @@ export const PUT = async (request:any,{params}:{params:paramsType}) => {
     try{
         await connectDb()
         const {Id} = params
-        // const objectId = new mongoose.Types.ObjectId(Id)
         const conversation = await Conversation.findOne({
             $and: [
                 { participants: Id[0] },

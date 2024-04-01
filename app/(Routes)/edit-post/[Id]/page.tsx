@@ -43,9 +43,7 @@ const page = ({ params }: { params: ParamsTypes }) => {
         const fetchPost = async () => {
             try {
                 const { Id } = params
-                console.log(Id)
                 const response = await getPostDetails(Id)
-                console.log(response.post)
                 setPost(response.post)
                 setFetched(true)
             } catch (e) {

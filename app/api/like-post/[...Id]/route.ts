@@ -11,16 +11,13 @@ interface ParamsType {
 export const POST  = async (request:any,{params}:{params:ParamsType}) => {
     try{
         await connectDb()
-        console.log(params)
         const {Id} = params
         const userId = Id[0]
         const postId = Id[1]
         const userObjectId = new mongoose.Types.ObjectId(userId)
         const postObjectId = new mongoose.Types.ObjectId(postId)
         const user = await User.findOne({_id:userObjectId})
-        console.log(user)
         const post = await Post.findOne({_id:postObjectId})
-        console.log(post)
         if(user.likedPost.includes(postId)){
             user.likedPost.pull(postId)
             await user.save()

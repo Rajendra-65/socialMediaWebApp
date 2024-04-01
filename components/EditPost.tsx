@@ -22,9 +22,7 @@ import { Loader } from "lucide-react";
 const EditPost = ({post}:{post:EditPostTypes}) => {
     
     const [loading, setLoading] = useState<boolean>(false)
-    const [mounted,setIsMounted] = useState(false)
     const router = useRouter()
-    useEffect(()=>{setIsMounted(true)},[])
     const formSchema = z.object({
         id: z.string(),
         caption: z.string().max(100, {
@@ -49,9 +47,7 @@ const EditPost = ({post}:{post:EditPostTypes}) => {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true)
-        console.log(values)
         const response = await updatePost(values)
-        console.log(response)
         if (response.success) {
             toast.success("post updated successFully", { position: "top-right" })
             setLoading(false)

@@ -25,7 +25,6 @@ const page = () => {
     const fetchUserAndPost = async () => {
       try {
         const userResponse = await getLogInUser();
-        console.log(userResponse.user);
         setUser(userResponse.user);
         const postResponse = await getPost();
         setPosts(postResponse.post);

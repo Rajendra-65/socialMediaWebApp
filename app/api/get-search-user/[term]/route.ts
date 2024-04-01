@@ -11,7 +11,7 @@ export const GET = async (request: any, { params }: { params: paramsType }) => {
         
         await connectDb();
         const { term } = params;
-        console.log(term)
+        (term)
 
         const matchedUser = await User.aggregate([
             {
@@ -26,7 +26,6 @@ export const GET = async (request: any, { params }: { params: paramsType }) => {
             },
         ]);
 
-        console.log(matchedUser)
         return NextResponse.json({ user: matchedUser, success: true });
         
     } catch (e) {

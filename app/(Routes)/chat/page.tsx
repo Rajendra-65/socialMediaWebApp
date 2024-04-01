@@ -95,7 +95,6 @@ const page = () => {
   },[currentUserId,fetched])
 
   const handleSearch = useDebouncedCallback(async (term) => {
-    console.log(`Searching... ${term}`);
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set("query", term);
@@ -107,12 +106,10 @@ const page = () => {
     const userName = params.get('query')
     const response = await getSearchUser(term)
     setSearchedUsers(response.user) 
-    console.log(userName)
 
   }, 700);
 
   const handleMessageClick = async (userId:any) => {
-    console.log(typeof userId)
     router.push(`chat/${userId}`)
   }
 

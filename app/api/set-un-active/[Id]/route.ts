@@ -10,7 +10,6 @@ interface ParamsType{
 
 export const PUT = async (request:any,{params}:{params:ParamsType}) => {
     try{
-        console.log("SetUnActive Reached....")
         await connectDb()
         const {Id} = params
         const objectId = new mongoose.Types.ObjectId(Id)

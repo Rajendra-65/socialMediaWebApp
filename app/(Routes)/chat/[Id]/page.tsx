@@ -53,7 +53,6 @@ const page = ({ params }: { params: paramsType }) => {
 
     const handleArrowClick = async () => {
         try {
-            console.log("HandleArrow clicked...")
             await RemoveFromChat(Id)
             router.push('/chat')
         } catch (e) {
@@ -158,7 +157,6 @@ const page = ({ params }: { params: paramsType }) => {
         // @ts-ignore
         setRecentMessages((prevMessages) => [...prevMessages, content]);
         setPending(true)
-        console.log(content);
         try {
             const response = await createMessage(Id, content as string);
             // @ts-ignore
