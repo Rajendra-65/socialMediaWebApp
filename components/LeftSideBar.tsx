@@ -72,7 +72,8 @@ const LeftSideBar = () => {
     const [realTimeNotification, setRealTimeNotification] = useState<boolean>(false)
     const [messages, setMessages] = useState<boolean>(false)
     const [indicator, setIndicator] = useState<boolean>(true)
-
+    const [mounted,setIsMounted] = useState(false)
+    useEffect(()=>{setIsMounted(true)},[])
     const handleLogOut = async () => {
         window.localStorage.removeItem('authToken')
         console.log(window.localStorage.getItem('authToken'))

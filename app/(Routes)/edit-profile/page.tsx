@@ -10,6 +10,7 @@ import isAuth from '@/components/isAuth'
 
 const page = () => {
     const [user, setUser] = useState<UserEditTypes>()
+    const [mounted,setIsMounted] = useState(false)
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -23,7 +24,9 @@ const page = () => {
         }
         fetchUser()
     }, [])
-
+    useEffect(()=>{
+        setIsMounted(true)
+    },[])
     return (
         <>
             {

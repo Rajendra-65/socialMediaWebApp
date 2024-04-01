@@ -28,6 +28,7 @@ export const PUT = async (request: any, { params }: { params: ParamsType }) => {
                 { _id: conversation._id },
                 { $addToSet: { inChat: senderId } }
             );
+            await conversation.save()
         }        
 
         return NextResponse.json({ success: true, data: conversation });

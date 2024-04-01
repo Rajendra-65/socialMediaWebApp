@@ -28,6 +28,10 @@ const conversationSchema = new Schema({
     },
     lastMessage:{
         type:String
+    },
+    lastMessageTime:{
+        type:Date,
+        default:Date.now
     }
 },{timestamps:true})
 

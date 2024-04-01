@@ -22,8 +22,9 @@ import { Loader } from "lucide-react";
 const EditPost = ({post}:{post:EditPostTypes}) => {
     
     const [loading, setLoading] = useState<boolean>(false)
+    const [mounted,setIsMounted] = useState(false)
     const router = useRouter()
-    console.log(post)
+    useEffect(()=>{setIsMounted(true)},[])
     const formSchema = z.object({
         id: z.string(),
         caption: z.string().max(100, {

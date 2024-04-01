@@ -23,6 +23,7 @@ interface ConversationTypes {
   _id:string
   user:string;
   lastMessage:string;
+  lastMessageTime:Date;
   unreadMessages:Number;
   createdAt:string;
   updatedAt:string;
@@ -31,6 +32,7 @@ interface ConversationTypes {
 const page = () => {
   const [searchResult, setSearchResult] = useState<boolean>(false);
   const [fetched,setFetched] = useState<boolean>(false)
+  const [mounted,setIsMounted] = useState(false)
   const [currentUserId,setCurrentUserId] = useState<string>()
   const [realTime,setRealTime] = useState<boolean>(false)
   const [realTimeChatId,setRealTimeChatId] = useState()
@@ -58,6 +60,10 @@ const page = () => {
   useEffect(() => {
     setSearchResult(true);
   }, []);
+
+  useEffect(()=>{
+    setIsMounted(true)
+  })
 
   useEffect(()=>{
     const fetchConversation = async () => {
@@ -170,7 +176,7 @@ const page = () => {
                     <h1 className="font-bold">{conversation.user === currentUserId ? "message sent" : conversation.unreadMessages === 0 && !realTime ? 'message Received' :conversation._id.toString() === realTimeChatId && realTime ? `${messageNumber} new messages` :`${conversation.unreadMessages} new Message` }</h1>
                   </div>
                   <div className="mt-7">
-                    <h1 className="text-base">{conversation._id.toString() === realTimeChatId && realTime ? (formatDistanceToNow(updatedAtDate! , { addSuffix: true })) : (formatDistanceToNow(new Date(conversation.updatedAt) , { addSuffix: true }))}</h1>
+                    <h1 className="text-base">{conversation._id.toString() === realTimeChatId && realTime ? (formatDistanceToNow(updatedAtDate! , { addSuffix: true })) : (formatDistanceToNow(new Date(conversation.lastMessageTime) , { addSuffix: true }))}</h1>
                   </div>
                 </div>
               </div>

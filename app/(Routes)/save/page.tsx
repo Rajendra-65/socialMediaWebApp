@@ -8,6 +8,7 @@ import isAuth from '@/components/isAuth'
 
 const page = () => {
   const [allSaved, setAllSaved] = useState<savedTypes[]>([])
+  const [mounted,setIsMounted] = useState(false)
   useEffect(()=>{
     const fetchData = async () => {
       try{
@@ -20,6 +21,10 @@ const page = () => {
     }
     fetchData()
   },[])
+
+  useEffect(()=>{
+    setIsMounted(true)
+  })
 
   return (
     <div className='flex flex-col gap-2'>

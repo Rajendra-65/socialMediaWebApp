@@ -15,7 +15,8 @@ const PeopleCard = ({
   currentUser: UserTypes;
 }) => {
   const [currentFollow, setCurrentFollow] = useState<boolean>(false);
-  // const [finalEffect, setFinalEffect] = useState<boolean>(false);
+  const [mounted,setIsMounted] = useState(false)
+  useEffect(()=>{setIsMounted(true)},[])
   console.log(user);
   console.log(currentUser);
 

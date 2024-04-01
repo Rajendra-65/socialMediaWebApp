@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -23,7 +23,9 @@ import { useRouter } from 'next/navigation'
 
 const LogInForm = () => {
     const [submitLoading,setSubmitLoading] = useState(false)
+    const [mounted,setIsMounted] = useState(false)
     const router = useRouter()
+    useEffect(()=>{setIsMounted(true)},[])
     const formSchema = z.object({
         email: z.string(),
         password: z.string().min(8, {

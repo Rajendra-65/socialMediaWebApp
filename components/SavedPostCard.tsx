@@ -1,9 +1,12 @@
+'use client'
 import Image from "next/image";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { UserTypes } from "@/types/user";
 import { savedTypes } from "@/types/saved";
 
 const SavedPostCard = ({saved}:{saved:savedTypes}) => {
+    const [mounted,setIsMounted] = useState(false)
+    useEffect(()=>{setIsMounted(true)},[])
     return (
         <div className="h-[300px] w-[300px] border rounded-md relative">
             <Image

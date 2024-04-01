@@ -20,9 +20,9 @@ export const PUT = async (request:any,{params}:{params:ParamsType}) => {
         if(!conversation){
             return NextResponse.json({success:true,noConversation:true})
         }
-        if (conversation.inChat.every((id: string) => id !== senderId)) {
-            conversation.inChat.pull(senderId);
-            await conversation.save();
+        if(conversation.inChat.includes(senderId)){
+            conversation.inChat.pull(senderId)
+            await conversation.save()
             await pusherServer.trigger(Id[0], 'inTheChat', false);
         }
         return NextResponse.json({success:true,data:conversation})

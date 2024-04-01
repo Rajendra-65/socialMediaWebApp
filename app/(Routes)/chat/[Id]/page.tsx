@@ -25,6 +25,8 @@ import FetchFailed from "@/components/FetchFailed";
 import { RemoveFromChat, pushToChat, seenConversation } from "@/service/conversation/conversationService";
 import { usePathname, useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
+import PageLoader from "@/components/PageLoader";
+import styles from '../../../../components/Width.module.css'
 
 interface paramsType {
     Id: string;
@@ -37,6 +39,7 @@ const page = ({ params }: { params: paramsType }) => {
     const [fetched, setFetched] = useState<boolean>(false);
     const [activeNow, setActiveNow] = useState<boolean>(false)
     const [lastActive, setLastActive] = useState(Date)
+    const [receiverId,setReceiverId] = useState<string>()
     const [prevMessages, setPrevMessages] = useState([]);
     const [recentMessages, setRecentMessages] = useState([])
     const [realTimeMessages, setRealTimeMessages] = useState([])
@@ -73,8 +76,14 @@ const page = ({ params }: { params: paramsType }) => {
                     ...prevMessages,
                     messageResponse.message,
                 ]);
+                if (Id) {
+                    const activeResponse = await getActiveStatus(Id)
+                    if (activeResponse.time) {
+                        setLastActive(activeResponse.time)
+                    }
+                }
                 setFetched(true);
-                await getActiveStatus(Id)
+
             } catch (e) {
                 console.log(e);
             }
@@ -89,6 +98,7 @@ const page = ({ params }: { params: paramsType }) => {
 
         const messageHandler = (message: any) => {
             setRealTime(true)
+            setReceiverId(message.receiver)
             setRealTimeMessages((current: any) => {
                 if (find(current, { id: message.sender })) {
                     return current
@@ -124,14 +134,14 @@ const page = ({ params }: { params: paramsType }) => {
     }, [router, Id])
 
     useEffect(() => {
-        const handleBeforeUnload = () => {
-            RemoveFromChat(Id);
+        const handleBeforeUnload = async () => {
+            await RemoveFromChat(Id);
         };
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, [pathName])
+    }, [pathName, router, Id])
 
     const scrollToBottom = () => {
         if (chatContainerRef.current) {
@@ -192,7 +202,7 @@ const page = ({ params }: { params: paramsType }) => {
                                             ) : (
                                                 <div className="flex gap-1">
                                                     <h1>Active</h1>
-                                                    {formatDistanceToNow(lastActive, { addSuffix: true })}
+                                                    {formatDistanceToNow(new Date(lastActive), { addSuffix: true })}
                                                 </div>
                                             )
                                         }
@@ -239,7 +249,7 @@ const page = ({ params }: { params: paramsType }) => {
                                     )) : null
                                 }
                                 {
-                                    realTime ? realTimeMessages.map((message: any, index) => (
+                                    realTime && receiverId?.toString() === currentUser?._id.toString() ? realTimeMessages.map((message: any, index) => (
                                         <div
                                             key={index}
                                             className={`flex p-1 rounded-lg w-full pb-[15px] justify-start`}
@@ -250,29 +260,30 @@ const page = ({ params }: { params: paramsType }) => {
                                         </div>)) : null
                                 }
                             </>
+                            <div className={`flex border px-2 py-2 rounded-md absolute mb-[89px] md:mb-[20px] bottom-0 justify-between bg-zinc-950 ${styles['w-fill-available']} mr-[20px]`}>
+                                <div className="flex w-fit gap-[8px]">
+                                    <Camera className="w-8 h-8 text-white" />
+                                    <input
+                                        className="rounded-md w-[60vw] md:w-[50vw]"
+                                        placeholder="Message..."
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <SendHorizonal
+                                        className="w-8 h-8 text-blue-700"
+                                        onClick={() => {
+                                            sendClick();
+                                        }}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex  border px-2 py-2 rounded-md absolute mb-[89px] md:mb-[20px]  md:w-[62vw] w-[94vw] bottom-0 justify-between bg-zinc-950">
-                        <div className="flex w-[85vw] gap-[8px]">
-                            <Camera className="w-8 h-8 text-white" />
-                            <input
-                                className="rounded-md w-[60vw] md:w-[50vw]"
-                                placeholder="Message..."
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <SendHorizonal
-                                className="w-8 h-8 text-blue-700"
-                                onClick={() => {
-                                    sendClick();
-                                }}
-                            />
-                        </div>
-                    </div>
+
                 </div>
-            ) : fetched && !chatUser ? <FetchFailed /> : null}
+            ) : fetched && !chatUser ? <FetchFailed /> : <PageLoader />}
         </>
     );
 };

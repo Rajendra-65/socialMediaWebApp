@@ -21,6 +21,7 @@ const page = () => {
   const [searchResult, setSearchResult] = useState<boolean>(false);
   const [searchedUsers, setSearchedUsers] = useState<UserTypes[]>([])
   const [currentFollow, setCurrentFollow] = useState<boolean>(false)
+  const [mounted,setIsMounted] = useState(false)
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -43,6 +44,10 @@ const page = () => {
     }
     fetchAllUser()
   }, [])
+
+  useEffect(()=>{
+    setIsMounted(true)
+  },[])
 
   const handleSearch = useDebouncedCallback(async (term) => {
     console.log(`Searching... ${term}`);

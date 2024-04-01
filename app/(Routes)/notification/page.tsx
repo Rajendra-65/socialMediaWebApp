@@ -18,8 +18,13 @@ const page = () => {
     const [userNotificationIds, setUserNotificationIds] = useState([])
     const [isNotification , setIsNotification ] = useState(false)
     const [isFollowed,setIsFollowed] = useState(false)
+    const [mounted,setIsMounted] = useState(false)
     const pathName = usePathname()
     const router = useRouter();
+
+    useEffect(()=>{
+        setIsMounted(true)
+    },[])
 
     useEffect(() => {
         const getUserNotification = async () => {

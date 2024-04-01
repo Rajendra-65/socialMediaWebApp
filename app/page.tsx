@@ -6,11 +6,16 @@ import PostFeed from "@/components/PostFeed";
 import isAuth from "@/components/isAuth";
 import { setActive } from "@/service/user/userServiece";
 import { setUnActive } from "@/service/user/userServiece";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 
 const page = () => {
+  const [mounted,setIsMounted] = useState(false)
   const token = window.localStorage.getItem('authToken')
   
+  useEffect(()=>{
+    setIsMounted(true)
+  },[])
+
   useEffect(()=>{
     const setUserActive = async () => {
         await setActive()

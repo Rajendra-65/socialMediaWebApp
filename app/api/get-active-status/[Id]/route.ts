@@ -13,7 +13,7 @@ export const GET = async (request:any,{params}:{params:ParamsType}) => {
         await connectDb()
         const {Id} = params
         const objectId = new mongoose.Types.ObjectId(Id)
-        const user  = await User.findById(objectId)
+        const user  = await User.findOne({_id:objectId})
         if(user.active){
             return NextResponse.json({success:true,active:true})
         }else{

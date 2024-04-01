@@ -25,10 +25,18 @@ export const POST = async (request:any,{params}:{params:paramsType}) => {
                 { participants: Id[1] }
             ]
         })
+
+        const message = await new Message({
+            sender:senderId,
+            receiver:receiverId,
+            content:data
+        })
+
         if(conversation){
             conversation.sender = senderId
             conversation.receiver = receiverId
         }
+
         if(!conversation){
             const newConversation = await new Conversation({
                 sender:senderId,
@@ -39,6 +47,10 @@ export const POST = async (request:any,{params}:{params:paramsType}) => {
                 lastMessage:data
             })
             await newConversation.save()
+            await pusherServer.trigger(Id[0],'messages:new',message)
+            await pusherServer.trigger(Id[1],'conversation:update',conversation._id)
+            await pusherServer.trigger(Id[1],'chat:update',Id[1])
+            return NextResponse.json({message:message,success:true})
         }
 
         if(conversation){
@@ -47,14 +59,8 @@ export const POST = async (request:any,{params}:{params:paramsType}) => {
             }
             conversation.user = Id[0]
             conversation.lastMessage = data
+            conversation.lastMessageTime = Date.now()
         }
-
-        const message = await new Message({
-            sender:senderId,
-            receiver:receiverId,
-            content:data
-        })
-        
         await pusherServer.trigger(Id[0],'messages:new',message)
         await pusherServer.trigger(Id[1],'conversation:update',conversation._id)
         await pusherServer.trigger(Id[1],'chat:update',Id[1])

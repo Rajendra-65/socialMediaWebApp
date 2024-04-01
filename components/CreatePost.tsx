@@ -1,6 +1,6 @@
 "use client"
 import { CldUploadButton } from "next-cloudinary";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { UploadCloudIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -25,7 +25,12 @@ import { toast } from "react-toastify";
 const CreatePost = () => {
     
     const [imageUrl,setImageUrl] = useState<string>('')
-    
+    const [mounted,setIsMounted] = useState(false)
+
+    useEffect(()=>{
+        setIsMounted(true)
+    },[])
+
     const handleUpload = (result:any) => {
         const imageUrl = result?.info?.secure_url
         setImageUrl(imageUrl)

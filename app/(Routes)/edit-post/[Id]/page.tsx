@@ -33,7 +33,11 @@ interface ParamsTypes {
 const page = ({ params }: { params: ParamsTypes }) => {
     const [post, setPost] = useState<EditPostTypes>()
     const [fetched, setFetched] = useState<boolean>(false)
+    const [mounted,setIsMounted] = useState(false)
 
+    useEffect(()=>{
+        setIsMounted(true)
+    },[])
 
     useEffect(() => {
         const fetchPost = async () => {

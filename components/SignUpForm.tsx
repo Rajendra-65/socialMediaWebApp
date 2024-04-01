@@ -13,7 +13,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Link from "next/link"
 import { createUser } from "@/service/user/userServiece"
 import bcrypt from "bcryptjs"
@@ -23,9 +23,9 @@ import { Loader2 } from "lucide-react"
 const SignUpForm = () => {
     
     const [submitLoading,setSubmitLoading] = useState(false)
-
+    const [mounted,setIsMounted] = useState(false)
     const pathName = usePathname()
-    
+    useEffect(()=>{setIsMounted(true)},[])
     const formSchema = z.object({
         firstName: z.string().min(2, {
             message: "firstName must be at least 2 characters.",

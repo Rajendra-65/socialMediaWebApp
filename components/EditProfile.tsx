@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -24,9 +24,10 @@ import { Loader } from "lucide-react";
 const EditProfile = ({user}:{user:UserEditTypes}) => {
     
     const [imageUrl,setImageUrl] = useState<string>()
+    const [mounted,setIsMounted] = useState(false)
     const [loading,setLoading] = useState<boolean>(false)
     const router = useRouter()
-
+    useEffect(()=>{setIsMounted(true)},[])
     const formSchema = z.object({
         firstName: z.string().min(2, {
             message: "firstName must be at least 2 characters.",
