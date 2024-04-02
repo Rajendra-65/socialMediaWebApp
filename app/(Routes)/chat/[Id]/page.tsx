@@ -39,7 +39,7 @@ const page = ({ params }: { params: paramsType }) => {
     const [fetched, setFetched] = useState<boolean>(false);
     const [activeNow, setActiveNow] = useState<boolean>(false)
     const [lastActive, setLastActive] = useState(Date)
-    const [receiverId,setReceiverId] = useState<string>()
+    const [receiverId, setReceiverId] = useState<string>()
     const [prevMessages, setPrevMessages] = useState([]);
     const [recentMessages, setRecentMessages] = useState([])
     const [realTimeMessages, setRealTimeMessages] = useState([])
@@ -47,7 +47,7 @@ const page = ({ params }: { params: paramsType }) => {
     const [currentUser, setCurrentUser] = useState<UserTypes>();
     const [chatUser, setChatUser] = useState<UserTypes>()
     const router = useRouter()
-    const chatContainerRef = useRef(null)
+    const chatContainerRef = useRef<HTMLDivElement>(null)
     const pathName = usePathname()
     const { Id } = params;
 
@@ -104,7 +104,7 @@ const page = ({ params }: { params: paramsType }) => {
                 }
                 return [...current, message.content]
             })
-            scrollToBottom()
+
         }
 
         const ActiveStatusHandler = (data: any) => {
@@ -142,15 +142,13 @@ const page = ({ params }: { params: paramsType }) => {
         };
     }, [pathName, router, Id])
 
-    const scrollToBottom = () => {
+    useEffect(() => {
         if (chatContainerRef.current) {
-            // @ts-ignore
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
-    }
+    }, [realTimeMessages, prevMessages, recentMessages, realTime, chatContainerRef.current]);
 
     const sendClick = async () => {
-        scrollToBottom()
         const content = message;
         setMessage("");
         setRealTime(false)
@@ -209,11 +207,11 @@ const page = ({ params }: { params: paramsType }) => {
                             </div>
                         </div>
                         <div className="flex gap-2 mt-[11px]">
-                            <Phone className="w-8 h-8 text-white" />
-                            <Video className="w-8 h-8 text-white" />
+                            <Phone className="w-8 h-8 text-white" onClick={()=>{alert('we will activate this phone call soon')}}/>
+                            <Video className="w-8 h-8 text-white"  onClick={()=>{alert('we will activate this video call soon')}}/>
                         </div>
                     </div>
-                    <div className="w-full border mb-[66px] h-[56vh] md:h-[76vh] overflow-y-auto " >
+                    <div className="w-full border mb-[66px] h-[56vh] md:h-[76vh] overflow-y-auto " ref={chatContainerRef}>
                         <div className="mt-4 " ref={chatContainerRef}>
                             <>
                                 {
