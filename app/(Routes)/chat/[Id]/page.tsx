@@ -26,6 +26,7 @@ import { RemoveFromChat, pushToChat, seenConversation } from "@/service/conversa
 import { usePathname, useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import PageLoader from "@/components/PageLoader";
+import { global } from "styled-jsx/css";
 import styles from '../../../../components/Width.module.css'
 
 interface paramsType {
