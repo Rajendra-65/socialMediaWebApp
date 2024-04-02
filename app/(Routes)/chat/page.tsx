@@ -159,7 +159,9 @@ const Page = () => {
           {fetched ? (conversations.map((conversation:ConversationTypes,index)=>(
             <div className="flex justify-between cursor-pointer" onClick={()=>{
               router.push(`/chat/${users[index]._id}`)
-            }}>
+            }}
+              key={conversation._id}
+            >
               <div className="flex gap-3">
                 <Image
                   src={users[index].profileImage || "/assets/icons/profile-placeholder.svg"}

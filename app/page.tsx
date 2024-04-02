@@ -8,7 +8,7 @@ import { setActive } from "@/service/user/userServiece";
 import { setUnActive } from "@/service/user/userServiece";
 import { useEffect,useState } from "react";
 
-const page = () => {
+const Page = () => {
   const [mounted,setIsMounted] = useState(false)
   const token = window.localStorage.getItem('authToken')
   
@@ -49,4 +49,4 @@ const page = () => {
   );
 }
 
-export default isAuth(page)
+export default isAuth(Page)

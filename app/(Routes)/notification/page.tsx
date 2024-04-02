@@ -76,7 +76,7 @@ const Page = () => {
                             <div className='flex w-full place-content-center h-fit-content gap-5 m-auto border border-b-2 border-r-2 border-b-white border-r-white lg:w-[50%] px-5 py-5 overflow-y-auto flex-col'>
                                 {
                                     isNotification  ? (notifications.map((notification, index) => (
-                                        <div className='flex place-content-center gap-2'>
+                                        <div className='flex place-content-center gap-2' key={index}>
                                             <Image
                                                 src={notificationDp[index] || "/assets/icons/profile-placeholder.svg"}
                                                 width={45}

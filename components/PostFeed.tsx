@@ -46,7 +46,7 @@ const PostFeed = () => {
                 fetched ? (!isFollowing ? (
                     <div className='ml-[18px] md:ml-0 w-[95%] border px-5 py-5 place-content-center'>
                         You haven't Followed People Yet Go to the <span className='text-blue-600 underline cursor-pointer'
-                        onClick={()=>{router.push('/all-users')}}
+                        onClick={() => {router.push('/all-users')}}
                         >people</span> Page and Follow Them To see Their Posts
                     </div>
                 ) : (
