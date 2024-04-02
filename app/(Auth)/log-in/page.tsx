@@ -5,7 +5,7 @@ import LogInForm from "@/components/LogInForm"
 import SubmitButtonLoader from '@/components/SubmitButtonLoader'
 import { usePathname } from 'next/navigation'
 
-const page = () => {
+const Page = () => {
     const pathName = usePathname()
     return (
         <div className={`flex items-center align-middle justify-center place-content-center mt-[75px] flex-col ${pathName==='/log-in' ? 'md:mr-[190px]':'null'}`}>
@@ -24,4 +24,4 @@ const page = () => {
 }
 
 
-export default page
+export default Page

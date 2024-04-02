@@ -4,9 +4,8 @@ import PostCard from './PostCard'
 import { PostTypes } from '@/types/post'
 import { UserTypes } from '@/types/user'
 import { getFeedPost } from '@/service/post/postService'
-import { getActiveStatus, getLogInUser } from '@/service/user/userServiece'
+import { getLogInUser } from '@/service/user/userServiece'
 import PageLoader from './PageLoader'
-import { Router } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface PostUserTypes {
@@ -53,6 +52,7 @@ const PostFeed = () => {
                 ) : (
                     AllPosts.map((post:PostTypes,index)=>(
                         <PostCard
+                            key={post && String(post._id)}
                             post={post}
                             user={postUsers[index]!}
                             currentUser={currentUser!}

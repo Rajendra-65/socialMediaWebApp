@@ -31,7 +31,7 @@ interface paramsType {
     Id: string;
 }
 
-const page = ({ params }: { params: paramsType }) => {
+const Page = ({ params }: { params: paramsType }) => {
     const [pending, setPending] = useState<boolean>(false)
     const [recent, setRecent] = useState<boolean>(false)
     const [realTime, setRealTime] = useState<boolean>(false)
@@ -283,4 +283,4 @@ const page = ({ params }: { params: paramsType }) => {
     );
 };
 
-export default page;
+export default Page;

@@ -30,7 +30,7 @@ interface ParamsTypes {
     Id: string
 }
 
-const page = ({ params }: { params: ParamsTypes }) => {
+const Page = ({ params }: { params: ParamsTypes }) => {
     const [post, setPost] = useState<EditPostTypes>()
     const [fetched, setFetched] = useState<boolean>(false)
     const [mounted,setIsMounted] = useState(false)
@@ -63,4 +63,4 @@ const page = ({ params }: { params: ParamsTypes }) => {
     )
 }
 
-export default isAuth(page)
+export default isAuth(Page)

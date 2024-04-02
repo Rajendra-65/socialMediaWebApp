@@ -6,7 +6,7 @@ import { savedTypes } from '@/types/saved'
 import { getSavedPost } from '@/service/post/postService'
 import isAuth from '@/components/isAuth'
 
-const page = () => {
+const Page = () => {
   const [allSaved, setAllSaved] = useState<savedTypes[]>([])
   const [mounted,setIsMounted] = useState(false)
   useEffect(()=>{
@@ -42,4 +42,4 @@ const page = () => {
   )
 }
 
-export default isAuth(page)
+export default isAuth(Page)

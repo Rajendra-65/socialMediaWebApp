@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import isAuth from '@/components/isAuth'
 
-const page = () => {
+const Page = () => {
   const [allUsers, setAllUsers] = useState<UserTypes[]>([])
   const [currentUser, setCurrentUser] = useState<UserTypes>()
   const [fetched, setFetched] = useState<boolean>(false)
@@ -127,4 +127,4 @@ const page = () => {
   )
 }
 
-export default isAuth(page)
+export default isAuth(Page)

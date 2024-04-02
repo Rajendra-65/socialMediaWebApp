@@ -3,7 +3,7 @@ import CreatePost from "@/components/CreatePost";
 import Image from "next/image";
 import React,{useEffect, useState} from "react";
 import isAuth from "@/components/isAuth";
-const page = () => {
+const Page = () => {
   const [mounted,setIsMounted] = useState(false)
   useEffect(()=>{
     setIsMounted(true)
@@ -30,4 +30,4 @@ const page = () => {
   );
 };
 
-export default isAuth(page);
+export default isAuth(Page);

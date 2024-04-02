@@ -29,7 +29,7 @@ interface ConversationTypes {
   updatedAt:string;
 }
 
-const page = () => {
+const Page = () => {
   const [searchResult, setSearchResult] = useState<boolean>(false);
   const [fetched,setFetched] = useState<boolean>(false)
   const [mounted,setIsMounted] = useState(false)
@@ -188,4 +188,4 @@ const page = () => {
   );
 };
 
-export default isAuth(page);
+export default isAuth(Page);

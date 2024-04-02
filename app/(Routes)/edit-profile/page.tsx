@@ -8,7 +8,7 @@ import { UserEditTypes } from '@/types/user'
 import PageLoader from '@/components/PageLoader'
 import isAuth from '@/components/isAuth'
 
-const page = () => {
+const Page = () => {
     const [user, setUser] = useState<UserEditTypes>()
     const [mounted,setIsMounted] = useState(false)
     useEffect(() => {
@@ -41,4 +41,4 @@ const page = () => {
     )
 }
 
-export default isAuth(page)
+export default isAuth(Page)

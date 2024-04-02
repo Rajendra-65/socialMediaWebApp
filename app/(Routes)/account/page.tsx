@@ -10,7 +10,7 @@ import FetchFailed from "@/components/FetchFailed";
 import isAuth from "@/components/isAuth";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const [mounted, setIsMounted] = useState<boolean>(false);
   const [user, setUser] = useState<UserTypes | null>();
   const [posts, setPosts] = useState<PostTypes[]>();
@@ -63,4 +63,4 @@ const page = () => {
   );
 };
 
-export default isAuth(page);
+export default isAuth(Page);

@@ -10,7 +10,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { makeFollow } from '@/service/user/userServiece'
 import isAuth from '@/components/isAuth'
 
-const page = () => {
+const Page = () => {
 
     const [fetched, setFetched] = useState(false)
     const [notifications, setNotifications] = useState([])
@@ -103,4 +103,4 @@ const page = () => {
     );
 }
 
-export default isAuth(page)
+export default isAuth(Page)
