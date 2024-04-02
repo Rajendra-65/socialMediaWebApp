@@ -26,8 +26,6 @@ import { RemoveFromChat, pushToChat, seenConversation } from "@/service/conversa
 import { usePathname, useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import PageLoader from "@/components/PageLoader";
-import { global } from "styled-jsx/css";
-import styles from '../../../../components/Width.module.css'
 
 interface paramsType {
     Id: string;
@@ -257,7 +255,7 @@ const page = ({ params }: { params: paramsType }) => {
                                         </div>)) : null
                                 }
                             </>
-                            <div className={`flex border px-2 py-2 rounded-md absolute mb-[89px] md:mb-[20px] bottom-0 justify-between bg-zinc-950 ${styles['w-fill-available']} mr-[20px]`}>
+                            <div className={`flex border px-2 py-2 rounded-md absolute mb-[89px] md:mb-[20px] bottom-0 justify-between bg-zinc-950`} style={{ width: '-webkit-fill-available', marginRight: '20px' }}>
                                 <div className="flex w-fit gap-[8px]">
                                     <Camera className="w-8 h-8 text-white" />
                                     <input
