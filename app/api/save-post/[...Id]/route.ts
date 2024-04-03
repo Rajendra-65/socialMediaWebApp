@@ -4,7 +4,11 @@ import { NextResponse } from "next/server"
 import { UserTypes } from "@/types/user"
 import { connectDb } from "@/utils/connectDb"
 
-export const GET = async (request:any,{params}) => {
+interface ParamsType{
+    Id:string
+}
+
+export const GET = async (request:any,{params}:{params:ParamsType}) => {
     try{
         await connectDb()
         const {Id} = params
