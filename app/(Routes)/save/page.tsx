@@ -30,9 +30,10 @@ const Page = () => {
       <h1 className='text-xl mb-2'>SavedPost Pages</h1>
       <div className='flex flex-wrap justify-center place-content-center items-start gap-5'>
         {
-          allSaved.map((saved)=>(
+          allSaved.map((saved,index)=>(
             <SavedPostCard
               saved={saved}
+              key={index}
             />
           ))
         }

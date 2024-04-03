@@ -47,7 +47,7 @@ const Page = () => {
               user={user}
             />
           ))) : (<div className='ml-[18px] md:ml-0 w-[95%] border px-5 py-5 place-content-center m-auto'>
-            You haven't Post Yet HeadOver to the 
+            You haven&apos;t Post Yet. Head over to the 
             <span      
               className='text-blue-600 underline cursor-pointer'
               onClick={() => { router.push(`/all-users`) }}

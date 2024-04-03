@@ -63,7 +63,7 @@ const Page = () => {
 
   useEffect(()=>{
     setIsMounted(true)
-  })
+  },[])
 
   useEffect(()=>{
     const fetchConversation = async () => {
