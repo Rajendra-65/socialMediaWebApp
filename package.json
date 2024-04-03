@@ -39,6 +39,8 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/lodash": "^4.17.0",
     "@types/node": "^20",
     "@types/react": "^18",

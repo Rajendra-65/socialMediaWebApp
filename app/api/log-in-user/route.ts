@@ -16,7 +16,7 @@ export const POST = async (request: any) => {
                     {
                         _id: user[0]._id,
                     }
-                    , process.env.JWT_KEY
+                    , process.env.JWT_KEY!
                 )
                 return NextResponse.json({ success: true, logIn: true, user: user[0], token: token })
             }
