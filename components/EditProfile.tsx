@@ -68,7 +68,7 @@ const EditProfile = ({user}:{user:UserEditTypes}) => {
         if(response.success){
             toast.success("profile updated successFully",{position:"top-right"})
             setLoading(false)
-            router.push('/account')
+            router.push(`/account`)
         }else{
             setLoading(false)
         }

@@ -53,7 +53,7 @@ const Page = ({ params }: { params: paramsType }) => {
     const handleArrowClick = async () => {
         try {
             await RemoveFromChat(Id)
-            router.push('/chat')
+            router.push(`/chat`)
         } catch (e) {
             console.log(e)
         }

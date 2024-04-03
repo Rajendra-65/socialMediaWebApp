@@ -51,7 +51,7 @@ const EditPost = ({post}:{post:EditPostTypes}) => {
         if (response.success) {
             toast.success("post updated successFully", { position: "top-right" })
             setLoading(false)
-            router.push('/account')
+            router.push(`/account`)
         } else {
             setLoading(false)
             toast.success("updationFailed please try again later", { position: "top-right" })

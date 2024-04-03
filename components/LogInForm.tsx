@@ -53,7 +53,7 @@ const LogInForm = () => {
             // @ts-ignore
             toast.success("log-in successFul",{position:'top-right'})
             setSubmitLoading(false)
-            router.push('/')
+            router.push(`/`)
         }else{
             toast.error("login False",{position:'top-right'})
         }

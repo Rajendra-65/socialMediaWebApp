@@ -19,7 +19,7 @@ const Navbar = () => {
         window.localStorage.removeItem('authToken')
         toast.success("User LoggedOut Successfully",{position:'top-right'})
         await setUnActive()
-        router.push('/log-in')
+        router.push(`/log-in`)
     }
 
     const NotificationHandler = () => {
@@ -56,7 +56,7 @@ const Navbar = () => {
                         width={190}
                         className='cursor-pointer'
                         alt="Logo of the snapGram"
-                        onClick={()=>{router.push('/')}}
+                        onClick={()=>{router.push(`/`)}}
                     />
                     <div className='flex gap-2 mr-3'>
                         <Image

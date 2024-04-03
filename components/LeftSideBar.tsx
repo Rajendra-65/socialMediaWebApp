@@ -78,7 +78,7 @@ const LeftSideBar = () => {
         window.localStorage.removeItem('authToken')
         toast.success("User LoggedOut Successfully", { position: 'top-right' })
         await setUnActive()
-        router.push('/log-in')
+        router.push(`/log-in`)
     }
 
     const listItemClick = async (route: string) => {
@@ -145,7 +145,7 @@ const LeftSideBar = () => {
                         className='mt-2 mb-3 cursor-pointer'
                         alt="Logo of the snapGram"
                     />
-                    <div className="flex gap-2 mb-5 cursor-pointer" onClick={() => { router.push('/edit-profile') }}>
+                    <div className="flex gap-2 mb-5 cursor-pointer" onClick={() => { router.push(`/edit-profile`) }}>
                         <Image
                             src="/assets/icons/profile-placeholder.svg"
                             width={38}
