@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Snapgram
+Snapgram is a social media web platform application that allows users to share posts, interact with other users through likes, saves, comments, and real-time notifications, and manage their profiles.
 
-## Getting Started
+Features
 
-First, run the development server:
+Post Updates: Users can create, edit, and delete posts with images and text content.
+Profile Management: Users can edit their profile information, including username, bio, and profile picture.
+Like and Save: Users can like and save posts to their profile for later viewing.
+Real-time Notifications: Users receive real-time notifications for activities such as, notificatiion , and chat messages.
+Chat Updates: Users can engage in real-time chat conversations with other users.
+Search: Users can search for other users and posts using keywords.
+Technologies Used
+Snapgram utilizes the following technologies and packages:
 
-```bash
+Frontend:
+
+React.js
+Next.js
+Tailwind CSS
+React Toastify for handling success and error messages
+Tailwind Merge for tailwindcss utilities
+Tailwind CSS Animate for animations
+Next Themes for theme management
+Axios for making HTTP requests
+Lucide React for iconography
+React Hook Form for form handling and validation
+Use Debounce for debouncing input events
+Backend:
+
+MongoDB with Mongoose for data storage
+JWT (JSON Web Tokens) for user authentication and authorization
+bcryptjs for password hashing
+Pusher for real-time chat updates
+AWS4 for AWS API authentication
+Class Variance Authority for class variance management
+Date-fns for date manipulation
+JSON Web Token decoding library for decoding JWT tokens
+Other:
+
+Cloudinary for image storage and manipulation
+Installation
+Clone the repository:
+
+bash
+Copy code
+git clone https://github.com/your-username/snapgram.git
+Install dependencies:
+
+bash
+Copy code
+cd snapgram
+npm install
+Configure environment variables:
+
+Create a .env file in the root directory and add the following variables:
+
+env
+Copy code
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+CLOUDINARY_URL=your_cloudinary_url
+PUSHER_APP_ID=your_pusher_app_id
+PUSHER_KEY=your_pusher_key
+PUSHER_SECRET=your_pusher_secret
+PUSHER_CLUSTER=your_pusher_cluster
+Start the development server:
+
+bash
+Copy code
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
