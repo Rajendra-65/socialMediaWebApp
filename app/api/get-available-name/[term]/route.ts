@@ -17,12 +17,11 @@ export const GET = async (request: any, { params }: { params: paramsType }) => {
                     text: {
                         query: term,
                         path: "userName",
-                        fuzzy: { maxEdits: 2, prefixLength: 2 },
                     },
                 },
             },
         ]);
-        if(matchedUser){
+        if(matchedUser.length){
             return NextResponse.json({ user: matchedUser, success: true,available:false });
         }else{
             return NextResponse.json({success:true,available:true})

@@ -125,3 +125,12 @@ export const setUnActive = async () => {
         console.log(e)
     }
 }
+
+export const getAvailableName = async (term:string) => {
+    try{
+        const response = await axios.get(`/api/get-available-name/${term}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
