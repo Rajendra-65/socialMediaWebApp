@@ -43,7 +43,7 @@ Clone the repository:
 
 bash
 Copy code
-git clone https://github.com/your-username/snapgram.git
+git clone https://github.com/Rajendra-65/socialMediaWebApp.git
 Install dependencies:
 
 bash
