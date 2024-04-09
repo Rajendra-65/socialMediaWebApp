@@ -81,7 +81,7 @@ const PostCard = ({
 
     return (
         <div className='flex justify-center place-content-center align-middle'>
-            <div className='h-[490px] w-[450px] border rounded-md bg-zinc-950'>
+            <div className='h-[400px] w-[340px] sm:h-[490px] sm:w-[450px] border rounded-md bg-zinc-950'>
                 <div className='px-3 py-3 flex flex-col'>
                     <div className='flex'>
                         <Image
