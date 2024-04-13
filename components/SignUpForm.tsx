@@ -202,7 +202,7 @@ const SignUpForm = () => {
                         {submitLoading ? (
                             <Loader2 className="h-4 w-4 animate-spin text-center m-auto" />
                         ) : (
-                            <Button type="submit" disabled={!isUserNameAvailable}>Submit</Button>
+                            <Button type="submit" disabled={isUserNameAvailable}>Submit</Button>
                         )}
                         <div className="flex mt-3">
                             <h1>Already have an account ? </h1>
