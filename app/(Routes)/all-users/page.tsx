@@ -42,7 +42,7 @@ const Page = () => {
       }
     }
     fetchAllUser()
-  }, [])
+  }, [mounted])
 
   useEffect(()=>{
     setIsMounted(true)
