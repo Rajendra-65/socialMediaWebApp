@@ -137,7 +137,7 @@ const LeftSideBar = () => {
     return (
         <>
             {
-                user ? (<div className={`hidden md:block flex flex-col mb-2 bg-zinc-950 left-0 fixed top-0 w-[285px] h-full px-3 ${pathName === "/sign-up" || pathName === "/log-in" ? 'md:hidden' : 'md:block'}`}>
+                user ? (<div className={`hidden md:block flex flex-col mb-2 bg-zinc-950 left-0 fixed top-0 w-[285px] h-full px-3 ${pathName === "/sign-up" || pathName === "/log-in" || pathName==="/change-password" ? 'md:hidden' : 'md:block'}`}>
                     <Image
                         src="/assets/images/logo.svg"
                         width={200}
