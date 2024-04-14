@@ -184,6 +184,7 @@ const Page = ({ params }: { params: paramsType }) => {
                                     width={50}
                                     height={50}
                                     alt="ProfilePlaceholder"
+                                    className="cursor-pointer"
                                 />
                                 <div>
                                     <h1 className="font-bold">{chatUser.userName}</h1>
@@ -206,8 +207,8 @@ const Page = ({ params }: { params: paramsType }) => {
                             </div>
                         </div>
                         <div className="flex gap-2 mt-[11px]">
-                            <Phone className="w-8 h-8 text-white" onClick={()=>{alert('we will activate this phone call soon')}}/>
-                            <Video className="w-8 h-8 text-white"  onClick={()=>{alert('we will activate this video call soon')}}/>
+                            <Phone className="w-8 h-8 text-white cursor-pointer" onClick={()=>{alert('we will activate this phone call soon')}}/>
+                            <Video className="w-8 h-8 text-white cursor-pointer"  onClick={()=>{alert('we will activate this video call soon')}}/>
                         </div>
                     </div>
                     <div className="w-full border mb-[66px] h-[56vh] md:h-[76vh] overflow-y-auto " ref={chatContainerRef}>
@@ -255,9 +256,9 @@ const Page = ({ params }: { params: paramsType }) => {
                                         </div>)) : null
                                 }
                             </>
-                            <div className={`flex border px-2 py-2 rounded-md absolute mb-[89px] md:mb-[20px] bottom-0 justify-between bg-zinc-950`} style={{ width: '-webkit-fill-available', marginRight: '20px' }}>
+                            <div className={`flex border px-2 py-2 rounded-md absolute mb-[65px] md:mb-[16px] lg:mb-[20px] bottom-0 justify-between bg-zinc-950`} style={{ width: '-webkit-fill-available', marginRight: '41px' }}>
                                 <div className="flex w-fit gap-[8px]">
-                                    <Camera className="w-8 h-8 text-white" />
+                                    <Camera className="w-8 h-8 text-white cursor-pointer" />
                                     <input
                                         className="rounded-md w-[60vw] md:w-[50vw]"
                                         placeholder="Message..."
@@ -267,7 +268,7 @@ const Page = ({ params }: { params: paramsType }) => {
                                 </div>
                                 <div>
                                     <SendHorizonal
-                                        className="w-8 h-8 text-blue-700"
+                                        className="w-8 h-8 text-blue-700 cursor-pointer"
                                         onClick={() => {
                                             sendClick();
                                         }}

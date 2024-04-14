@@ -20,7 +20,7 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="dark"
         >
-            <div className=' px-5 py-5'>
+            <div className=' px-5 '>
                 {children}
             </div>
         </ThemeProvider>

@@ -49,7 +49,7 @@ const Navbar = () => {
     return (
         <>
             {user ? (
-                <div className={`top-0 fixed h-[66px] flex justify-between md:hidden w-full bg-zinc-950 ${pathName === "/sign-up" || pathName === "/log-in" ? 'hidden' : ''}`}>
+                <div className={`top-0 fixed h-[66px] flex justify-between md:hidden w-full bg-zinc-950 bg-no-repeat ${pathName === "/sign-up" || pathName === "/log-in" ? 'hidden' : ''}`}>
                     <Image
                         src="/assets/images/logo.svg"
                         height={190}

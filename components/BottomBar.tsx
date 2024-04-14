@@ -109,7 +109,7 @@ const BottomBar = () => {
     }, [user])
 
     return (
-        <div className={`md:hidden bottom-0 fixed bg-zinc-950 w-full h-[66px] ${pathName === "/sign-up" || pathName === "/log-in" ? 'hidden':'null'}`}>
+        <div className={`md:hidden bottom-0 fixed bg-zinc-950 w-full h-[66px] bg-no-repeat ${pathName === "/sign-up" || pathName === "/log-in" ? 'hidden':'null'}`}>
             <ul className="flex justify-between px-3 py-3 ">
                 {bottombarLinks.map((item, index) => (
                     <li
