@@ -106,7 +106,7 @@ const AccountPostCard = ({
                                     src="/assets/icons/edit.svg"
                                     width={28}
                                     height={28}
-                                    className="mr-2 mt-2"
+                                    className="mr-2 mt-2 cursor-pointer"
                                     alt="Edit Post Image"
                                     onClick= {()=>{
                                         handleEditClick(post._id)
@@ -139,6 +139,7 @@ const AccountPostCard = ({
                                             onClick={() => {
                                                 handleLike(post._id);
                                             }}
+                                            className="cursor-pointer"
                                         />
                                     ) : (
                                         <Image
@@ -149,6 +150,7 @@ const AccountPostCard = ({
                                             onClick={() => {
                                                 handleUnLike(post._id);
                                             }}
+                                            className="cursor-pointer"
                                         />
                                     )
                                 ) : (
@@ -160,6 +162,7 @@ const AccountPostCard = ({
                                         onClick={() => {
                                             handleUnLike(post._id);
                                         }}
+                                        className="cursor-pointer"
                                     />) : (
                                         <Image
                                             src="/assets/icons/like.svg"
@@ -169,6 +172,7 @@ const AccountPostCard = ({
                                             onClick={() => {
                                                 handleLike(post._id);
                                             }}
+                                            className="cursor-pointer"
                                         />
                                     )
                                 )}
@@ -183,11 +187,12 @@ const AccountPostCard = ({
                                             src={"/assets/icons/saved.svg"}
                                             width={28}
                                             height={28}
-                                            className="mr-3"
+                                            className="mr-3 cursor-pointer"
                                             alt="Save Image"
                                             onClick={() => {
                                                 handleSave(post._id);
                                             }}
+                                                 
                                         />) : (
                                             saveLoading ? (
                                                 <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin"/>
@@ -195,7 +200,7 @@ const AccountPostCard = ({
                                                 src={"/assets/icons/save.svg"}
                                                 width={28}
                                                 height={28}
-                                                className="mr-3"
+                                                className="mr-3 cursor-pointer"
                                                 alt="Save Image"
                                                 onClick={() => {
                                                     handleSave(post._id);
@@ -209,7 +214,7 @@ const AccountPostCard = ({
                                             src={"/assets/icons/saved.svg"}
                                             width={28}
                                             height={28}
-                                            className="mr-3"
+                                            className="mr-3 cursor-pointer"
                                             alt="Save Image"
                                             onClick={() => {
                                                 handleSave(post._id);
@@ -221,7 +226,7 @@ const AccountPostCard = ({
                                                 src={"/assets/icons/save.svg"}
                                                 width={28}
                                                 height={28}
-                                                className="mr-3"
+                                                className="mr-3 cursor-pointer"
                                                 alt="Save Image"
                                                 onClick={() => {
                                                     handleSave(post._id);
