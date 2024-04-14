@@ -41,11 +41,11 @@ const PostFeed = () => {
         fetchFeedPost()
     }, [])
     return (
-        <div className="mt-[80px] md:mt-5 md:ml-[300px] flex flex-col gap-6">
+        <div className="mt-5 flex flex-col gap-6">
             {fetched ? (
                 !isFollowing ? (
                     <div className="ml-[18px] md:ml-0 w-[95%] border px-5 py-5 place-content-center">
-                        You haven't followed anyone yet. Go to the{" "}
+                        You have not followed anyone yet. Go to the{" "}
                         <span
                             className="text-blue-600 underline cursor-pointer"
                             onClick={() => {
