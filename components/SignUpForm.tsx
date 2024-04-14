@@ -20,8 +20,9 @@ import bcrypt from "bcryptjs";
 import { usePathname } from "next/navigation";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { EyeIcon, Loader2 } from "lucide-react";
 import { useDebouncedCallback } from "use-debounce";
+import { EyeOffIcon } from "lucide-react";
 import { getSearchUser } from "@/service/user/userServiece";
 
 const SignUpForm = () => {
@@ -29,6 +30,8 @@ const SignUpForm = () => {
     const [mounted, setIsMounted] = useState(false);
     const [isUserNameAvailable, setIsUserNameAvailable] = useState(false);
     const [search, setSearch] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
+
     const pathName = usePathname();
     const router = useRouter();
 
@@ -79,6 +82,10 @@ const SignUpForm = () => {
         },
     });
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setSubmitLoading(true);
         const hashedPassword = await bcrypt.hash(values.password, 10);
@@ -95,7 +102,7 @@ const SignUpForm = () => {
     }
 
     const handleSearch = useDebouncedCallback(async (term) => {
-        
+
         if (!term.length) {
             setSearch(false)
             setIsUserNameAvailable(false)
@@ -192,7 +199,20 @@ const SignUpForm = () => {
                             <FormItem>
                                 <FormLabel>password</FormLabel>
                                 <FormControl>
-                                    <Input {...field} type="password" />
+                                    <div className="flex relative">
+                                        <Input {...field} type={showPassword ? "text" : "password"} />
+                                        <button
+                                            type="button"
+                                            onClick={togglePasswordVisibility}
+                                            className="focus:outline-none absolute right-4 top-1/2 transform -translate-y-1/2"
+                                        >
+                                            {showPassword ? (
+                                                <EyeIcon className="h-5 w-5 text-gray-400" />
+                                            ) : (
+                                                <EyeOffIcon className="h-5 w-5 text-gray-400" />
+                                            )}
+                                        </button>
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -202,7 +222,7 @@ const SignUpForm = () => {
                         {submitLoading ? (
                             <Loader2 className="h-4 w-4 animate-spin text-center m-auto" />
                         ) : (
-                            <Button type="submit" disabled={isUserNameAvailable}>Submit</Button>
+                            <Button type="submit" disabled={!isUserNameAvailable}>Submit</Button>
                         )}
                         <div className="flex mt-3">
                             <h1>Already have an account ? </h1>

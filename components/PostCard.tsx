@@ -81,7 +81,7 @@ const PostCard = ({
 
     return (
         <div className='flex justify-center place-content-center align-middle'>
-            <div className='h-[400px] w-[340px] sm:h-[490px] sm:w-[450px] border rounded-md bg-zinc-950'>
+            <div className='h-[475px] sm:h-[490px] sm:w-[450px] border rounded-md bg-zinc-950'>
                 <div className='px-3 py-3 flex flex-col'>
                     <div className='flex'>
                         <Image
@@ -89,6 +89,7 @@ const PostCard = ({
                             width={45}
                             height={45}
                             alt="profileImage of the User"
+                            style={{borderRadius:"50%"}}
                         />
                         <div className='flex flex-col gap-1'>
                             <h1 className='text-base'>{user.userName}</h1>

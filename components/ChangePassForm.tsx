@@ -1,9 +1,10 @@
 "use client"
-import React, { useState,useEffect } from 'react'
+import React, { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
+import bcrypt from "bcryptjs"
 import {
     Form,
     FormControl,
@@ -13,51 +14,49 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import Link from "next/link"
-import { logInUser } from '@/service/user/userServiece'
-import { EyeIcon, Loader2 } from 'lucide-react'
-import { jwtDecode } from 'jwt-decode'
+import { changePassword } from '@/service/user/userServiece'
+import { Loader2 } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
-import { EyeOffIcon } from 'lucide-react'
+import { EyeIcon,EyeOffIcon } from 'lucide-react'
 
-const LogInForm = () => {
-    const [submitLoading,setSubmitLoading] = useState(false)
+const ChangePassForm = () => {
+
+    const [submitLoading, setSubmitLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter()
+
     const formSchema = z.object({
         email: z.string(),
-        password: z.string().min(8, {
+        NewPassword: z.string().min(8, {
             message: "Password must be of 8 characters"
         }).max(15, {
             message: "Password must be under 15 characters"
         })
     })
 
-
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
-            password: "",
+            NewPassword: "",
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setSubmitLoading(true)
-        const response = await logInUser(values)
-        const user = response.user
-        if(response.logIn){
-            const token = response.token
-            window.localStorage.setItem('authToken',token)
-            const decodedToken = jwtDecode(token)
+        const hashedPassword = await bcrypt.hash(values.NewPassword, 10)
+        values.NewPassword = hashedPassword
+        const response = await changePassword(values)
+        if (response.user) {
+
             // @ts-ignore
-            toast.success("log-in successFul",{position:'top-right'})
+            toast.success("password Changed", { position: 'top-right' })
             setSubmitLoading(false)
-            router.push(`/`)
-        }else{
+            router.push(`/log-in`)
+        } else {
             setSubmitLoading(false)
-            toast.error("login False",{position:'top-right'})
+            toast.error("Fail to change try again", { position: 'top-right' })
         }
     }
 
@@ -84,10 +83,10 @@ const LogInForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="password"
+                        name="NewPassword"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>password</FormLabel>
+                                <FormLabel>New Password</FormLabel>
                                 <FormControl>
                                     <div className="flex relative">
                                         <Input {...field} type={showPassword ? "text" : "password"} />
@@ -108,15 +107,8 @@ const LogInForm = () => {
                             </FormItem>
                         )}
                     />
-                    <div className='flex justify-center'>
-                        <h1 className='text-blue-600 cursor-pointer text-center' onClick={()=>{router.push('/change-password')}}>Forgot Password ?</h1>
-                    </div>
                     <div className="flex justify-center flex-col">
-                    {submitLoading ? (<Loader2 className="h-4 w-4 animate-spin text-center m-auto"/>) : (<Button type="submit">Submit</Button>)}
-                        <div className="flex mt-3">
-                            <h1>New to snapGram ? </h1>
-                            <Link href="/sign-up" className='text-blue-600 ml-1'> sign-up </Link>
-                        </div>
+                        {submitLoading ? (<Loader2 className="h-4 w-4 animate-spin text-center m-auto" />) : (<Button type="submit">Submit</Button>)}
                     </div>
                 </form>
             </Form>
@@ -124,4 +116,4 @@ const LogInForm = () => {
     )
 }
 
-export default LogInForm
+export default ChangePassForm

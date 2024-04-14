@@ -16,6 +16,11 @@ interface receivedLoggedInValues{
     password:string
 }
 
+interface changePasswordValues {
+    email:string,
+    NewPassword:string
+}
+
 export const createUser = async (values:receivedValues) =>{
         try {
             const response = await axios.post('/api/create-user', JSON.stringify(values), {
@@ -129,6 +134,15 @@ export const setUnActive = async () => {
 export const getAvailableName = async (term:string) => {
     try{
         const response = await axios.get(`/api/get-available-name/${term}`)
+        return response.data
+    }catch(e){
+        console.log(e)
+    }
+}
+
+export const changePassword = async (values:changePasswordValues) => {
+    try{
+        const response = await axios.put('/api/change-password',JSON.stringify(values))
         return response.data
     }catch(e){
         console.log(e)

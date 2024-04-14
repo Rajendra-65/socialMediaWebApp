@@ -41,7 +41,7 @@ const PostFeed = () => {
         fetchFeedPost()
     }, [])
     return (
-        <div className="mt-5 flex flex-col gap-6">
+        <div className=" flex flex-col gap-6">
             {fetched ? (
                 !isFollowing ? (
                     <div className="ml-[18px] md:ml-0 w-[95%] border px-5 py-5 place-content-center">

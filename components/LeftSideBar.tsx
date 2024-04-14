@@ -147,9 +147,10 @@ const LeftSideBar = () => {
                     />
                     <div className="flex gap-2 mb-5 cursor-pointer" onClick={() => { router.push(`/edit-profile`) }}>
                         <Image
-                            src="/assets/icons/profile-placeholder.svg"
+                            src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
                             width={38}
                             height={38}
+                            style={{borderRadius:"50%"}}
                             className='cursor-pointer'
                             alt="Image of the user"
                         />
