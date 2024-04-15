@@ -139,6 +139,7 @@ const Page = () => {
                     src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
                     height={60}
                     width={60}
+                    style={{borderRadius:"50%"}}
                     alt="Profile Image of the User"
                   />
                   <div>
@@ -167,6 +168,7 @@ const Page = () => {
                   src={users[index].profileImage || "/assets/icons/profile-placeholder.svg"}
                   height={60}
                   width={60}
+                  style={{borderRadius:"50%"}}
                   alt="Profile Image of the User"
                 />
                 <div className="flex gap-2">
