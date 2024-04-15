@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Log-in | SnapGram",
+    title: "Change-password | SnapGram",
     description: "team-snapGram",
 };
 
