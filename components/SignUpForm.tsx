@@ -97,6 +97,8 @@ const SignUpForm = () => {
             router.push("/log-in");
             form.reset();
         } else {
+            form.reset();
+            setSubmitLoading(false);
             toast.error("userCreation Failed", { position: "top-right" });
         }
     }
