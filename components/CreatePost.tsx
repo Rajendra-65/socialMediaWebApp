@@ -63,7 +63,7 @@ const CreatePost = () => {
     })
 
     return (
-        <div className="flex flex-col gap-3 w-[450px]">
+        <div className="flex flex-col gap-3 sm:w-[450px] w-full mx-5">
             <div className="flex gap-2">
                 <h1 className="text-xl">Add Image:</h1>
                 <CldUploadButton
