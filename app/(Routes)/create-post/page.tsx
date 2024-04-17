@@ -3,11 +3,20 @@ import CreatePost from "@/components/CreatePost";
 import Image from "next/image";
 import React,{useEffect, useState} from "react";
 import isAuth from "@/components/isAuth";
+import useUserActivity from "@/app/hooks/useUserActivity";
+import { setUnActive } from "@/service/user/userServiece";
 const Page = () => {
   const [mounted,setIsMounted] = useState(false)
+  const isActive = useUserActivity()
   useEffect(()=>{
     setIsMounted(true)
   },[])
+  useEffect(() => {
+    if (!isActive) {
+      // User is inactive, call setUnActivity function
+      setUnActive()
+    }
+  }, [isActive]); 
   return (
     <div className="flex m-auto place-content-center justify-center align-middle">
       <div className="flex flex-col place-content-center justify-center align-middle">

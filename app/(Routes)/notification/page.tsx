@@ -9,7 +9,8 @@ import PageLoader from '@/components/PageLoader'
 import { usePathname, useRouter } from 'next/navigation'
 import { makeFollow } from '@/service/user/userServiece'
 import isAuth from '@/components/isAuth'
-
+import useUserActivity from '@/app/hooks/useUserActivity'
+import { setUnActive } from '@/service/user/userServiece'
 const Page = () => {
 
     const [fetched, setFetched] = useState(false)
@@ -21,10 +22,18 @@ const Page = () => {
     const [mounted,setIsMounted] = useState(false)
     const pathName = usePathname()
     const router = useRouter();
+    const isActive = useUserActivity()
 
     useEffect(()=>{
         setIsMounted(true)
     },[])
+
+    useEffect(() => {
+        if (!isActive) {
+          // User is inactive, call setUnActivity function
+          setUnActive()
+        }
+      }, [isActive]); 
 
     useEffect(() => {
         const getUserNotification = async () => {

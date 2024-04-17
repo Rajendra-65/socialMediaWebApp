@@ -9,14 +9,21 @@ import PageLoader from "@/components/PageLoader";
 import FetchFailed from "@/components/FetchFailed";
 import isAuth from "@/components/isAuth";
 import { useRouter } from "next/navigation";
-
+import useUserActivity from "@/app/hooks/useUserActivity";
+import { setUnActive } from "@/service/user/userServiece";
 const Page = () => {
   const [mounted, setIsMounted] = useState<boolean>(false);
   const [user, setUser] = useState<UserTypes | null>();
   const [posts, setPosts] = useState<PostTypes[]>();
   const [fetched, setFetched] = useState<boolean>(false);
   const router = useRouter()
-  
+  const isActive = useUserActivity()
+  useEffect(() => {
+    if (!isActive) {
+      // User is inactive, call setUnActivity function
+      setUnActive()
+    }
+  }, [isActive]); 
   useEffect(() => {
     setIsMounted(true);
   }, []);

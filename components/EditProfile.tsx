@@ -20,11 +20,15 @@ import { updateUser } from "@/service/user/userServiece";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
+import { useDebouncedCallback } from "use-debounce";
+import { getAvailableName } from "@/service/user/userServiece";
 
 const EditProfile = ({user}:{user:UserEditTypes}) => {
     
     const [imageUrl,setImageUrl] = useState<string>()
     const [loading,setLoading] = useState<boolean>(false)
+    const [isUserNameAvailable, setIsUserNameAvailable] = useState(false);
+    const [search, setSearch] = useState(false)
     const router = useRouter()
     const formSchema = z.object({
         firstName: z.string().min(2, {
@@ -73,6 +77,24 @@ const EditProfile = ({user}:{user:UserEditTypes}) => {
             setLoading(false)
         }
     }
+
+    const handleSearch = useDebouncedCallback(async (term) => {
+
+        if (!term.length) {
+            setSearch(false)
+            setIsUserNameAvailable(false)
+        }
+
+        if (term.length) {
+            const response = await getAvailableName(term)
+            if (response.available) {
+                setIsUserNameAvailable(true)
+                setSearch(true)
+            } else {
+                setIsUserNameAvailable(false)
+            }
+        }
+    }, 200);
 
     return <div className="w-full border bg-zinc-950 overflow-y-auto rounded-md px-5 py-5 flex flex-col gap-3">
         <Form {...form}>
@@ -126,9 +148,23 @@ const EditProfile = ({user}:{user:UserEditTypes}) => {
                             <FormItem>
                                 <FormLabel>userName</FormLabel>
                                 <FormControl>
-                                    <Input {...field} value={field.value} onChange={(e) => field.onChange(e.target.value)} />
+                                    <Input {...field}
+                                        value={field.value} 
+                                        onChange={(e) => {
+                                            field.onChange(e.target.value);
+                                            handleSearch(e.target.value);
+                                        }}
+                                    />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage
+                                    className={
+                                        isUserNameAvailable ? "text-green-500" : "text-red-500"
+                                    }
+                                >
+                                    {search ? (isUserNameAvailable
+                                        ? "Username is available"
+                                        : "Username is not available") : null}
+                                </FormMessage>
                             </FormItem>
                         )}
                     />                   

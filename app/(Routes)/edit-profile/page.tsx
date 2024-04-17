@@ -7,10 +7,18 @@ import EditProfile from '@/components/EditProfile'
 import { UserEditTypes } from '@/types/user'
 import PageLoader from '@/components/PageLoader'
 import isAuth from '@/components/isAuth'
-
+import useUserActivity from '@/app/hooks/useUserActivity'
+import { setUnActive } from '@/service/user/userServiece'
 const Page = () => {
     const [user, setUser] = useState<UserEditTypes>()
     const [mounted,setIsMounted] = useState(false)
+    const isActive = useUserActivity()
+    useEffect(() => {
+        if (!isActive) {
+          // User is inactive, call setUnActivity function
+          setUnActive()
+        }
+      }, [isActive]); 
     useEffect(() => {
         const fetchUser = async () => {
             try {

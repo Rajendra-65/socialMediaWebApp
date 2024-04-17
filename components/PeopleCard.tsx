@@ -15,7 +15,6 @@ const PeopleCard = ({
   currentUser: UserTypes;
 }) => {
   const [currentFollow, setCurrentFollow] = useState<boolean>(false);
-
   const handleFollow = async (followingId: any) => {
     try {
       setCurrentFollow(!currentFollow);
@@ -36,6 +35,7 @@ const PeopleCard = ({
             src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
             height={42}
             width={42}
+            style={{borderRadius:"50%"}}
             alt="ProfileImage of the User"
           />
           <h1 className="mt-2">@{user.userName}</h1>

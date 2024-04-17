@@ -10,7 +10,6 @@ interface ParamsType{
 
 export const PUT = async (request:any,{params}:{params:ParamsType}) => {
     try{
-        await connectDb()
         const {Id} = params
         const objectId = new mongoose.Types.ObjectId(Id)
         const user  = await User.findById(objectId)
@@ -18,7 +17,7 @@ export const PUT = async (request:any,{params}:{params:ParamsType}) => {
         user.lastActiveTime = new Date()
         user.save()
         await pusherServer.trigger(Id,'active:status',user.lastActiveTime)
-        return NextResponse.json({success:true,active:user.active})
+        return null
     }catch(e){
         console.log(e)
         return NextResponse.json({success:false})

@@ -124,8 +124,7 @@ export const setActive = async () => {
 export const setUnActive = async () => {
     try{
         const userId = await getUserId()
-        const response = await axios.put(`/api/set-un-active/${userId}`)
-        return response.data
+        await axios.put(`/api/set-un-active/${userId}`)
     }catch(e){
         console.log(e)
     }

@@ -10,9 +10,9 @@ import { likePost } from '@/service/post/postService'
 import { Loader2 } from 'lucide-react'
 
 interface PostUserTypes {
-    _id:string,
-    userName:string;
-    profileImage:string;
+    _id: string,
+    userName: string;
+    profileImage: string;
 }
 
 const PostCard = ({
@@ -22,7 +22,7 @@ const PostCard = ({
 }: {
     post: PostTypes;
     user: PostUserTypes;
-    currentUser:UserTypes;
+    currentUser: UserTypes;
 }) => {
 
     const [mounted, setIsMounted] = useState<boolean>(false)
@@ -81,7 +81,7 @@ const PostCard = ({
 
     return (
         <div className='flex justify-center place-content-center align-middle'>
-            <div className='h-[475px] sm:h-[490px] sm:w-[450px] border rounded-md bg-zinc-950'>
+            <div className='h-[480px] w-[450px] border rounded-md bg-zinc-950'>
                 <div className='px-3 py-3 flex flex-col'>
                     <div className='flex'>
                         <Image
@@ -89,12 +89,12 @@ const PostCard = ({
                             width={45}
                             height={45}
                             alt="profileImage of the User"
-                            style={{borderRadius:"50%"}}
+                            style={{ borderRadius: "50%" }}
                         />
                         <div className='flex flex-col gap-1'>
                             <h1 className='text-base'>{user.userName}</h1>
                             <div className='flex gap-1'>
-                                <h1 className='text-sm'>{formatDistanceToNow(post.createdAt,{addSuffix:true})}</h1>
+                                <h1 className='text-sm'>{formatDistanceToNow(post.createdAt, { addSuffix: true })}</h1>
                                 <h1 className='text-sm'>. {post.location}</h1>
                             </div>
                         </div>
@@ -105,14 +105,21 @@ const PostCard = ({
                     </div>
                     <div className='w-[440px] h-[450px]  mt-1'>
                         <Image
-                            src={post.imageUrl!}
-                            width={420}
-                            height={520}
-                            style={{ borderRadius: "10px", backgroundSize: "cover" }}
-                            alt='postImage'
+                            src={post.imageUrl as string}
+                            layout="responsive"
+                            width={612}
+                            height={612}
+                            style={{
+                                maxWidth: "95%",
+                                maxHeight: "61%",
+                                borderRadius: "10px",
+                                objectFit: "cover",
+                                marginLeft: "4px"
+                            }}
+                            alt="postImage"
                         />
                         <div className='flex justify-between mt-2 mr-1 px-1'>
-                        <div className="flex ">
+                            <div className="flex ">
                                 {
                                     post.likedBy?.includes(currentUser._id) ? (
                                         currentLike ? (
@@ -164,7 +171,7 @@ const PostCard = ({
                                 {
                                     currentUser.savedPosts.includes(post._id) ? (
                                         currentSave ? saveLoading ? (
-                                            <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin"/>
+                                            <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin" />
                                         ) : (<Image
                                             src={"/assets/icons/saved.svg"}
                                             width={28}
@@ -176,7 +183,7 @@ const PostCard = ({
                                             }}
                                         />) : (
                                             saveLoading ? (
-                                                <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin"/>
+                                                <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin" />
                                             ) : (<Image
                                                 src={"/assets/icons/save.svg"}
                                                 width={28}
@@ -190,7 +197,7 @@ const PostCard = ({
                                         )
                                     ) : (
                                         currentSave ? (saveLoading ? (
-                                            <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin"/>
+                                            <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin" />
                                         ) : (<Image
                                             src={"/assets/icons/saved.svg"}
                                             width={28}
@@ -202,7 +209,7 @@ const PostCard = ({
                                             }}
                                         />)) : (
                                             saveLoading ? (
-                                                <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin"/>
+                                                <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin" />
                                             ) : (<Image
                                                 src={"/assets/icons/save.svg"}
                                                 width={28}

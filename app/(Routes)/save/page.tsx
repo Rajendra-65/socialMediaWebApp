@@ -5,10 +5,20 @@ import { UserTypes } from '@/types/user'
 import { savedTypes } from '@/types/saved'
 import { getSavedPost } from '@/service/post/postService'
 import isAuth from '@/components/isAuth'
+import useUserActivity from '@/app/hooks/useUserActivity'
+import { setUnActive } from '@/service/user/userServiece'
 
 const Page = () => {
   const [allSaved, setAllSaved] = useState<savedTypes[]>([])
   const [mounted,setIsMounted] = useState(false)
+  const isActive = useUserActivity()
+  useEffect(() => {
+    if (!isActive) {
+      // User is inactive, call setUnActivity function
+      setUnActive()
+    }
+  }, [isActive]); 
+
   useEffect(()=>{
     const fetchData = async () => {
       try{

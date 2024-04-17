@@ -26,6 +26,7 @@ const AccountPostCard = ({
     const [currentLike, setCurrentLike] = useState<boolean>(false)
     const [initial, setInitial] = useState<boolean>(true)
     const [likeCount, setLikeCount] = useState<number>(0)
+    
     const router = useRouter()
 
     useEffect(() => {
@@ -73,13 +74,13 @@ const AccountPostCard = ({
         setLikeCount(likeCount - 1)
     };
 
-    const handleEditClick = async (postId:any) => {
+    const handleEditClick = async (postId: any) => {
         router.push(`/edit-post/${postId}`)
     }
 
     return (
         <div className="flex justify-center place-content-center align-middle">
-            <div className="h-[450px] w-[450px] border rounded-md bg-zinc-950">
+            <div className="h-[480px] w-[450px] border rounded-md bg-zinc-950">
                 <div className="px-3 py-3 flex flex-col">
                     <div className="flex flex-col">
                         <div className="flex justify-between">
@@ -90,7 +91,7 @@ const AccountPostCard = ({
                                     }
                                     width={60}
                                     height={60}
-                                    style={{borderRadius:"50%"}}
+                                    style={{ borderRadius: "50%" }}
                                     alt="profileImage of the User"
                                 />
                                 <div className="flex flex-col gap-1">
@@ -108,7 +109,7 @@ const AccountPostCard = ({
                                     height={28}
                                     className="mr-2 mt-2"
                                     alt="Edit Post Image"
-                                    onClick= {()=>{
+                                    onClick={() => {
                                         handleEditClick(post._id)
                                     }}
                                 />
@@ -122,9 +123,16 @@ const AccountPostCard = ({
                     <div className="w-[440px] h-[570px]  mt-1">
                         <Image
                             src={post.imageUrl as string}
-                            width={420}
-                            height={520}
-                            style={{ borderRadius: "10px", backgroundSize: "cover" }}
+                            layout="responsive"
+                            width={612}
+                            height={612}
+                            style={{
+                                maxWidth: "95%",
+                                maxHeight: "50%",
+                                borderRadius: "10px",
+                                objectFit: "cover",
+                                marginLeft:"4px"
+                            }}
                             alt="postImage"
                         />
                         <div className="flex justify-between mt-2 mr-1 px-1">
@@ -178,7 +186,7 @@ const AccountPostCard = ({
                                 {
                                     user.savedPosts.includes(post._id) ? (
                                         currentSave ? saveLoading ? (
-                                            <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin"/>
+                                            <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin" />
                                         ) : (<Image
                                             src={"/assets/icons/saved.svg"}
                                             width={28}
@@ -190,7 +198,7 @@ const AccountPostCard = ({
                                             }}
                                         />) : (
                                             saveLoading ? (
-                                                <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin"/>
+                                                <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin" />
                                             ) : (<Image
                                                 src={"/assets/icons/save.svg"}
                                                 width={28}
@@ -204,7 +212,7 @@ const AccountPostCard = ({
                                         )
                                     ) : (
                                         currentSave ? (saveLoading ? (
-                                            <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin"/>
+                                            <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin" />
                                         ) : (<Image
                                             src={"/assets/icons/saved.svg"}
                                             width={28}
@@ -216,7 +224,7 @@ const AccountPostCard = ({
                                             }}
                                         />)) : (
                                             saveLoading ? (
-                                                <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin"/>
+                                                <Loader2 className="w-7 h-7 mr-3 mt-2 animate-spin" />
                                             ) : (<Image
                                                 src={"/assets/icons/save.svg"}
                                                 width={28}

@@ -26,6 +26,8 @@ import EditPost from "@/components/EditPost";
 import PageLoader from "@/components/PageLoader";
 import FetchFailed from "@/components/FetchFailed";
 import isAuth from "@/components/isAuth";
+import useUserActivity from "@/app/hooks/useUserActivity";
+import { setUnActive } from "@/service/user/userServiece";
 interface ParamsTypes {
     Id: string
 }
@@ -34,6 +36,7 @@ const Page = ({ params }: { params: ParamsTypes }) => {
     const [post, setPost] = useState<EditPostTypes>()
     const [fetched, setFetched] = useState<boolean>(false)
     const [mounted,setIsMounted] = useState(false)
+    const isActive = useUserActivity()
 
     useEffect(()=>{
         setIsMounted(true)
@@ -53,6 +56,12 @@ const Page = ({ params }: { params: ParamsTypes }) => {
         fetchPost()
     }, [])
 
+    useEffect(() => {
+        if (!isActive) {
+          // User is inactive, call setUnActivity function
+          setUnActive()
+        }
+      }, [isActive]); 
 
     return (
         <div className='flex items-center justify-center place-content-center align-middle mt-[80px] md:mt-[0px] mb-[80px] md:mb-0 bg-zinc-950 border rounded-md w-full'>

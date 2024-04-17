@@ -9,10 +9,11 @@ import { getLogInUser } from '@/service/user/userServiece'
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { getSearchUser } from '@/service/user/userServiece'
+import { getSearchUser,setUnActive } from '@/service/user/userServiece'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import isAuth from '@/components/isAuth'
+import useUserActivity from '@/app/hooks/useUserActivity'
 
 const Page = () => {
   const [allUsers, setAllUsers] = useState<UserTypes[]>([])
@@ -25,9 +26,15 @@ const Page = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const isActive = useUserActivity()
   const params = new URLSearchParams(searchParams);
   const termLength: string | null = params.get('query')
-
+  useEffect(() => {
+    if (!isActive) {
+      // User is inactive, call setUnActivity function
+      setUnActive()
+    }
+  }, [isActive]); 
   useEffect(() => {
     const fetchAllUser = async () => {
       try {

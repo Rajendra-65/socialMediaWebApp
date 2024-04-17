@@ -13,6 +13,8 @@ import { getUserId } from "@/service/token/tokenService";
 import { formatDistanceToNow } from 'date-fns';
 import { pusherClient } from "@/lib/pusher";
 import isAuth from "@/components/isAuth";
+import { setUnActive } from "@/service/user/userServiece";
+import useUserActivity from "@/app/hooks/useUserActivity";
 interface ConversationUsersType {
     _id:string;
     userName:string;
@@ -45,6 +47,7 @@ const Page = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter()
+  const isActive = useUserActivity()
   const { replace } = useRouter();
   const params = new URLSearchParams(searchParams);
   const termLength:string | null = params.get('query')
@@ -94,6 +97,13 @@ const Page = () => {
   }
   },[currentUserId,fetched])
 
+  useEffect(() => {
+    if (!isActive) {
+      // User is inactive, call setUnActivity function
+      setUnActive()
+    }
+  }, [isActive]); 
+
   const handleSearch = useDebouncedCallback(async (term) => {
     const params = new URLSearchParams(searchParams);
     if (term) {
@@ -139,6 +149,7 @@ const Page = () => {
                     src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
                     height={60}
                     width={60}
+                    style={{borderRadius:"50%"}}
                     alt="Profile Image of the User"
                   />
                   <div>

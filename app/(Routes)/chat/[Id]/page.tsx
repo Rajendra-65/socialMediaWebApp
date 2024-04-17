@@ -26,6 +26,8 @@ import { RemoveFromChat, pushToChat, seenConversation } from "@/service/conversa
 import { usePathname, useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import PageLoader from "@/components/PageLoader";
+import useUserActivity from "@/app/hooks/useUserActivity";
+import { setUnActive } from "@/service/user/userServiece";
 
 interface paramsType {
     Id: string;
@@ -46,6 +48,7 @@ const Page = ({ params }: { params: paramsType }) => {
     const [currentUser, setCurrentUser] = useState<UserTypes>();
     const [chatUser, setChatUser] = useState<UserTypes>()
     const router = useRouter()
+    const isActive = useUserActivity()
     const chatContainerRef = useRef<HTMLDivElement>(null)
     const pathName = usePathname()
     const { Id } = params;
@@ -58,6 +61,13 @@ const Page = ({ params }: { params: paramsType }) => {
             console.log(e)
         }
     }
+
+    useEffect(() => {
+        if (!isActive) {
+          // User is inactive, call setUnActivity function
+          setUnActive()
+        }
+      }, [isActive]); 
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
