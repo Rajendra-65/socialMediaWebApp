@@ -127,7 +127,7 @@ const AccountPostCard = ({
                             height={612}
                             style={{
                                 maxWidth: "95%",
-                                maxHeight: "50%",
+                                maxHeight: "61%",
                                 borderRadius: "10px",
                                 objectFit: "cover",
                                 marginLeft: "4px"
