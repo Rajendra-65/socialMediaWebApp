@@ -116,7 +116,7 @@ const CreatePost = () => {
                         )}
                     />
                     <div className="flex justify-center flex-col">
-                        <Button type="submit" disabled={!imageUrl.length}>Submit</Button>
+                        <Button type="submit">Submit</Button>
                     </div>
                 </form>
             </Form>

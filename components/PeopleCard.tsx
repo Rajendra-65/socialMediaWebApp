@@ -15,6 +15,7 @@ const PeopleCard = ({
   currentUser: UserTypes;
 }) => {
   const [currentFollow, setCurrentFollow] = useState<boolean>(false);
+
   const handleFollow = async (followingId: any) => {
     try {
       setCurrentFollow(!currentFollow);

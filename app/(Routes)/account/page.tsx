@@ -11,6 +11,7 @@ import isAuth from "@/components/isAuth";
 import { useRouter } from "next/navigation";
 import useUserActivity from "@/app/hooks/useUserActivity";
 import { setUnActive } from "@/service/user/userServiece";
+
 const Page = () => {
   const [mounted, setIsMounted] = useState<boolean>(false);
   const [user, setUser] = useState<UserTypes | null>();
