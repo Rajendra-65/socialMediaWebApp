@@ -104,7 +104,7 @@ const EditProfile = ({user}:{user:UserEditTypes}) => {
                             src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
                             width={60}
                             height={60}
-                            style={{borderRadius:"10px"}}
+                            style={{borderRadius:"50%"}}
                             alt="Profile Image"
                         />
                         <CldUploadButton
@@ -112,7 +112,7 @@ const EditProfile = ({user}:{user:UserEditTypes}) => {
                             onSuccess={handleUpload}
                             uploadPreset="xntzsiah"
                         >
-                            <h1 className="text-sm text-blue-700 mt-">Change ProfileImage</h1>
+                            <h1 className="text-sm text-blue-700 mt-4">Change ProfileImage</h1>
                         </CldUploadButton>
                     </div>
                     <FormField
