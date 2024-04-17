@@ -194,6 +194,7 @@ const Page = ({ params }: { params: paramsType }) => {
                                     width={50}
                                     height={50}
                                     alt="ProfilePlaceholder"
+                                    style={{borderRadius:"50%"}}
                                     className="cursor-pointer"
                                 />
                                 <div>
