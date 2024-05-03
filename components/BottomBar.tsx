@@ -117,7 +117,7 @@ const BottomBar = () => {
                         onClick={() => {
                             listItemClick(item.href);
                         }}
-                        className={`${pathName === item.href ? 'bg-purple-600 cursor-pointer':'null'}`}
+                        className={`${pathName === item.href ? 'bg-purple-600 cursor-pointer':'null'} hover:scale-105 transition-transform`}
                     >
                         <div className="flex flex-col gap-1 place-content-center align-middle">
                             <div className="flex place-content-center align-middle">

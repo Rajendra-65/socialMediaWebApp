@@ -17,7 +17,7 @@ export const PUT = async (request:any,{params}:{params:ParamsType}) => {
         user.lastActiveTime = new Date()
         user.save()
         await pusherServer.trigger(Id,'active:status',user.lastActiveTime)
-        return null
+        return NextResponse.json({success:true})
     }catch(e){
         console.log(e)
         return NextResponse.json({success:false})

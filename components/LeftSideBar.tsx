@@ -18,6 +18,13 @@ import { UserTypes } from '@/types/user';
 import { MessageCircleMore } from 'lucide-react';
 import { pusherClient } from '@/lib/pusher';
 import { haveChat } from '@/service/chat/chatServices';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 
 const leftSideBarLinks = [
     {
@@ -72,8 +79,8 @@ const LeftSideBar = () => {
     const [realTimeNotification, setRealTimeNotification] = useState<boolean>(false)
     const [messages, setMessages] = useState<boolean>(false)
     const [indicator, setIndicator] = useState<boolean>(true)
-    const [mounted,setIsMounted] = useState(false)
-    useEffect(()=>{setIsMounted(true)},[])
+    const [mounted, setIsMounted] = useState(false)
+    useEffect(() => { setIsMounted(true) }, [])
     const handleLogOut = async () => {
         window.localStorage.removeItem('authToken')
         toast.success("User LoggedOut Successfully", { position: 'top-right' })
@@ -92,8 +99,8 @@ const LeftSideBar = () => {
         setRealTimeNotification(true)
     }
 
-    const LiveConversationUpdate = async (data:string) => {
-        if(data === user?._id.toString()){
+    const LiveConversationUpdate = async (data: string) => {
+        if (data === user?._id.toString()) {
             setMessages(true)
         }
     }
@@ -123,7 +130,7 @@ const LeftSideBar = () => {
         const userId: string = `${user?._id}`
         pusherClient.subscribe(userId)
         pusherClient.bind('notification:new', NotificationHandler)
-        pusherClient.bind('chat:update',LiveConversationUpdate)
+        pusherClient.bind('chat:update', LiveConversationUpdate)
 
         return () => {
             if (userId) {
@@ -137,7 +144,7 @@ const LeftSideBar = () => {
     return (
         <>
             {
-                user ? (<div className={`hidden md:block flex flex-col mb-2 bg-zinc-950 left-0 fixed top-0 w-[285px] h-full px-3 ${pathName === "/sign-up" || pathName === "/log-in" || pathName==="/change-password" ? 'md:hidden' : 'md:block'}`}>
+                user ? (<div className={`hidden md:block flex flex-col mb-2 bg-zinc-950 left-0 fixed top-0 w-[285px] h-full px-3 ${pathName === "/sign-up" || pathName === "/log-in" || pathName === "/change-password" ? 'md:hidden' : 'md:block'}`}>
                     <Image
                         src="/assets/images/logo.svg"
                         width={200}
@@ -145,20 +152,30 @@ const LeftSideBar = () => {
                         className='mt-2 mb-3 cursor-pointer'
                         alt="Logo of the snapGram"
                     />
-                    <div className="flex gap-2 mb-5 cursor-pointer" onClick={() => { router.push(`/edit-profile`) }}>
-                        <Image
-                            src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
-                            width={38}
-                            height={38}
-                            style={{borderRadius:"50%"}}
-                            className='cursor-pointer'
-                            alt="Image of the user"
-                        />
-                        <div className=" flex flex-col">
-                            <h1 className="text-base mb-1">@{user.userName}</h1>
-                            <h1 className="text-xs">@{user.userName}</h1>
-                        </div>
-                    </div>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="flex gap-2 mb-5 cursor-pointer" onClick={() => { router.push(`/edit-profile`) }}>
+                                    <Image
+                                        src={user.profileImage || "/assets/icons/profile-placeholder.svg"}
+                                        width={38}
+                                        height={38}
+                                        style={{ borderRadius: "50%" }}
+                                        className='cursor-pointer'
+                                        alt="Image of the user"
+                                    />
+                                    <div className=" flex flex-col">
+                                        <h1 className="text-base mb-1">@{user.userName}</h1>
+                                        <h1 className="text-xs">@{user.userName}</h1>
+                                    </div>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" align="start">
+                                <p className='p-1'>Edit-profile</p>
+                                <p className='p-1'>@{user.userName}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                     <ul className='flex flex-col gap-8 ml-2'>
                         {
                             leftSideBarLinks.map((item, index) => (
@@ -169,16 +186,16 @@ const LeftSideBar = () => {
                                     }}
                                     className={`cursor-pointer ${pathName === item.href ? 'bg-purple-600 border  rounded-md' : 'null'}`}
                                 >
-                                    <div className="flex gap-4 h-8 mt-1">
+                                    <div className="flex gap-4 h-8 mt-1 hover:scale-105 transition-transform">
                                         <item.icon className={`w-6 h-6 ${item.color}`} />
-                                        {item.label === 'Chat' ? (messages && indicator ? (pathName.startsWith('/chat/') ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]" />):null) : null) : null}
+                                        {item.label === 'Chat' ? (messages && indicator ? (pathName.startsWith('/chat/') ? (<div className="h-2 w-2 rounded-full bg-emerald-600 mt-[10px] ml-[-24px]" />) : null) : null) : null}
                                         {item.label}
                                     </div>
                                 </li>
                             ))
                         }
                     </ul>
-                    <div className="fixed bottom-12 flex gap-2 ml-2 cursor-pointer" onClick={() => { handleLogOut() }}>
+                    <div className="fixed bottom-12 flex gap-2 ml-2 cursor-pointer hover:scale-105 transition-transform" onClick={() => { handleLogOut() }}>
                         <Image
                             src="/assets/icons/logout.svg"
                             width={22}
@@ -188,7 +205,7 @@ const LeftSideBar = () => {
                         <h1 className="ml-[10px]">Logout</h1>
                     </div>
                     <div
-                        className='fixed bottom-2 flex gap-2 ml-2 cursor-pointer'
+                        className='fixed bottom-2 flex gap-2 ml-2 cursor-pointer hover:scale-105 transition-transform'
                         onClick={() => { router.push(`/notification`) }}
                     >
                         <MessageCircleMore className='text-purple-600 h-[30px] w-[30px]' />

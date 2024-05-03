@@ -193,6 +193,7 @@ const Page = ({ params }: { params: paramsType }) => {
                                     src={chatUser.profileImage || "/assets/icons/profile-placeholder.svg"}
                                     width={50}
                                     height={50}
+                                    style={{borderRadius:"50%"}}
                                     alt="ProfilePlaceholder"
                                     className="cursor-pointer"
                                 />

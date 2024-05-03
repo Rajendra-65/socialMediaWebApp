@@ -119,12 +119,19 @@ const AccountPostCard = ({
                             <h1 className="text-sm">{post.tags}</h1>
                         </div>
                     </div>
-                    <div className="w-[440px] h-[570px]  mt-1">
-                        <Image
+                    <div className="w-[440px] h-[450px]  mt-1">
+                    <Image
                             src={post.imageUrl as string}
-                            width={420}
-                            height={520}
-                            style={{ borderRadius: "10px", backgroundSize: "cover" }}
+                            layout="responsive"
+                            width={612}
+                            height={612}
+                            style={{
+                                maxWidth: "95%",
+                                maxHeight: "61%",
+                                borderRadius: "10px",
+                                objectFit: "cover",
+                                marginLeft: "4px"
+                            }}
                             alt="postImage"
                         />
                         <div className="flex justify-between mt-2 mr-1 px-1">
