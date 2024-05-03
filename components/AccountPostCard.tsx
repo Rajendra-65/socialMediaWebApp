@@ -120,7 +120,7 @@ const AccountPostCard = ({
                         </div>
                     </div>
                     <div className="w-[440px] h-[450px]  mt-1">
-                    <Image
+                        <Image
                             src={post.imageUrl as string}
                             layout="responsive"
                             width={612}
