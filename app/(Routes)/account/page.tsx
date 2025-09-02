@@ -5,12 +5,14 @@ import { UserTypes } from "../../../types/user";
 import { PostTypes } from "../../../types/post";
 import { getLogInUser } from "@/service/user/userServiece";
 import { getPost } from "@/service/post/postService";
-import PageLoader from "@/components/PageLoader";
+import SidebarLoader from "@/components/SidebarLoader";
+import { Skeleton } from "@/components/ui/skeleton"
 import FetchFailed from "@/components/FetchFailed";
 import isAuth from "@/components/isAuth";
 import { useRouter } from "next/navigation";
 import useUserActivity from "@/app/hooks/useUserActivity";
 import { setUnActive } from "@/service/user/userServiece";
+import { CardLoader } from "@/components/CardLoader";
 
 const Page = () => {
   const [mounted, setIsMounted] = useState<boolean>(false);
@@ -64,7 +66,7 @@ const Page = () => {
         ) : fetched && (!user || !posts) ? (
           <FetchFailed />
         ) : (
-          <PageLoader />
+          <CardLoader/>
         )
       }
     </div>

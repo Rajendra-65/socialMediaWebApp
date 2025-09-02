@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { AllUsersTypes, UserTypes } from "@/types/user";
 import { getLogInUser, makeFollow } from "@/service/user/userServiece";
-import PageLoader from "./PageLoader";
+import PageLoader from "./SidebarLoader";
 import { createNotification } from "@/service/notification/notificationService";
 
 const PeopleCard = ({

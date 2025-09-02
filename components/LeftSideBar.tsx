@@ -13,7 +13,7 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { getLogInUser, setUnActive } from '@/service/user/userServiece';
 import { toast } from 'react-toastify';
-import PageLoader from './PageLoader';
+import PageLoader from './SidebarLoader';
 import { UserTypes } from '@/types/user';
 import { MessageCircleMore } from 'lucide-react';
 import { pusherClient } from '@/lib/pusher';

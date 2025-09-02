@@ -1,6 +1,6 @@
 "use client"
 import FetchFailed from '@/components/FetchFailed'
-import PageLoader from '@/components/PageLoader'
+import PageLoader from '@/components/SidebarLoader'
 import PeopleCard from '@/components/PeopleCard'
 import { getUserId } from '@/service/token/tokenService'
 import { getAllUsers, makeFollow } from '@/service/user/userServiece'
@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import isAuth from '@/components/isAuth'
 import useUserActivity from '@/app/hooks/useUserActivity'
+import { CardLoader } from '@/components/CardLoader'
 
 const Page = () => {
   const [allUsers, setAllUsers] = useState<UserTypes[]>([])
@@ -127,7 +128,7 @@ const Page = () => {
               currentUser={currentUser as UserTypes}
               key={index}
             />
-          )))) : (<PageLoader />)
+          )))) : (<CardLoader/>)
         }
       </div>
     </div>

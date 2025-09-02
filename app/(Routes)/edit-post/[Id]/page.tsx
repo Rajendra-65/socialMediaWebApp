@@ -23,7 +23,7 @@ import { Loader } from "lucide-react";
 import { EditPostTypes } from "@/types/post";
 import { getPostDetails, updatePost } from "@/service/post/postService";
 import EditPost from "@/components/EditPost";
-import PageLoader from "@/components/PageLoader";
+import PageLoader from "@/components/SidebarLoader";
 import FetchFailed from "@/components/FetchFailed";
 import isAuth from "@/components/isAuth";
 import useUserActivity from "@/app/hooks/useUserActivity";

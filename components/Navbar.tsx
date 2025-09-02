@@ -3,7 +3,7 @@ import { getLogInUser, setUnActive } from '@/service/user/userServiece';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import PageLoader from './PageLoader';
+import PageLoader from './SidebarLoader';
 import { toast } from "react-toastify";
 import { UserTypes } from '@/types/user';
 import { MessageCircleMore } from 'lucide-react';

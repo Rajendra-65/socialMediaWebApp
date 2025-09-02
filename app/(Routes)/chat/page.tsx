@@ -8,7 +8,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { getSearchUser } from "@/service/user/userServiece";
 import { UserTypes } from "@/types/user";
 import { getConversations } from "@/service/conversation/conversationService";
-import PageLoader from "@/components/PageLoader";
+import PageLoader from "@/components/SidebarLoader";
 import { getUserId } from "@/service/token/tokenService";
 import { formatDistanceToNow } from 'date-fns';
 import { pusherClient } from "@/lib/pusher";

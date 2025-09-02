@@ -25,7 +25,7 @@ import FetchFailed from "@/components/FetchFailed";
 import { RemoveFromChat, pushToChat, seenConversation } from "@/service/conversation/conversationService";
 import { usePathname, useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
-import PageLoader from "@/components/PageLoader";
+import PageLoader from "@/components/SidebarLoader";
 import useUserActivity from "@/app/hooks/useUserActivity";
 import { setUnActive } from "@/service/user/userServiece";
 

@@ -5,8 +5,9 @@ import { PostTypes } from '@/types/post'
 import { UserTypes } from '@/types/user'
 import { getFeedPost } from '@/service/post/postService'
 import { getLogInUser } from '@/service/user/userServiece'
-import PageLoader from './PageLoader'
+import PageLoader from './SidebarLoader'
 import { useRouter } from 'next/navigation'
+import { CardLoader } from './CardLoader'
 
 interface PostUserTypes {
     _id: string,
@@ -71,7 +72,7 @@ const PostFeed = () => {
                     </div>
                 )
             ) : (
-                !fetched && <PageLoader />
+                !fetched && <CardLoader />
             )}
         </div>
 
