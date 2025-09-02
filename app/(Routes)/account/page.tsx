@@ -58,7 +58,7 @@ const Page = () => {
             You haven&apos;t Post Yet. Head over to the 
             <span      
               className='text-blue-600 underline cursor-pointer'
-              onClick={() => { router.push(`/all-users`) }}
+              onClick={() => { router.push(`/create-post`) }}
             >create-post</span> Page and createOne
           </div>)
         ) : fetched && (!user || !posts) ? (
